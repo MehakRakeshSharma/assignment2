@@ -1,0 +1,233 @@
+1. Write a program to print unit digit of a given number 
+
+ans 1)
+
+#include<stdio.h>
+int main ()
+{
+int x,y;
+printf ("enter any number");
+scanf("%d",&x);
+if (y=x%10)
+printf (" The unit digit is %d", y);
+return 0;
+}
+
+
+2. Write a program to print a given number without its last digit.
+
+ans 2)
+
+
+#include<stdio.h>
+int main ()
+{
+
+int x,y;
+printf ("enter any number");
+scanf("%d",&x);
+if (y=x%10)
+printf (" the given number without last digit = %d", (x-y)/10);
+return 0;
+} 
+
+
+
+3. Write a program to swap values of two int variables.
+
+
+ans 3)
+
+#include<stdio.h>
+int main ()
+{
+int x,y,t ;
+system("clr");
+printf ("enter the value of first and second number respectively\n");
+scanf("x=%d and y=%d",&x,&y);
+t=x;
+x=y;
+y=t;
+printf("\n after swapping, now, x=%d and y=%d",x,y);
+return 0;
+}
+
+///////////////////////////////////////////////this didn't worked :(the upper one)
+
+
+4. Write a program to swap values of two int variables without using a third variable. 
+
+ans 4)
+
+
+#include<stdio.h>
+int main ()
+{
+int x,y;
+system("clr");
+printf ("enter the value of first and second number respectively\n");
+scanf("x=%d and y=%d",&x,&y);
+x=+y;
+y=x-y;
+x=-y;
+printf("\n after swapping, now, x=%d and y=%d",x,y);
+return 0;
+}
+
+
+////////////////////////////////////////////////////// both q3. and q4. are correct (logically from my end but are not giving right output)
+
+
+5. Write a program to input a three-digit number and display the sum of the digits.
+
+ans 5)
+
+#include<stdio.h>
+int main ()
+{
+int a,x,y,z;
+printf ("enter a 3 digit number\n");
+scanf("%d",&a);
+x= a%10;
+y= ((a%100)-x)/10;
+z= (a-(a%100))/100;
+printf ("\n The sum of the three digits of the number is %d",x+y+z);
+return 0;
+}
+
+6 . Write a program which takes a character as an input and displays its ASCII code
+
+
+#include<stdio.h>
+int main ()
+{
+char a;
+printf ("enter any character");
+scanf ("%c",&a);
+printf ("the ASCII code of the character is %d",a);
+return 0;
+}
+
+
+7. Write a program to find the position of first 1 in LSB. 
+
+#include<stdio.h>
+int main ()
+{
+int t;
+printf ("enter any digit");
+scanf ("%d", &t);
+
+
+
+
+8. Write a program to check whether the given number is even or odd using a bitwise  operator. 
+
+ans 8 )
+
+#include<stdio.h>
+int main ()
+{
+int a;
+printf ("\n Enter a number \n");
+scanf ("%d",&a);
+(a&1)==1?printf ("the number you entered is odd"):printf ("the number you entered was even");
+return 0;
+}
+
+
+
+9. Write a program to print size of an int, a float, a char and a double type variable 
+
+
+ans 9)
+
+#include<stdio.h>
+int main ()
+{
+int a;
+float b;
+char c;
+double d;
+printf ("the size of int is %d, the size of float is %d, the size of char is %d, the size of float is %d", sizeof (a), sizeof (b), sizeof (c), sizeof (d));
+return 0;
+}
+
+
+
+10. Write a program to make the last digit of a number stored in a variable as zero.  (Example - if x=2345 then make it x=2340) 
+
+
+#include<stdio.h>
+int main ()
+{
+int a;
+printf("\n enter any number\n");
+scanf ("%d",&a);
+printf("\n if the last digit is replaced by zero, then the number will become = %d",a-(a%10));
+return 0;
+}
+
+
+
+11. Write a program to input a number from the user and also input a digit. Append a  digit in the number and print the resulting number. (Example - number=234 and  digit=9 then the resulting number is 2349) 
+
+#include<stdio.h>
+int main ()
+{
+int a,b;
+printf ("\n Enter a number and enter a digit\n");
+scanf ("%d  %d", &a, &b);
+printf(" the required new number is %d",(a*10)+b);
+return 0;
+}
+
+
+12. Assume price of 1 USD is INR 76.23. Write a program to take the amount in INR and  convert it into USD. 
+
+#include<stdio.h>
+int main ()
+{
+float a;
+printf ("\n Enter your INR amount\n");
+scanf ("%f",&a);
+printf ("\n The USD of %f INR = %f",a,a/76.23);
+return 0;
+}
+
+
+13. Write a program to take a three-digit number from the user and rotate its digits by  one position towards the right.
+
+
+ans 13)
+
+#include<stdio.h>
+int main ()
+{
+int a,b,c;
+printf("enter a 3 digit number, _ _ _ \n");
+scanf ("%d%d%d",&a,&b,&c);
+printf (" if the number are rotated right by one place then the number is %d%d%d",c,a,b);
+return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+7 th ,3 rd and 4th doubt

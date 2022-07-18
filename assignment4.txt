@@ -1,0 +1,193 @@
+Assignment - 4
+ A Job Ready Bootcamp in C++, DSA and IOT
+ MySirG
+ Iterative Control Statements 
+
+
+1. Write a program to print MySirG 5 times on the screen
+
+ans 1 )
+
+ #include<stdio.h>
+int main ()
+{
+int a=0;
+while (a<5)
+{
+printf("MySirG\n");
+a++;
+}
+return 0;
+}
+
+2. Write a program to print the first 10 natural numbers. 
+
+
+ans 2)
+
+#include<stdio.h>
+int main ()
+{
+    int a=1;
+    do
+    {
+        printf ("%d\n",a);
+        a++;
+    }
+    while (a<11);
+    return 0;
+}
+
+
+3. Write a program to print the first 10 natural numbers in reverse order 
+
+
+ans 3)
+
+#include<stdio.h>
+int main ()
+{
+    int a=10;
+    do
+    {
+        printf ("%d\n",a);
+        a--;
+    }
+    while (a>0);
+    return 0;
+}
+
+4. Write a program to print the first 10 odd natural numbers 
+
+
+ans 4)
+
+
+#include<stdio.h>
+int main ()
+{
+    int a=1;
+    do
+    {
+        printf ("%d\n",2*a-1);
+        a++;
+    }
+    while (a<11);
+    return 0;
+}
+
+
+5. Write a program to print the first 10 odd natural numbers in reverse order.
+
+
+ans 5)
+
+
+#include<stdio.h>
+int main ()
+{
+    int a=10;
+    do
+    {
+        printf ("%d\n",2*a-1);
+        a--;
+    }
+    while (a>0);
+    return 0;
+}
+
+6. Write a program to print the first 10 even natural numbers 
+
+
+ans 6)
+
+
+#include<stdio.h>
+int main ()
+{
+    int a=1;
+    do
+    {
+        printf ("%d\n",2*a);
+        a++;
+    }
+    while (a<11);
+    return 0;
+}
+
+7. Write a program to print the first 10 even natural numbers in reverse order 
+
+
+ans 7 )
+
+
+#include<stdio.h>
+int main ()
+{
+    int a=10;
+    do
+    {
+        printf ("%d\n",2*a);
+        a--;
+    }
+    while (a>0);
+    return 0;
+}
+
+8. Write a program to print squares of the first 10 natural numbers 
+
+
+ans 8)
+
+
+#include<stdio.h>
+int main ()
+{
+    int a=1;
+    do
+    {
+        printf ("%d\n",a*a);
+        a++;
+    }
+    while (a<11);
+    return 0;
+}
+
+9. Write a program to print cubes of the first 10 natural numbers
+
+
+ans 9)
+
+#include<stdio.h>
+int main ()
+{
+    int a=1;
+    do
+    {
+        printf ("%d\n",a*a*a);
+        a++;
+    }
+    while (a<11);
+    return 0;
+}
+
+ 
+10. Write a program to print a table of 5.
+
+
+ans 10 )
+
+
+#include<stdio.h>
+int main ()
+{
+    int a=1;
+    do
+    {
+        printf ("%d\n",5*a);
+        a++;
+    }
+    while (a<11);
+    return 0;
+}
+

@@ -1,0 +1,322 @@
+Assignment - 11 
+A Job Ready Bootcamp in C++, DSA and IOT MySirG
+
+More on functions in C Language
+
+
+1. Write a function to calculate LCM of two numbers. (TSRS)
+
+ans 1)
+
+#include<stdio.h>
+int main ()
+{
+int x,y,z;
+int lcm (int,int);
+printf ("Enter two numbers :\n");
+scanf ("%d %d",&x,&y);
+z= lcm (x,y);
+return 0;
+}
+
+int lcm (int a,int b)
+{
+    int max;
+    max=a>b?a:b;
+    while  (1)
+    {
+        if (max % a==0 && max % b==0)
+        {
+            printf ("The LCM of %d and %d is %d",a,b,max);
+            break;
+        }
+        ++max;
+    }
+   return max;
+}
+
+2. Write a function to calculate HCF of two numbers. (TSRS)
+
+ans 2 )
+
+#include<stdio.h>
+int main ()
+{
+int x,y,z;
+int hcf (int,int);
+printf ("Enter two numbers :\n");
+scanf ("%d %d",&x,&y);
+z= hcf (x,y);
+return 0;
+}
+
+int hcf (int a,int b)
+{
+
+    int min;
+    min=a<b?a:b;
+    while (1)
+    {
+        if (a%min==0&&b%min==0)
+        {
+            printf ("The HCF of %d and %d is %d",a,b,min);
+            break;
+        }
+        --min;
+    }
+
+    return min;
+
+
+}
+
+3. Write a function to check whether a given number is Prime or not. (TSRS)
+
+ans 3 )
+#include<stdio.h>
+int main ()
+{
+int x;
+void prime (int);
+printf ("Enter a number :\n");
+scanf ("%d",&x);
+ prime (x);
+return 0;
+}
+
+void prime (int a)
+{
+  int b,count;
+  for (b=1;b<a;b++)
+  {
+      if (a%b==0)
+        count++;
+  }
+  if (count==1)
+    printf("\nThe number is a prime number");
+  else
+    printf ("\nThe number is not a prime number");
+}
+
+
+4. Write a function to find the next prime number of a given number. (TSRS)
+
+ans 4)
+
+#include<stdio.h>
+int main ()
+{
+int x;
+void prime (int);
+printf ("Enter a number :\n");
+scanf ("%d",&x);
+ prime (x);
+return 0;
+}
+
+void prime (int a)
+{
+
+    int b;
+    printf ("The prime number after %d is: \n",a);
+
+    for (a++;;a++)
+    {
+        for (b=2;a%b!=0;b++)
+        {
+
+
+        }
+        if (a==b)
+        {
+           printf("%d\n",a);
+            break;
+        }
+
+    }
+
+
+}
+
+5. Write a function to print first N prime numbers (TSRN)
+
+ans 5)
+
+#include<stdio.h>
+int main ()
+{
+int x;
+void prime (int);
+printf ("Enter a number :\n");
+scanf ("%d",&x);
+ prime (x);
+return 0;
+}
+
+void prime (int a)
+
+{
+    int b,c;
+    printf ("The prime numbers below %d are:\n1 \n",a);
+
+    for (b=2;b<=a;b++)
+    {
+        for (c=2;b%c!=0;c++)
+        {
+
+
+        }
+        if (b==c)
+            printf("%d\n",b);
+    }
+}
+
+
+6. Write a function to print all Prime numbers between two given numbers. (TSRN)
+
+
+ans 6 )
+
+#include<stdio.h>
+int main ()
+{
+int x,y;
+void prime (int,int);
+ printf ("Enter two numbers\n");
+    scanf ("%d %d",&x,&y);
+ prime (x,y);
+return 0;
+}
+
+void prime (int a,int b)
+
+{
+     int c;
+
+    printf ("The prime numbers between the given numbers are: \n");
+    if (a==1)
+    {
+        printf ("\n1");
+        a++;
+    }
+
+    for (a;a<=c;a++)
+    {
+        for (b=2;a%b!=0;b++)
+        {
+
+
+        }
+        if (a==b)
+            printf("\n%d\n",a);
+    }
+}
+
+
+7. Write a function to print first N terms of Fibonacci series (TSRN)
+
+
+ans 7 )
+
+#include<stdio.h>
+int main ()
+{
+int x;
+void fibonnaci (int);
+printf ("Enter a number upto which fibonnaci series you want to print.\n");
+    scanf ("%d",&x);
+ fibonnaci (x);
+return 0;
+}
+
+void fibonnaci (int a)
+
+{
+    int b=0,c=1,d,e;
+
+    printf ("The fibonnaci series upto %d terms is :\n",a);
+    for (e=0;e<a;e++)
+    {
+        d=b+c;
+        printf ("%d\n",d);
+        b=c;
+        c=d;
+    }
+}
+
+
+8. Write a function to print PASCAL Triangle. (TSRN)
+
+ans 8)
+
+#include<stdio.h >
+long factorial(int);
+int main()
+{
+    int i, n, c;
+    printf("Enter the number of rows you wish to see in pascal triangle\n");
+    scanf("%d", & n);
+    for (i = 0; i < n; i++) {
+        for (c = 0; c <= (n - i - 2); c++) printf(" ");
+        for (c = 0; c <= i; c++) printf("%ld ", factorial(i) / (factorial(c) * factorial(i - c)));
+        printf("\n");
+    }
+    return 0;
+}
+long factorial(int n) {
+    int c;
+    long result = 1;
+    for (c = 1; c <= n; c++) result = result * c;
+    return result;
+}
+
+9. Write a program in C to find the square of any number using the function.
+
+ans 9)
+
+#include<stdio.h >
+int main()
+{
+    int a;
+    void sq (int);
+    printf ("Enter the number, whose square is required :\n");
+    scanf ("%d",&a);
+     sq (a);
+    return 0;
+}
+void sq (int x)
+{
+    printf ("The square of %d is %d",x,x*x);
+}
+
+10. Write a program in C to find the sum of the series 1! /1+2!/2+3!/3+4!/4+5!/5 using the
+function.
+
+ans 10)
+
+#include<stdio.h >
+int main()
+{
+    int a;
+    int series (void);
+    a= series ();
+    printf ("The sum of the given series is %d",a);
+    return 0;
+}
+int series ()
+{
+    int x=1,y,z,factorial=1,u=0;
+   do
+   {
+       for (z=1;z<=x;z++)
+       {
+           factorial=factorial*z;
+       }
+       y=factorial/x;
+       u=u+y;
+       x++;
+
+   }
+   while (x<=5);
+  return (u);
+}

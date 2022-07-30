@@ -1,0 +1,246 @@
+Assignment - 12
+
+ A Job Ready Bootcamp in C++, DSA and IOT MySirG 
+
+
+Recursion in C Language 
+
+
+1. Write a recursive function to print first N natural numbers 
+
+ans 1)
+
+
+#include<stdio.h>
+void function (int);
+void function (int b)
+{
+if (b==0)
+return;
+function (b-1);
+printf ("%d\n",b);
+}
+int main ()
+{
+int a;
+printf ("Enter a number upto which all natural numbers are to be printed.\n");
+scanf ("%d",&a);
+function (a);
+return 0;
+}
+
+2. Write a recursive function to print first N natural numbers in reverse order 
+
+ans 2 )
+
+#include<stdio.h>
+void function (int);
+void function (int b)
+{
+if (b==0)
+return;
+printf ("%d\n",b);
+function (b-1);
+}
+int main ()
+{
+int a;
+printf ("Enter a number upto which all natural numbers are to be printed in reverse order.\n");
+scanf ("%d",&a);
+function (a);
+return 0;
+}
+
+3. Write a recursive function to print first N odd natural numbers 
+
+ans 3)
+
+#include<stdio.h>
+void function (int);
+void function (int b)
+{
+if (b==0)
+return;
+function (b-1);
+printf ("%d\n",2*b-1);
+}
+int main ()
+{
+int a;
+printf ("Enter a number upto which all odd natural numbers are to be printed.\n");
+scanf ("%d",&a);
+function (a);
+return 0;
+}
+
+4. Write a recursive function to print first N odd natural numbers in reverse order
+
+ans 4 )
+
+ #include<stdio.h>
+void function (int);
+void function (int b)
+{
+if (b==0)
+return;
+printf ("%d\n",2*b-1);
+function (b-1);
+}
+int main ()
+{
+int a;
+printf ("Enter a number upto which all odd natural numbers are to be printed in reverse order.\n");
+scanf ("%d",&a);
+function (a);
+return 0;
+}
+
+5. Write a recursive function to print first N even natural numbers 
+
+ans 5)
+
+#include<stdio.h>
+void function (int);
+void function (int b)
+{
+if (b==0)
+return;
+function (b-1);
+printf ("%d\n",2*b);
+}
+int main ()
+{
+int a;
+printf ("Enter a number upto which all even natural numbers are to be printed.\n");
+scanf ("%d",&a);
+function (a);
+return 0;
+}
+
+6. Write a recursive function to print first N even natural numbers in reverse order 
+
+ans 6 )
+#include<stdio.h>
+void function (int);
+void function (int b)
+{
+if (b==0)
+return;
+printf ("%d\n",2*b);
+function (b-1);
+}
+int main ()
+{
+int a;
+printf ("Enter a number upto which all even natural numbers are to be printed.\n");
+scanf ("%d",&a);
+function (a);
+return 0;
+}
+
+
+7. Write a recursive function to print squares of first N natural numbers 
+
+ans 7)
+
+#include<stdio.h>
+void function (int);
+void function (int b)
+{
+if (b==0)
+return;
+function (b-1);
+printf ("%d\n",b*b);
+}
+int main ()
+{
+int a;
+printf ("Enter a number upto which all even natural numbers are to be printed.\n");
+scanf ("%d",&a);
+function (a);
+return 0;
+}
+
+8. Write a recursive function to print binary of a given decimal number 
+
+ans 8 )
+
+#include<stdio.h>
+void binary (int);
+int c=0,i;
+void binary (int b)
+{
+    if (b==0)
+        return;
+    binary (b>>1);
+    c=b&1;
+    printf ("%d",c);
+}
+int main ()
+{
+int a;
+printf ("Enter a number.\n");
+scanf ("%d",&a);
+printf ("The binary of the given number is:\n");
+binary (a);
+
+return 0;
+}
+
+9. Write a recursive function to print octal of a given decimal number 
+
+ans 9)
+
+#include<stdio.h>
+void binary (int);
+int c=0,i;
+void binary (int b)
+{
+
+    if (b%8==0)
+        return;
+    binary (b/8);
+    c=b%8;
+    printf ("%d",c);
+
+}
+int main ()
+{
+int a;
+printf ("Enter a number.\n");
+scanf ("%d",&a);
+printf ("The octal of the given number is:\n");
+binary (a);
+
+return 0;
+}
+
+10. Write a recursive function to print reverse of a given number
+
+ans 10 )
+
+#include<stdio.h>
+void binary (int);
+int c=0,i;
+void binary (int b)
+{
+
+    if (b%10==0&&b/10==0)
+        return;
+        c=b%10;
+    printf ("%d",c);
+    binary (b/10);
+
+
+}
+int main ()
+{
+int a;
+printf ("Enter a number.\n");
+scanf ("%d",&a);
+printf ("The reverse of the given number is:\n");
+binary (a);
+
+return 0;
+}
+

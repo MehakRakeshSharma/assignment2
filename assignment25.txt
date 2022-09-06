@@ -1,0 +1,377 @@
+Assignment - 25 A Job Ready Bootcamp in C++, DSA and IOT
+ MySirG 
+Classes and Objects 
+
+
+1. Define a class Complex to represent a complex number. Declare instance member variables to store real and imaginary part of a complex number, also define instance member functions to set values of complex number and print values of complex number 
+
+Ans 1)
+
+#include<iostream>
+using namespace std;
+class COMPLEX
+{
+   int a,b;
+   public :
+   void setdata (int x,int y)
+   {
+       a=x;
+       b=y;
+   }
+   void display ()
+   {
+       cout<<endl<<"THE COMPLEX NUMBER IS "<<a<<"+"<<b<<"i";
+   }
+};
+int main ()
+{
+    int i,j;
+    COMPLEX c;
+    cout<<"Enter the real and imaginary parts of the comple numbers : ";
+    cin>>i>>j;
+    c.setdata (i,j);
+    c.display ();
+    return 0;
+}
+
+
+2. Define a class Time to represent Time (like 3 hr 45 min 20 sec). Declare appropriate number of instance member variables and also define instance member functions to set values for time and display values of time. 
+
+Ans 2 )
+
+#include<iostream>
+using namespace std;
+class time
+{
+   int a,b,c;
+   public :
+   void setdata (int x,int y,int z)
+   {
+       a=x;
+       b=y;
+       c=z;
+   }
+   void display ()
+   {
+       cout<<endl<<"THE TIME IS "<<a<<"hr "<<b<<"min "<<c<<"sec";
+   }
+};
+int main ()
+{
+    int i,j,k;
+    time t;
+    cout<<"Enter the hours, minutes and seconds : ";
+    cin>>i>>j>>k;
+    t.setdata (i,j,k);
+    t.display ();
+    return 0;
+}
+
+
+3. Define a class Factorial and define an instance member function to find the Factorial of a number using class. 
+
+Ans 3 )
+
+#include<iostream>
+using namespace std;
+class factorial
+{
+   int a,b=1;
+   public :
+   void setdata (int x)
+   {
+       a=x;
+       for (;x>=1;x--)
+       {
+           b=b*x;
+       }
+   }
+   void display ()
+   {
+       cout<<endl<<"THE TIME FACTORIAL OF "<<a<<" is "<<b;
+   }
+};
+int main ()
+{
+    int i;
+    factorial f;
+    cout<<"Enter the number : ";
+    cin>>i;
+    f.setdata (i);
+    f.display ();
+    return 0;
+}
+
+
+4. Define a class Largest Number and define an instance member function to find the Largest of three Numbers using the class. 
+
+Ans 4)
+
+#include<iostream>
+using namespace std;
+class LargestNumber
+{
+    int a,b,c,temp;
+public :
+    void fun (int i, int j, int k)
+    {
+        a=i;
+        b=j;
+        c=k;
+        if (a>b&&a>c)
+            temp=a;
+        if (b>c&&b>a)
+            temp=b;
+        if (c>a&&c>b)
+            temp=c;
+
+        cout<<endl<<"The greatest of the three numbers is : "<<temp;
+    }
+
+};
+int main ()
+{
+    int x,y,z;
+    LargestNumber ln;
+    cout<<"Enter three numbers : ";
+    cin>>x>>y>>z;
+    ln.fun (x,y,z);
+    return 0;
+}
+
+
+
+5. Define a class ReverseNumber and define an instance member function to find Reverse of a Number using class. 
+
+
+Ans 5 )
+
+#include<iostream>
+using namespace std;
+class ReverseNumber
+{
+    int a,b,c,m[20];
+public :
+    void fun (int i)
+    {
+        a=i;
+        for (c=1;i/10!=0;c++)
+        {
+            i=(i-(i%10))/10;
+        }
+
+        for (b=0;b<=c-1;b++)
+        {
+            m[b]=a%10;
+            a=(a-(a%10))/10;
+        }
+
+    }
+    void show ()
+    {
+        cout<<endl<<"the reverse of the number is : ";
+        for (b=0;b<=c-1;b++)
+        {
+            cout<<m[b];
+        }
+    }
+
+};
+int main ()
+{
+    int x;
+    ReverseNumber rn;
+    cout<<"Enter the number : ";
+    cin>>x;
+    rn.fun (x);
+    rn.show ();
+    return 0;
+}
+
+6. Define a class Square to find the square of a number and write a C++ program to Count number of times a function is called.
+
+Ans 6 )
+
+#include<iostream>
+using namespace std;
+class square
+{
+   public :
+       void sq (int i)
+       {
+
+           cout<<endl<<"THE SQAURE OF "<<i<<" is : "<<i*i;
+       }
+};
+int main ()
+{
+    int a;
+    square s;
+    cout<<"Enter a number : ";
+    cin>>a;
+    s.sq (a);
+    return 0;
+}
+
+ 
+7. Define a class Greatest and define instance member function to find Largest among 3 numbers using classes. 
+
+Ans 7 )
+
+#include<iostream>
+using namespace std;
+class Greatest
+{
+    int a,b,c,temp;
+public :
+    void fun (int i, int j, int k)
+    {
+        a=i;
+        b=j;
+        c=k;
+        if (a>b&&a>c)
+            temp=a;
+        if (b>c&&b>a)
+            temp=b;
+        if (c>a&&c>b)
+            temp=c;
+
+        cout<<endl<<"The greatest of the three numbers is : "<<temp;
+    }
+
+};
+int main ()
+{
+    int x,y,z;
+    Greatest g;
+    cout<<"Enter three numbers : ";
+    cin>>x>>y>>z;
+    g.fun (x,y,z);
+    return 0;
+}
+
+
+
+8. Define a class Rectangle and define an instance member function to find the area of the rectangle. 
+
+Ans  8 )
+
+#include<iostream>
+using namespace std;
+class Rectangle
+{
+   public :
+       void area (int i, int j)
+       {
+
+           cout<<endl<<"THE AREA OF RECTANGLE IS : "<<i*j;
+       }
+};
+int main ()
+{
+    int l,b;
+    Rectangle r;
+    cout<<"Enter the length and breadth of the rectangle  : ";
+    cin>>l>>b;
+    r.area (l,b);
+    return 0;
+}
+
+
+9. Define a class Circle and define an instance member function to find the area of the circle. 
+
+Ans 9 )
+
+#include<iostream>
+using namespace std;
+class Circle
+{
+   public :
+       void area (float R)
+       {
+
+           cout<<endl<<"THE AREA OF CIRCLE IS : "<<3.14*R*R;
+       }
+};
+int main ()
+{
+    float r;
+    Circle c;
+    cout<<"Enter the radius of the circle : ";
+    cin>>r;
+    c.area (r);
+    return 0;
+}
+
+
+10. Define a class Area and define instance member functions to find the area of the different shapes like square, rectangle , circle etc.
+
+Ans 10 )
+
+#include<iostream>
+using namespace std;
+class area
+{
+
+public :
+   void areac ()
+{
+    float r;
+    cout<< "Enter radius of the circle : ";
+    cin>>r;
+    cout<<endl<<"THE AREA OF CIRCLE IS : "<<3.14*r*r;
+}
+void arear ()
+{
+    int l,b;
+     cout<<endl<<"Enter length and breadth of the rectangle : ";
+    cin>>l>>b;
+   cout<<endl<<"The area of rectangle is : "<<l*b;
+}
+void areat ()
+{
+    int s,m,X,Y,Z,t;
+    float i;
+     cout<<endl<<"Enter the 3 sides of the triangle : ";
+    cin >>X>>Y>>Z;
+
+    s=(X+Y+Z)/2;
+    m=(s*(s-X)*(s-Y)*(s-Z));
+    for(i=1.0; ;i++)
+    {
+        if (i*i==m)
+            break;
+    }
+    cout<< endl<< "Area of triangle is "<<t;
+
+}
+};
+int main ()
+{
+    area A;
+    int a;
+    cout<<" for calculating area of : "<<endl<< " 1) circle "<<endl<<" 2) rectangle"<<endl<<" 3) triangle "<<endl<<"ENTER YOUR CHOICE :";
+    cin>>a;
+    switch (a)
+    {
+    case 1:
+      {
+          A.areac();
+      break;
+      }
+    case 2:
+        {
+            A.arear();
+            break;
+        }
+    case 3:
+        {
+            A.areat();
+            break;
+        }
+    }
+    return 0;
+}
+
+
+

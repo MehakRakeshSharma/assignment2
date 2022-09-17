@@ -1,0 +1,284 @@
+Assignment - 22 A Job Ready Bootcamp in C++, DSA and IOT 
+MySirG 
+DMA 
+
+1. Define a function to input variable length string and store it in an array without memory wastage. 
+
+ans 1 )
+
+#include<stdio.h>
+#include<stdlib.h>
+int main ()
+{
+    char *p,c;
+    int i=0,j=1;
+    printf ("enter a string : ");
+    p=(char*)malloc(sizeof (char));
+    while (c!='\n')
+    {
+        c=getc(stdin);
+        *(p+i)=c;
+        i++;
+        j++;
+    }
+    *(p+i)='\0';
+    p=(char*)realloc(p,sizeof (j));
+
+    printf ("The string is : ");
+     for (i=0;i<=j-1;i++)
+        printf ("%c",*(p+i));
+    free (*p);
+    return 0;
+}
+
+
+2. Write a program to ask the user to input a number of data values he would like to enter then create an array dynamically to accommodate the data values. Now take the input from the user and display the average of data values. 
+
+ans 2 )
+
+#include<stdio.h>
+#include<stdlib.h>
+int main ()
+{
+    int a,*p,i,sum=0;
+    float avg;
+    printf ("Enter the elements of the array : ");
+    scanf ("%d",&a);
+    p=calloc(a,sizeof (int));
+    printf ("Enter the values : ");
+    for (i=0;i<=a-1;i++)
+    {
+        scanf ("%d",(p+i));
+    }
+    for (i=0;i<=a-1;i++)
+    {
+        sum=sum+*(p+i);
+    }
+    avg=sum/a;
+    printf ("The average of the above numbers is : %f",avg);
+    free (*p);
+    return 0;
+}
+
+
+3. Write a program to calculate the sum of n numbers entered by the user using malloc and free. 
+
+ans 3)
+#include<stdio.h>
+#include<stdlib.h>
+int main ()
+{
+    int n,*p,i,sum=0;
+    printf ("Enter the number of elements : ");
+    scanf ("%d",&n);
+    p=malloc(n*sizeof (int));
+    printf ("Enter the values : ");
+    for (i=0;i<=n-1;i++)
+    {
+        scanf ("%d",(p+i));
+    }
+    for (i=0;i<=n-1;i++)
+    {
+        sum=sum+*(p+i);
+    }
+    printf ("The sum of the above numbers is : %d",sum);
+    free (*p);
+    return 0;
+}
+
+
+4. Write a program to input and print text using dynamic memory allocation.
+
+ans 4 )
+
+#include<stdio.h>
+#include<stdlib.h>
+int main ()
+{
+    char *p,c;
+    int i=0,j=1;
+    printf ("enter a string : ");
+    p=(char*)malloc(sizeof (char));
+    while (c!='\n')
+    {
+        c=getc(stdin);
+        *(p+i)=c;
+        i++;
+        j++;
+    }
+    *(p+i)='\0';
+    p=(char*)realloc(p,sizeof (j));
+
+    printf ("The string is : ");
+     for (i=0;i<=j-1;i++)
+        printf ("%c",*(p+i));
+    free (*p);
+    return 0;
+}
+
+
+5. Write a program to read a one dimensional array, print sum of all elements along with inputted array elements using dynamic memory allocation. 
+
+ans 5 )
+
+
+#include<stdio.h>
+#include<stdlib.h>
+int main ()
+{
+    int n,*p,i,sum=0;
+    printf ("Enter the number of elements : ");
+    scanf ("%d",&n);
+    p=malloc(n*sizeof (int));
+    printf ("Enter the values : ");
+    for (i=0;i<=n-1;i++)
+    {
+        scanf ("%d",(p+i));
+    }
+    for (i=0;i<=n-1;i++)
+    {
+        sum=sum+*(p+i);
+        printf ("%d, sum : %d \n",*(p+i),sum);
+    }
+
+    free (*p);
+    return 0;
+}
+
+
+6. Write a program in C to find the largest element using Dynamic Memory Allocation. 
+
+ans 6 )
+
+#include<stdio.h>
+#include<stdlib.h>
+int main ()
+{
+    int n,*p,i,temp;
+    printf ("Enter the number of elements : ");
+    scanf ("%d",&n);
+    p=(int*)malloc(n*sizeof (int));
+    printf ("Enter the values : ");
+    for (i=0;i<=n-1;i++)
+    {
+        scanf ("%d",(p+i));
+    }
+    for (i=0;i<=n-2;i++)
+    {
+        if (*p<*(p+i+1))
+        {
+            temp=*p;
+            *p=*(p+i+1);
+            *(p+i+1)=temp;
+        }
+    }
+
+      printf ("The maximum value is : %d ", *p);
+    free (*p);
+    return 0;
+}
+
+
+
+7. Write a program to demonstrate memory leak in C. 
+
+ans 7 )
+
+#include<stdio.h>
+#include<stdlib.h>
+void ml (void);
+void ml ()
+{
+ int *p;
+ p=(int *)malloc(sizeof(int));
+ *p=10;
+printf ("before memory leak, p points a variable which contains : %d\n",*p);
+}
+int main ()
+{
+    ml ();
+    printf ("after memory leak, we can not access the same variable as the scope of pointer ended with the function ");
+    return 0;
+}
+
+
+8. Write a program to demonstrate dangling pointers in C. 
+
+ans 8 )
+
+#include<stdio.h>
+#include<stdlib.h>
+int *p;
+int main ()
+{
+ p=(int*)malloc(sizeof(int));
+ *p=10;
+printf ("before being a dangling pointer, p points a variable which contains : %d\n",*p);
+free (*p);
+printf ("After freeing up the space of dynamically allocated memory now, p points to some variable having value : %d",*p);
+return 0;
+}
+
+
+9. Write a program to allocate memory dynamically of the size in bytes entered by the user. Also handle the case when memory allocation is failed. 
+
+ans 9 )
+
+#include<stdio.h>
+#include<stdlib.h>
+int main ()
+{
+  int a,*p;
+  double *q;
+  printf ("Enter the size of bytes : ");
+  scanf ("%d",&a);
+    p=(int*)malloc(a);
+    if (*p==NULL)
+    {
+        printf ("memory allocation failed");
+        return 0;
+    }
+    if (sizeof (a)>4&&sizeof (a)<8)
+    {
+        q=(double*)realloc(p,a);
+    }
+  return 0;
+}
+
+
+10. Find out the maximum and minimum from an array using dynamic memory allocation in C.
+
+ans 10 )
+
+
+#include<stdio.h>
+#include<stdlib.h>
+int main ()
+{
+    int n,*p,i,j,temp;
+    printf ("Enter the number of elements : ");
+    scanf ("%d",&n);
+    p=(int*)malloc(n*sizeof (int));
+    printf ("Enter the values : ");
+    for (i=0;i<=n-1;i++)
+    {
+        scanf ("%d",(p+i));
+    }
+    for (i=0;i<=n-2;i++)
+    {
+        for (j=i+1;j<=n-1;j++)
+        {
+            if (*(p+i)<*(p+j))
+            {
+                temp= *(p+i);
+                *(p+i)=*(p+j);
+                *(p+j)=temp;
+            }
+        }
+
+    }
+
+      printf ("The maximum value is : %d and minimum value is : %d ", *p,*(p+n-1));
+    free (*p);
+    return 0;
+}

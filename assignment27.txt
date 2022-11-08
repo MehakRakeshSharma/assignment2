@@ -1,0 +1,568 @@
+Assignment - 27 
+
+A Job Ready Bootcamp in C++, DSA and IOT 
+MySirG 
+
+Operator overloading and friend function 
+
+
+1. Define a class Complex with appropriate instance variables and member functions. Define following operators in the class: 
+a. + 
+b. - 
+c. * 
+d. == 
+
+ans 1 )
+#include<iostream>
+#include<conio.h>
+using namespace std;
+
+class Complex
+{
+    int real,img;
+public :
+    void set_data (int x,int y)
+    {
+        real=x; img=y;
+    }
+    void get_data ()
+    {
+        cout<<"Real part is : "<<real<<" imaginary part is : "<<img<<endl;
+    }
+    Complex operator + (Complex c)
+    {
+     Complex temp;
+     temp.real=real + c.real;
+     temp.img= img + c.img;
+     return temp;
+    }
+    Complex operator - (Complex c)
+    {
+        Complex temp;
+        temp.real=real-c.real;
+        temp.img= img- c.img;
+        return temp;
+    }
+    Complex operator * (Complex c)
+    {
+        Complex temp;
+        temp.real= real*c.real;
+        temp.img = img*c.img;
+        return temp;
+    }
+    void operator == (Complex c)
+    {
+        real=c.real;
+        img=c.img;
+    }
+}c1,c2,c3,c4,c5;
+
+
+int main ()
+{
+    c1.set_data (5,3);
+    c2.set_data (8,2);
+    c3=c1+c2;
+    c4=c1-c2;
+    c5= c1*c2;
+    c2==c1;
+    c3.get_data();
+    c4.get_data();
+    c5.get_data();
+    c2.get_data ();
+    return 0;
+}
+
+2. Write a C++ program to overload unary operators that is increment and decrement. 
+
+ans 2 )
+
+#include<iostream>
+#include<conio.h>
+using namespace std;
+
+class unary
+{
+    int a;
+public :
+    unary(int A)
+    {
+        a=A;
+    }
+    int operator ++ (void)
+    {
+       return ++a;
+    }
+    int operator -- (void)
+    {
+       return --a;
+    }
+    void display (void)
+    {
+        cout<<endl<<"THE FINAL OUTPUT IS : "<<a;
+    }
+}u(5);
+
+
+int main ()
+{
+    ++u ;
+    u.display();
+    return 0;
+}
+
+
+3. Write a C++ program to add two complex numbers using operator overloaded by a friend function. 
+
+
+ans 3)
+
+#include<iostream>
+#include<conio.h>
+using namespace std;
+
+class Complex
+{
+   int real,img;
+   public :
+       Complex ()
+       {
+           real =0;
+           img =0;
+       }
+       Complex (int a)
+       {
+           real =a;
+           img =0;
+       }
+       Complex (int a, int b)
+       {
+           real= a;
+           img= b;
+       }
+       friend Complex operator + (Complex, Complex);
+
+       void display_data (void)
+       {
+           cout<<endl<<" The real and imaginary part are : "<<real<<" and "<<img<<" respectively"<<endl;
+       }
+};
+
+Complex operator + (Complex X, Complex Y)
+{
+    Complex temp;
+    temp.real= X.real + Y.real;
+    temp.img= X.img + Y.img;
+    return temp;
+}
+int main ()
+{
+   Complex c1 (2),c2 (3,5),c3;
+   c3=c2+c1;
+   c3.display_data();
+    return 0;
+}
+
+
+4. Create a class Time which contains: 
+- Hours 
+- Minutes 
+- Seconds 
+Write a C++ program using operator overloading for the following: 
+1. = = : To check whether two Times are the same or not. 
+2. >> : To accept the time. 
+3. << : To display the time.
+
+ans 4 )
+
+#include<iostream>
+#include<conio.h>
+using namespace std;
+class Time
+{
+    int hours, minutes, seconds;
+public:
+    friend istream& operator >> (istream& , Time& );
+
+    friend ostream& operator << (ostream& , Time);
+
+     void operator == ( Time t)
+     {
+         if (hours == t.hours && minutes == t.minutes && seconds == t.seconds )
+            cout<<endl<<" yes, both the input time are same .";
+
+         else
+            cout<<endl<<" No, both the input time are different .";
+     }
+}t1,t2;
+
+istream& operator >> (istream& din, Time& t )
+{
+    cout<<endl<<" Enter hours : ";
+    cin>>t.hours;
+    cout<<endl<<" Enter minutes : ";
+    cin>>t.minutes;
+    cout<<endl<<" Enter seconds : ";
+    cin>>t.seconds;
+    return din;
+}
+ostream& operator << (ostream& dout, Time T)
+{
+    cout<<endl<<" The time is : "<<T.hours<<" hrs. "<<T.minutes<<" mins. "<<T.seconds<<" sec. ";
+}
+
+int main ()
+{
+
+    cin >> t1;
+    cin >> t2;
+    cout << t1;
+    cout <<t2;
+    t1==t2;
+    return 0;
+}
+
+
+5. Consider following class Numbers 
+class Numbers
+{ 
+int x,y,z; 
+public: 
+// methods 
+}; 
+Overload the operator unary minus (-) to negate the numbers.
+
+
+ans 5 ) 
+
+#include<iostream>
+#include<conio.h>
+using namespace std;
+class  Numbers
+{
+int x,y,z;
+public:
+    void set_data (int X)
+    {
+        x=X;
+    }
+ void operator - (void)
+ {
+     x=-x;
+ }
+ void display_data (void)
+ {
+     cout<<" The number after negation is : "<<x;
+ }
+}n;
+
+int main ()
+{
+    n.set_data(-6);
+    -n;
+    n.display_data ();
+    return 0;
+}
+
+ 
+6. Create a class String to represent a string. 
+a) Overload the + operator to concatenate two strings. 
+b) == to compare 2 strings. 
+
+ans 6 )
+
+#include<iostream>
+#include<conio.h>
+#include<string.h>
+using namespace std;
+class String
+{
+    char a[50],b[50],c[100];
+    int i;
+public:
+    String ()
+    {
+        cout<<"Enter first string : ";
+        for (i=0;a[i]!='\0';i++)
+        cin>>endl>>a[i];
+        cout<<endl<<"Enter second string : ";
+        for (i=0;b[i]!='\0';i++)
+            cin>>endl>>b[i]>>endl;
+
+    }
+    void operator + (void)
+    {
+        c=strcat(a,b);
+        cout<<endl<<" After concatenation, the string is : "<<c;
+    }
+    void operator == (void)
+    {
+        i= strcmp (a,b);
+        if (i>=0)
+        {
+            if (i==0)
+                cout<< endl<<" Both the strings are of same length.";
+            else
+                cout<<endl<<" String one is greater.";
+
+        }
+        else
+            cout<<endl<<" The second string is greater than first string.";
+    }
+}s;
+int main ()
+{
+    +s;
+    ==s;
+    return 0;
+}
+
+
+
+7. Define a C++ class fraction 
+class fraction 
+{ 
+long numerator; 
+long denominator; 
+Public: 
+fraction (long n=0, long d=0); 
+} 
+Overload the following operators as member or friend: 
+a) Unary ++ (pre and post both) 
+b) Overload as friend functions: operators << and >>. 
+
+
+ans 7 )
+
+#include<iostream>
+#include<conio.h>
+using namespace std;
+class fraction
+{
+    long numerator;
+long denominator;
+public:
+fraction (long n=0, long d=1)
+{
+    numerator=n;
+    denominator=d;
+}
+void operator ++ (void)
+{
+    numerator = numerator+(1*denominator);   //pre
+}
+void operator ++ (int)
+{
+
+     numerator = numerator++ ; //post
+}
+friend istream& operator >> (istream & , fraction &);
+
+friend ostream& operator << (ostream& , fraction );
+}f1;
+
+istream& operator >> (istream & din, fraction& f)
+{
+    cin>>f.numerator;
+    cin>>f.denominator;
+    return din;
+}
+ostream& operator << (ostream & dout, fraction F)
+{
+    cout<<endl<< " THE fraction is : "<<F.numerator<<"/"<<F.denominator;
+}
+int main ()
+{
+  cin>>f1;
+  ++f1;
+  cout<<f1;
+  f1++;
+  ++f1;
+  cout<<f1;
+
+    return 0;
+}
+
+
+8. Consider a class Matrix 
+Class Matrix 
+{ 
+int a[3][3]; 
+Public: 
+//methods; 
+}; 
+Overload the - (Unary) should negate the numbers stored in the object. 
+
+ans 8 )
+
+#include<iostream>
+#include<conio.h>
+using namespace std;
+
+class Matrix
+{
+int a[3][3];
+public:
+//methods;
+ Matrix ()
+{
+    cout<<endl<<"Enter 9 elements for this matrix :\n ";
+    for (int i=1;i<=3;i++)
+    {
+        for (int j=1;j<=3;j++)
+        {
+            cin>>a[i][j];
+        }
+    }
+}
+    void display (void)
+    {
+        cout<< " The matrix is : "<<endl;
+        for (int i=1;i<=3;i++)
+    {
+        for (int j=1;j<=3;j++)
+        {
+            cout<<a[i][j];
+        }
+        cout<<endl;
+    }
+
+    }
+    void operator - (void)
+    {
+        for (int i=1;i<=3;i++)
+    {
+        for (int j=1;j<=3;j++)
+        {
+            a[i][j]= - (a[i][j]);
+        }
+    }
+
+    }
+
+}m;
+int main ()
+{
+    - m;
+    m.display();
+    return 0;
+}
+
+9. Consider the following class mystring 
+Class mystring 
+{ 
+char str [100]; 
+Public: 
+// methods 
+}; 
+Overload operator “!” to reverse the case of each alphabet in the string (Uppercase to Lowercase and vice versa). 
+
+ans 9 )
+
+#include<iostream>
+#include<conio.h>
+using namespace std;
+
+class mystring
+{
+char str [100];
+public:
+// methods
+mystring ()
+{
+    cout<<"Enter a string : ";
+    cin>>str;
+}
+void operator ! (void)
+{
+    for (int i=0;str[i]!='\0';i++)
+    {
+        if (str[i]<=90)
+           str[i] = str[i]+32;
+        else
+           str [i]= str[i]-32;
+    }
+}
+void display (void)
+{
+    cout<<str;
+}
+};
+
+int main ()
+{
+    mystring s1;
+    !s1;
+    s1.display();
+    return 0;
+}
+
+
+10.Class Matrix 
+{ 
+int a[3][3]; 
+Public: 
+//methods; 
+}; 
+Let m1 and m2 are two matrices. Find out m3=m1+m2 (use operator overloading). 
+Output -
+
+
+ans 10 )
+
+#include<iostream>
+#include<conio.h>
+using namespace std;
+
+class Matrix
+{
+    int a[3][3];
+public:
+     void entry (void)
+{
+    cout<<endl<<"Enter 9 elements for this matrix :\n ";
+    for (int i=1;i<=3;i++)
+    {
+        for (int j=1;j<=3;j++)
+        {
+            cin>>a[i][j];
+        }
+    }
+}
+    void display (void)
+    {
+        cout<< " The matrix is : "<<endl;
+        for (int i=1;i<=3;i++)
+    {
+        for (int j=1;j<=3;j++)
+        {
+            cout<<a[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    }
+ Matrix operator + (Matrix A)
+ {
+     Matrix B;
+     for (int i=1;i<=3;i++)
+     {
+         for (int j=1;j<=3;j++)
+         {
+             B.a[i][j]=a[i][j]+A.a[i][j];
+         }
+     }
+     return B;
+ }
+
+}m1,m2,m3;
+
+int main ()
+{
+    m1.entry();
+    cout<<endl<<" Enter another 9 elements for second matrix : \n";
+    m2.entry();
+    Matrix m3=m1+m2;
+    m3.display ();
+    return 0;
+}
+

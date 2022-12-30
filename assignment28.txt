@@ -1,0 +1,365 @@
+Assignment - 28 A Job Ready Bootcamp in C++, DSA and IOT 
+           
+        MySirG Operator 
+
+Overloading, friend operator and this pointers 
+
+
+1. Define a class Complex with appropriate instance variables and member functions. Overload following operators 
+a. << insertion operator 
+b. >> extraction operator 
+
+ans1 )
+
+#include<iostream>
+#include<conio.h>
+using namespace std;
+class Complex
+{
+    int a ,b;
+public :
+    void set_data (int x, int y)
+    {
+        a=x;
+        b=y;
+    }
+    void show_data ()
+    {
+        cout<<"\n a= "<<a<<" b = "<<b;
+    }
+    friend ostream& operator << (ostream & , Complex);
+    friend istream& operator >> (istream& , Complex &);
+
+}c1;
+
+ostream& operator << (ostream & dout, Complex C)
+{
+    cout<<"\n a = "<<C.a<<" b = " << C.b;
+    return (dout);
+}
+istream& operator >> (istream & din, Complex& C)
+{
+    cin>>C.a>>C.b;
+    return din;
+}
+int main  ()
+{
+    cout<<" Enter a complex number ";
+    cin>>c1;
+    cout<<"\n You entered : ";
+    cout<<c1;
+    return 0;
+}
+
+
+2. Define a class Complex with appropriate instance variables and member functions. One of the functions should be setData() to set the properties of the object. Make sure the names of formal arguments are the same as names of instance variables. 
+
+ans 2 )
+
+#include<iostream>
+#include<conio.h>
+using namespace std;
+class Complex
+{
+    int a ,b;
+public :
+    Complex set_data (int a, int b)
+    {
+        Complex C;
+
+        C.a=a;
+        C.b=b;
+        return C;
+    }
+    void show_data ()
+    {
+        cout<<"\n a= "<<a<<" b = "<<b;
+    }
+
+}c1,c2;
+
+int main  ()
+{
+    c1=c2.set_data(3,4);
+    c1.show_data();
+    return 0;
+}
+
+
+3. Overload subscript operator [] that will be useful when we want to check for an index out of bound. 
+
+ans 3 )
+
+#include<iostream>
+#include<conio.h>
+using namespace std;
+class Array
+{
+    int a[10];
+public :
+    Array ( )
+    {
+        cout<<endl<<"Enter the elements of the array : \n";
+        for (int i =0;a[i]!='\0';i++)
+        {
+            cin>>a[i];
+        }
+    }
+    void show_data ()
+    {
+        for (int i=0;a[i]!='\0';i++)
+        cout<<"\n Array's element are : "<<a[i];
+    }
+
+    void operator [] ( char c)
+    {
+        for (int i=0;a[i]!='c';i++)
+            cout<<"\n The index number of "<<c<<" is : "<<i;
+    }
+}a;
+
+int main  ()
+{
+    int b;
+    a.show_data();
+    cout<<"\n Enter the element whose index number you want : ";
+    cin>>b;
+    a[b];
+
+    return 0;
+}
+
+4. Create a student class and overload new and delete operators as a member function of the class. 
+
+ans 4 )
+
+#include<iostream>
+#include<stdlib.h>
+using namespace std;
+class student
+{
+    string name;
+    int age;
+
+public:
+
+    student (string NAME,int AGE)
+    {
+        this->name=NAME;
+        this->age=AGE;
+    }
+     void display()
+    {
+        cout<< "Name:" << name << endl;
+        cout<< "Age:" << age << endl;
+    }
+   void * operator new(size_t size)
+    {
+        cout<< "Overloading new operator with size: " << size << endl;
+        void * p = malloc(size);
+
+        return p;
+    }
+
+    void operator delete(void * p)
+    {
+        cout<< "Overloading delete operator " << endl;
+        free(p);
+    }
+};
+
+int main()
+{
+    student * p = new student("Mehak", 21);
+
+    p->display();
+    delete p;
+}
+
+
+5. Create a student class and overload new and delete operators outside the class. 
+
+ans 5 )
+
+#include<iostream>
+#include<stdlib.h>
+using namespace std;
+class student
+{
+    string name;
+    int age;
+
+public:
+
+    student (string NAME,int AGE)
+    {
+        this->name=NAME;
+        this->age=AGE;
+    }
+     void display()
+    {
+        cout<< "Name:" << name << endl;
+        cout<< "Age:" << age << endl;
+    }
+ friend void * operator new(size_t , student);
+ friend void operator delete(void *, student );
+};
+ void * operator new(size_t size,student s)
+    {
+        cout<< "Overloading new operator with size: " << size << endl;
+        void * p = malloc(size);
+
+        return p;
+    }
+
+    void operator delete(void * p,student s)
+    {
+        cout<< "Overloading delete operator " << endl;
+        free(p);
+    }
+
+int main()
+{
+    student * p = new student("Mehak", 21);
+
+    p->display();
+    delete p;
+}
+
+
+
+6. Create a complex class and overload assignment operator for that class. 
+
+ans 6 )
+
+#include<iostream>
+
+using namespace std;
+class Complex
+{
+int real,img;
+public :
+    Complex ()
+    {
+        real =0;
+        img = 0;
+    }
+    Complex (int a)
+    {
+        real= a;
+        img = 0;
+    }
+    Complex (int a ,int b)
+    {
+        real = a;
+        img = b;
+    }
+    void display (void)
+    {
+        cout<<" The real and imaginary part are : "<<real<<" and "<<img<<" respectively\n";
+    }
+   Complex& operator= (const Complex &c)
+   {
+       Complex temp;
+
+       temp.real=c.real;
+       temp.img=c.img;
+       return temp;
+   }
+
+};
+
+int main ()
+{
+    Complex c1,c2(6,5),c3;
+    c3=c1=c2;
+    c1.display();
+    return 0;
+}
+
+
+9. Create an Integer class and overload logical not operator for that class. 
+
+ans 9 )
+
+#include <iostream>
+using namespace std;
+
+class Integer
+{
+    int n;
+
+public:
+    void getNum(int x)
+    {
+        n = x;
+    }
+    void display (void)
+    {
+        cout << "value of n is: " << n;
+    }
+
+    void operator!(void)
+    {
+        n = !n;
+    }
+};
+
+int main()
+{
+    Integer i;
+    i.getNum(10);
+    cout << "Before calling Operator Overloading:";
+    i.display();
+    cout << endl;
+
+    !i;
+    cout << "After  calling Operator Overloading:";
+    i.display();
+    cout << endl;
+
+    return 0;
+}
+
+
+10. Create a Coordinate class for 3 variables x,y and z and overload comma operator 
+such that when you write c3 = (c1 , c2 ) then c2 is assigned to c3. Where c1,c2,and c3 are objects of 3D coordinate class.
+
+ans 10 )
+ 
+
+#include <iostream>
+using namespace std;
+
+class Coordinate
+{
+    int x,y,z;
+
+public :
+
+    Coordinate (int X,int Y=0, int Z=0)
+    {
+        x=X;
+        y=Y;
+        z=Z;
+    }
+    void display (void)
+    {
+        cout<<"\n x,y and z coordinates are : "<<x<<" , "<<y<<" and "<<z<<" respectively";
+    }
+
+    Coordinate operator, (Coordinate C)
+    {
+        return C;
+    }
+};
+
+int main ()
+{
+    Coordinate c1(1,2,3),c2(4,3),c3(1);
+    c3=(c1,c2);
+    c3.display();
+    return 0;
+}
+
+

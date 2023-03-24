@@ -1,0 +1,425 @@
+Assignment – 30 A Job Ready Bootcamp in C++, DSA and IOT 
+MySirG 
+Exception Handling
+
+ 
+1. Write a C++ program to demonstrate the use of try, catch block with the argument as an  integer and string using multiple catch blocks. 
+
+ans 1 )
+
+#include<iostream>
+#include<string.h>
+using namespace std;
+
+int main ()
+{
+    int choice;
+    float a,b,c;
+    char s[10];
+    cout<<" Enter your choice : "<<endl<<" 1  string"<<endl<<" 2  Integers "<<endl;
+    cin>>choice;
+    try {
+    if (choice == 2)
+    {
+        cout<<endl<<" Enter 2 numbers : "<<endl;
+    cin>>a>>b;
+    if (b == 0)
+        throw (b);
+    c= a/b;
+    cout<<endl<<" The division of 2 numbers is : "<<c;
+    }
+    if (choice == 1)
+    {
+        cout<<endl<<" Enter a String of 10 alphabets"<<endl;
+        cin>>s;
+        if (s[9]== '\0'||s[10]!='\0')
+         throw (s)   ;
+        cout<<endl<<" The string is " <<s;
+    }
+    }
+    catch (const float x )
+    {
+        cout<<endl<<" denominator cannot be zero";
+    }
+    catch (const char * y)
+    {
+        cout<<endl<<" you can only enter a 10 alphabet letter ";
+    }
+    catch (...)
+    {
+        cout<<endl<<" Invalid input ";
+    }
+
+    return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Write a C++ program to demonstrate try, throw and catch statements. 
+
+ans 2 )
+
+#include<iostream>
+using namespace std;
+
+int main ()
+{
+    float a,b,c;
+    try {
+        cout<<endl<<" Enter 2 numbers : "<<endl;
+    cin>>a>>b;
+    if (b == 0)
+        throw (b);
+    c= a/b;
+    cout<<endl<<" The division of 2 numbers is : "<<c;
+    }
+    catch (const float x )
+    {
+        cout<<endl<<" denominator cannot be zero";
+    }
+    return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Write a C++ program to perform arithmetic operations on two numbers and throw an  exception if the dividend is zero or does not contain an operator. 
+
+ans 3 ) 
+
+#include<iostream>
+using namespace std;
+
+int main ()
+{
+    float a,b,c;
+    char Operator;
+    try {
+        cout<<endl<<" Enter first number : ";
+        cin>>a;
+
+        if ( a == 0)
+        throw a;
+
+        cout<<endl<<" Enter the operator : ";
+        cin>>Operator;
+
+        if (Operator == '*'|| Operator == '/'|| Operator == '+' || Operator == '-' );
+        else
+            throw Operator;
+
+
+        cout<<endl<<" Enter the second number : ";
+        cin>>b;
+
+    }
+    catch (const float x)
+    {
+        cout<<endl<<" divident cannot be = 0 ";
+    }
+    catch (const char y)
+    {
+        cout<<endl<<" operator can only be '+'/'-'/'*'/'/'";
+    }
+    switch (Operator)
+    {
+    case '+':
+        {
+            c=a+b;
+            cout<<endl<<" The result of adding 2 numbers is : "<<c;
+            break;
+        }
+
+    case '-':
+        {
+            c=a-b;
+            cout<<endl<<" The result of subtracting 2 numbers is : "<<c;
+            break;
+        }
+
+    case '*':
+        {
+            c=a*b;
+            cout<<endl<<" The result of multiplying 2 numbers is : "<<c;
+            break;
+        }
+
+    case '/':
+        {
+            if (b==0)
+                cout<<endl<< " Denominator cannot be zero";
+            else
+            {c=a/b;
+            cout<<endl<<" The result of dividing 2 numbers is : "<<c;
+            }
+        }
+    }
+    return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Write a C++ program to accept an email address and throw an exception if it does not  contain @ symbol. 
+
+ans 4 )
+
+#include<iostream>
+using namespace std;
+
+int main ()
+{
+    int i;
+    char email[100];
+    try
+    {
+    cout<<endl<<" Enter your email ";
+    cin>>email;
+    for (i=0;email[i]!='\0';i++)
+    {
+        if (email[i]== '@')
+            break;
+
+    }
+    if (email[i]=='@')
+    {
+
+     cout<<endl<<" Break Applied";
+return 1;
+    }
+    else
+        throw exception ();
+    }
+
+    catch (...)
+    {
+        cout<<endl<<" Invalid Email, '@' missing ";
+    }
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+5. Write a C++ program to accept a mobile number and throw an exception if it does not  contain 10 digits. 
+
+ans 5 )
+
+#include<iostream>
+using namespace std;
+
+int main ()
+{
+    int mob[10],i;
+    cout<<endl<<" Enter your mobile number ";
+    try
+    {
+      cin>>mob[10];
+      for (i=0;i<(sizeof(mob)/4);i++);
+      if (i!=10)
+       throw (i);
+       cout<<endl<<" The number is of 10 digits !";
+    }
+    catch (const int x)
+    {
+        cout<<endl<<" The number you entered is having "<<x<<" digits instead of 10 ";
+    }
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Write a C++ program to accept area pin code and throw an exception if it does not  contain 6 digits. 
+
+ans 6 )
+
+#include<iostream>
+using namespace std;
+
+int main ()
+{
+    int pin[6],i;
+    cout<<endl<<" Enter your AREA PIN CODE : ";
+    try
+    {
+      cin>>pin[6];
+      for (i=0;i<(sizeof(pin)/4);i++);
+      if (i!= 6)
+       throw (i);
+       cout<<endl<<" VALID PIN CODE !";
+    }
+    catch (const int x)
+    {
+        cout<<endl<<" The pin code you entered is having "<<x<<" digits instead of 6 ";
+    }
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Write a C++ program to accept a username if the username has less than 6 characters  or does contain any digit or special symbol. 
+
+ans 7 ) 
+
+#include<iostream>
+using namespace std;
+
+int main ()
+{
+    int i,digits=0,sp=0;
+    char name[50];
+    cout<<endl<<" Enter your username : ";
+    try
+    {
+      cin>>name[50];
+      for (i=0;name[i]!='\0';i++)
+      {
+          if (name[i]>=0 && name[i]<=9)
+            digits++;
+
+          if((name[i]>=32 && name[i]<=47) || (name[i]>=58 && name[i]<=64) || (name[i]>=91 && name[i]<=96) || (name[i]>=123 && name[i]<=126))
+            sp++;
+      }
+      if (i>=5 && (sp>=1 || digits >=1) )
+
+       cout<<endl<<" VALID USERNAME!";
+
+       else
+        throw exception ();
+    }
+    catch (...)
+    {
+        cout<<endl<<" Make sure your username is atleast of 6 alphabets and must contain atleast a digit or a aspecial character ";
+    }
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Write a C++ program to accept a password and throw an exception if the password has  less than 6 characters or does not contain a digit or does not contain any special  character or does not contain any capital letter. 
+
+ans 8 )
+
+#include<iostream>
+using namespace std;
+
+int main ()
+{
+    int i,digits=0,sp=0,cl=0;
+    char name[50];
+    cout<<endl<<" Enter your username : ";
+    try
+    {
+      cin>>name[50];
+      for (i=0;name[i]!='\0';i++)
+      {
+          if (name[i]>=0 && name[i]<=9)
+            digits++;
+
+          if((name[i]>=32 && name[i]<=47) || (name[i]>=58 && name[i]<=64) || (name[i]>=91 && name[i]<=96) || (name[i]>=123 && name[i]<=126))
+            sp++;
+            
+            if (name[i]>=97 && name[i]<=122)
+                cl++;
+      }
+      if (i>=5 && (sp>=1 || digits >=1) )
+
+       cout<<endl<<" VALID Password!";
+
+       else
+        throw exception ();
+    }
+    catch (...)
+    {
+        cout<<endl<<" Make sure your password is atleast of 6 alphabets and must contain atleast a digit or a a special character or a Capital letter ";
+    }
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Write a C++ program to accept Gmail id only and throw an exception if the id does not  contain @ and gmail.com. 
+
+ans 9 )
+
+#include<iostream>
+using namespace std;
+
+int main ()
+{
+    int i;
+    char email[100];
+    try
+    {
+    cout<<endl<<" Enter your Gmail ";
+    cin>>email;
+    for (i=0;email[i]!='\0';i++)
+    {
+        if (email[i]== '@')
+            break;
+
+    }
+    if (email[i]=='@')
+    {
+
+            if (email[i+1]=='g'&&email[i+2]=='m'&& email [i+3]=='a'&& email [i+4]=='i'&& email[i+5]=='l'&& email[i+6]=='.'&& email[i+7]=='c'&& email [i+8]=='o'&& email [i+9]=='m'&& email[i+10]=='\0')
+               {
+                   cout<<endl<<" Valid Gmail ";
+                     return 1;
+               }
+               else
+                throw (i);
+
+
+    }
+    else
+        throw exception ();
+    }
+catch (const int a)
+{
+    cout<<endl<<" Invalid Email, 'gmail.com' missing ";
+}
+    catch (...)
+    {
+        cout<<endl<<" Invalid Email, '@' missing ";
+    }
+    return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Write a C++ program to accept Nickname and throw an exception if it has greater than 8  characters or does contain a digit or special symbol or space.
+
+ans 10 )
+
+
+#include<iostream>
+using namespace std;
+
+int main ()
+{
+    int i,digits=0,sp=0,space=0;
+    char name[50];
+    cout<<endl<<" Enter your username : ";
+    try
+    {
+      cin>>name[50];
+      for (i=0;name[i]!='\0';i++)
+      {
+          if (name[i]>=0 && name[i]<=9)
+            digits++;
+
+          if((name[i]>=32 && name[i]<=47) || (name[i]>=58 && name[i]<=64) || (name[i]>=91 && name[i]<=96) || (name[i]>=123 && name[i]<=126))
+            sp++;
+
+            if (name[i]==' ')
+           space++;
+      }
+      if (i>=7 || (sp>0 || digits >0 || space>0) )
+           throw exception ();
+
+       else
+
+       cout<<endl<<" VALID NICKNAME!";
+
+    }
+    catch (...)
+    {
+        cout<<endl<<" Make sure your password is atleast of 6 alphabets and must contain atleast a digit or a a special character or a Capital letter ";
+    }
+    return 0;
+}
+

@@ -1,0 +1,835 @@
+Assignment - 31 A Job Ready Bootcamp in C++, DSA and IOT 
+
+MySirG
+
+new and delete operator, Inheritance
+
+
+1. Define a class Person with instance members name and age. Also define member functions setName(), setAge(), getName(), getAge(). Now define class Employee by inheriting Person class. In the Employee class define empid and salary as instance members. Also define setEmpid, setSalary, getEmpid, getSalary.
+
+
+ans 1 ) 
+
+#include<iostream>
+using namespace std;
+class person
+{
+    int age;
+    char name[50];
+
+public :
+    set_name ()
+    {
+        cout<<endl<<" Enter name : ";
+        cin>>name;
+    }
+    set_age (int x)
+    {
+        age = x;
+
+    }
+    get_name ()
+    {
+        cout<<endl<<name;
+    }
+    get_age ()
+    {
+        cout<<endl<<age;
+    }
+};
+class employee : public person
+{
+    int empid,salary;
+
+public :
+
+     set_empid ()
+     {
+         cout<<endl<<" Enter employee ID : ";
+         cin>>empid;
+     }
+
+     set_salary (int y)
+     {
+        salary = y;
+     }
+
+     get_empid ()
+     {
+         cout<<endl<<empid;
+     }
+     get_salary ()
+     {
+         cout<<endl<<salary;
+     }
+
+}e;
+int main ()
+{
+    e.set_name();
+    e.set_age(20);
+    e.set_empid();
+    e.set_salary (100000);
+    e.get_name ();
+    e.get_age ();
+    e.get_empid();
+    e.get_salary();
+
+    return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Write a C++ program to add two numbers using single inheritance. Accept these two numbers from the user in base class and display the sum of these two numbers in derived class.
+
+
+ans 2 )
+
+#include<iostream>
+using namespace std;
+
+class AddData          //Base Class
+{
+         protected :
+            
+                int num1, num2;
+        public:
+                void accept()
+                {
+                        cout<<"\n Enter First Number : ";
+                        cin>>num1;
+                        cout<<"\n Enter Second Number : ";
+                        cin>>num2;
+                }
+};
+class Addition: public AddData   //Class Addition – Derived Class
+{
+                int sum;
+        public:
+                void add()
+                {
+                        sum = num1 + num2;
+                }
+                void display()
+                {
+                        cout<<"\n Addition of Two Numbers : "<<sum;
+                }
+};
+int main()
+{
+        Addition a;
+        a.accept();
+        a.add();
+        a.display();
+        return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Write a C++ program to calculate the percentage of a student using multi-level inheritance. Accept the marks of three subjects in base class. A class will be derived from the above mentioned class which includes a function to find the total marks obtained and another class derived from this class which calculates and displays the percentage of students.
+
+
+ans 3 )
+
+#include<iostream>
+using namespace std;
+class first
+{
+protected :
+
+    float  a,b,c;
+
+public :
+
+    first ()
+    {
+        cout<<endl<<" Enter the marks of your 3 subjects out of 30: ";
+        cin>>a>>b>>c;
+    }
+
+};
+class second : public first
+{
+protected :
+    float sum ;
+public :
+
+    SUM ()
+    {
+        sum = a+b+c;
+    }
+
+};
+
+class third : public second
+{
+private :
+    float percentage ;
+public:
+    display ()
+    {
+        percentage = (sum/90)*100;
+        cout<<endl<<" The percentage is : "<<percentage<<"%";
+    }
+
+}p;
+
+int main ()
+{
+    p.SUM();
+    p.display();
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+4. Write a C++ program to design a base class Person (name, address, phone_no). Derive a class Employee (eno, ename) from Person. Derive a class Manager (designation, department name, basic-salary) from Employee. Write a menu driven program to:
+a. Accept all details of 'n' managers.
+b. Display manager having highest salary
+
+
+ans 4)
+
+#include<iostream>
+using namespace std;
+
+class person
+{
+protected :
+    char name[20];
+    string address;
+    int phone;
+};
+
+class employee : public person
+{
+protected :
+    int eno;
+};
+
+  class manager : public employee
+{
+
+string designation,department;
+int salary;
+public :
+
+   details ()
+    {
+        cout<<endl<<" Enter Employee no. : ";
+        cin>>eno;
+
+        cout<<endl<<" Enter Name : ";
+        cin>>name;
+
+        cout<<endl<<" Enter Address : ";
+        cin>>address;
+
+        cout<<endl<<" Enter Phone no. : ";
+        cin>>phone;
+
+        cout<<endl<<" Enter designation : ";
+        cin>>designation;
+
+        cout<<endl<<" Enter Department Name : ";
+        cin>>department;
+
+        cout<<endl<<" Enter Basic Salary : ";
+        cin>>salary;
+    }
+
+    int get_salary ()
+    {
+        return salary;
+    }
+
+      get_name ()
+     {
+         cout<<name;
+     }
+
+};
+
+int main ()
+{
+    int a,x[a];
+    cout<<endl<<" How many Managers you want to enter ? ";
+    cin>>a;
+
+    for (int i=0;i<a;i++)
+    {
+        manager mi;
+        cout<<endl<<" Enter Details of Manager : "<<endl<<"______________________________________________________________________________________________";
+        mi.details ();
+    }
+
+    for (int i=0;i<a;i++)
+    {
+        manager mi;
+        x[i]= mi.get_salary ();
+    }
+    for (int i=0;i<a;i++)
+    {
+        for (int j=i+1;j<a;j++)
+        {
+            int temp;
+            if (x[i]>x[j])
+            {
+                temp =x[j];
+                x[j]=x[i];
+                x[i]=temp;
+            }
+        }
+    }
+    int i;
+    manager mi;
+    for (i=0;i<a;i++)
+    {
+
+        int b=mi.get_salary();
+        if (x[a-1]== b)
+        break;
+            }
+
+            cout<<endl<<"Manager with highest Package is : "<<x[a-1];
+            cout<<endl<<"And, Manager's name is : "<<mi.get_name();
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Write a C++ program to define a base class Item (item-no, name, price). Derive a class Discounted-Item (discount-percent). A customer purchases 'n' items. Display the item-wise bill and total amount using appropriate format.
+
+
+ans 5 )
+
+#include<iostream>
+using namespace std;
+
+class Item
+{
+protected :
+   int item_no;
+   float price;
+   char name[50];
+};
+
+class Discounted_Item : public Item
+{
+ float dp,d_price = (price-price*(dp/100));
+ public :
+
+     details ()
+     {
+         cout<<endl<<" Enter item Name : ";
+         cin>>name;
+
+         cout<<endl<<" Enter item no. : ";
+         cin>>item_no;
+
+         cout<<endl<<" Enter item Price : ";
+         cin>>price;
+
+         cout<<endl<<" Enter Discounted percentage : ";
+         cin>>dp;
+     }
+
+     display ()
+     {
+         cout<<endl<<" Item Name : "<<name;
+         cout<<endl<<" Item No.  : "<<item_no;
+         cout<<endl<<" Item Price: "<<price;
+         cout<<endl<<" Discount percent : "<<dp;
+         cout<<endl<<" Discounted price : "<<d_price;
+     }
+
+     float get_discount ()
+     {
+         return (price-d_price);
+     }
+     float get_price ()
+     {
+         return price;
+     };
+};
+
+int main ()
+{
+    int a;
+    float sum_p=0,sum_dp=0;
+    cout<<endl<<" How many items you want to enter ? ";
+    cin>>a;
+    Discounted_Item d[a];
+    for (int i=0;i<a;i++)
+    {
+        d[i].details();
+        cout<<endl<<"_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _";
+    }
+    for (int i=0;i<a;i++)
+    {
+        d[i].display();
+        cout<<endl<<"_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _";
+    }
+    cout<<endl<<" Total Price : ";
+    for (int i=0;i<a;i++)
+    {
+        float m = d[i].get_price ();
+        sum_p= sum_p + m;
+
+    }
+    cout<<sum_p;
+
+    cout<<endl<<" Total Discount : ";
+    for (int i=0;i<a;i++)
+    {
+        float m = d[i].get_discount ();
+        sum_dp= sum_dp + m;
+
+    }
+    cout<<sum_dp;
+            return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Write a C++ program to demonstrate how a common friend function can be used to exchange the private values of two classes. (Use call by reference method).
+
+ans 6 )
+
+#include<iostream>
+using namespace std;
+class Derived;
+class Base
+{
+    protected:
+        int num1;
+    public:
+        Base()
+        {
+                num1=10;
+        }
+        void show()
+        {
+                cout<<"\n Value of Number 1 : "<<num1;
+        }
+        friend void swap(Base *num1, Derived *num2);
+};
+class Derived
+{
+    protected:
+        int num2;
+    public:
+        Derived()
+        {
+                num2=20;
+        }
+        void show()
+        {
+                cout<<"\n Value of Number 2 : "<<num2;
+        }
+        friend void swap(Base *num1, Derived *num2);
+};
+void swap(Base *no1, Derived *no2)
+{
+        int no3;
+        no3=no1->num1;
+        no1->num1=no2->num2;
+        no2->num2=no3;
+}
+int main()
+{
+        Base b;
+        Derived d;
+        swap(&b, &d);
+        b.show();
+        d.show();
+        return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Write class declarations and member function definitions for a C++ base class to represent an Employee (emp-code, name). Derive two classes as Fulltime (daily rate, number of days, salary) and Parttime (number of working hours, hourly rate, salary). Write a menu driven program to:
+1. Accept the details of ‘n’ employees.
+2. Display the details of ‘n’ employees.
+3. Search a given Employee by emp-code.
+
+ans 7 )
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Employee {
+protected:
+    int emp_code;
+    string name;
+public:
+    Employee(int code, string emp_name) {
+        emp_code = code;
+        name = emp_name;
+    }
+    virtual void calculateSalary() = 0;
+    void display() {
+        cout << "Employee Code: " << emp_code << endl;
+        cout << "Name: " << name << endl;
+    }
+};
+
+class Fulltime : public Employee {
+private:
+    float daily_rate;
+    int num_days;
+    float salary;
+public:
+    Fulltime(int code, string emp_name, float rate, int days) : Employee(code, emp_name) {
+        daily_rate = rate;
+        num_days = days;
+    }
+    void calculateSalary() {
+        salary = daily_rate * num_days;
+    }
+    void display() {
+        Employee::display();
+        cout << "Salary: " << salary << endl;
+    }
+};
+
+class Parttime : public Employee {
+private:
+    int num_hours;
+    float hourly_rate;
+    float salary;
+public:
+    Parttime(int code, string emp_name, int hours, float rate) : Employee(code, emp_name) {
+        num_hours = hours;
+        hourly_rate = rate;
+    }
+    void calculateSalary() {
+        salary = num_hours * hourly_rate;
+    }
+    void display() {
+        Employee::display();
+        cout << "Salary: " << salary << endl;
+    }
+};
+int main ()
+{
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8 - In a bank, different customers have savings account. Some customers may have taken a loan from the bank. So bank always maintain information about bank depositors and borrowers.
+Design a Base class Customer (name, phone-number). Derive a class Depositor(accno, balance) from Customer. Again, derive a class Borrower (loan-no, loan-amt) from Depositor.
+Write necessary member functions to read and display the details of ‘n’ customers.
+
+ans 8 )
+
+#include<iostream>
+using namespace std;
+class  customer
+{
+protected :
+    string name;
+    int phone;
+};
+class depositer : public customer
+{
+protected :
+
+    int account_no, balance;
+public :
+    details ()
+    {
+        cout<<endl<<" Enter your name : ";
+        cin>>name;
+        cout<<endl<<" Enter your phone number : ";
+        cin>>phone;
+        cout<<endl<<" Enter your account number : ";
+        cin>>account_no;
+        cout<<endl<< " Enter the amount to be deposited : ";
+        cin>>balance;
+    }
+
+    change_balance ()
+    {
+        int a;
+        cout<<" you want to 1) deposit or 2) withdraw ? ";
+        cin>>a;
+        switch (a)
+        {
+        case 1:
+            {
+                int x;
+                cout<<endl<<" Amount to be added : ";
+                cin>>x;
+                balance = balance +x;
+                cout<<endl<<" Total balance is : " <<balance;
+                break;
+            }
+             case 2:
+            {
+                int x;
+                cout<<endl<<" Amount to be withdrawn : ";
+                cin>>x;
+                balance = balance -x;
+                cout<<endl<<" Total balance is : "<< balance;
+                break;
+            }
+
+               default :
+                {
+                    cout<<endl<<" invalid choice";
+                }
+        }
+    }
+    display ()
+    {
+        int acc;
+        cout<<endl<<" Enter account number : ";
+        cin>>acc;
+        if (acc == account_no )
+         cout<<endl<<" The name of account holder is : "<<name<<endl<<" The Total balance in the account is : "<<balance;
+         else
+            cout<<endl<<" Invalid account number ";
+    }
+
+};
+
+class borrower : public depositer
+{
+    int loan_no,loan_amt;
+public:
+
+    loan ()
+    {
+        cout<<endl<<" Enter your loan number : ";
+        cin>>loan_no;
+        cout<<endl<<" Enter loan amount : ";
+        cin>>loan_amt;
+    }
+
+    check ()
+    {
+        int acc;
+        cout<<endl<<" Enter your account number : ";
+        cin>>acc;
+         if (acc == account_no )
+         cout<<endl<<" The name of account holder is : "<<name<<endl<<" The Total balance in the account is : "<<balance<<" loan amount is : "<<loan_amt;
+         else
+            cout<<endl<<" Invalid account number ";
+    }
+
+};
+int main ()
+{
+
+
+        int a;
+        cout<<" Enter your choice "<<endl<<" 1) depositer "<<endl<<" 2 ) borrower "<<endl<< " 3)  exit ";
+        cin>>a;
+        switch (a)
+        {
+        case 1:
+            {
+                int m;
+                cout<<" How many accounts details you will enter ? ";
+                cin>>m;
+                depositer d[m];
+                for (int i =0;i<m;i++)
+                {
+                    d[i].details();
+                    cout<<endl<<"_________________________________________________________________________________________________________________________________";
+                    d[i].display ();
+
+                cout<<endl<<" do you  want to change amount ? 1) yes 2) NO ";
+                cin>>m;
+                if (m==1)
+                {
+                    d[i].change_balance();
+                }
+                else
+                    exit;
+               } break;
+            }
+        case 2 :
+            {
+                 int m;
+                cout<<" How many accounts details you will enter ? ";
+                cin>>m;
+                borrower b[m];
+                for (int i =0;i<m;i++)
+                {
+                    b[i].details();
+                    cout<<endl<<"_________________________________________________________________________________________________________________________________";
+                    b[i].display ();
+
+                cout<<"____________________________________________________________________________________________________________________";
+                 {
+                    b[i].loan();
+                    cout<<endl<<"_________________________________________________________________________________________________________________________________";
+                    b[i].check();
+                } }
+                break;
+
+}
+        case 3:
+            exit;
+         }
+
+
+
+    return 0;
+
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Write a C++ program to implement the following class hierarchy: Student: id, name StudentExam (derived from Student): Marks of 6 subjects StudentResult (derived from StudentExam) : percentage Define appropriate functions to accept and display details. Create 'n' objects of the StudentResult class and display the marklist.
+
+ans 9 )
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Student {
+protected:
+    int id;
+    string name;
+public:
+    void get_details() {
+        cout << "Enter ID: ";
+        cin >> id;
+        cout << "Enter Name: ";
+        cin.ignore();
+        getline(cin, name);
+    }
+    void display_details() {
+        cout << "ID: " << id << endl;
+        cout << "Name: " << name << endl;
+    }
+};
+
+class StudentExam : public Student {
+protected:
+    int marks[6];
+public:
+    void get_marks() {
+        cout << "Enter marks of 6 subjects:" << endl;
+        for(int i = 0; i < 6; i++) {
+            cout << "Subject " << i+1 << ": ";
+            cin >> marks[i];
+        }
+    }
+    void display_marks() {
+        cout << "Marks:" << endl;
+        for(int i = 0; i < 6; i++) {
+            cout << "Subject " << i+1 << ": " << marks[i] << endl;
+        }
+    }
+};
+
+class StudentResult : public StudentExam {
+private:
+    float percentage;
+public:
+    void calculate_percentage() {
+        int total = 0;
+        for(int i = 0; i < 6; i++) {
+            total += marks[i];
+        }
+        percentage = (float)total / 6.0;
+    }
+    void display_result() {
+        cout << "Percentage: " << percentage << "%" << endl;
+    }
+};
+
+int main() {
+    int n;
+    cout << "Enter number of students: ";
+    cin >> n;
+
+    StudentResult* students[n];
+
+    for(int i = 0; i < n; i++) {
+        students[i] = new StudentResult();
+        students[i]->get_details();
+        students[i]->get_marks();
+        students[i]->calculate_percentage();
+    }
+
+    cout << "\nMarklist:\n";
+    for(int i = 0; i < n; i++) {
+        students[i]->display_details();
+        students[i]->display_marks();
+        students[i]->display_result();
+        cout << endl;
+    }
+
+    return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+10. Consider two base classes worker(int code, char name, float salary), officer(float DA, HRA) class manger(float TA(is 10% of salary), gross salary) is derived from both base classes.
+Write necessary member functions.
+
+ans 10 )
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Worker {
+protected:
+    int code;
+    char name;
+    float salary;
+public:
+    Worker(int c, char n, float s) {
+        code = c;
+        name = n;
+        salary = s;
+    }
+    virtual void display() {
+        cout << "Code: " << code << endl;
+        cout << "Name: " << name << endl;
+        cout << "Salary: " << salary << endl;
+    }
+};
+
+class Officer : public Worker {
+protected:
+    float DA;
+    float HRA;
+public:
+    Officer(int c, char n, float s, float da, float hra) : Worker(c, n, s) {
+        DA = da;
+        HRA = hra;
+    }
+    void display() {
+        Worker::display();
+        cout << "DA: " << DA << endl;
+        cout << "HRA: " << HRA << endl;
+    }
+};
+
+class Manager : public Officer {
+private:
+    float TA;
+    float gross_salary;
+public:
+    Manager(int c, char n, float s, float da, float hra) : Officer(c, n, s, da, hra) {
+        TA = 0.1 * s;
+        gross_salary = s + DA + HRA + TA;
+    }
+    void display() {
+        Officer::display();
+        cout << "TA: " << TA << endl;
+        cout << "Gross Salary: " << gross_salary << endl;
+    }
+};
+
+int main ()
+{
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+

@@ -1,0 +1,472 @@
+Assignment -32 A Job Ready Bootcamp in C++, DSA and IOT 
+MySirG 
+Overriding, overloading, constructor in inheritance 
+
+
+1. Create a class FLOAT that contains one float data member. Overload all the four arithmetic operators so that they can operate on the objects of FLOAT. 
+
+ans 1 )
+
+#include<iostream>
+using namespace std;
+class FLOAT
+{
+    float x;
+public :
+    FLOAT ()
+    {
+        cout<<endl<<" Enter the real number  : ";
+        cin>>x;
+    }
+
+    FLOAT ( float y)
+    {
+        x= y;
+    }
+    FLOAT operator + (FLOAT f)
+    {
+        float m = f.get ();
+        FLOAT temp = x + m;
+        return temp;
+
+    }
+
+    FLOAT operator - (FLOAT f)
+    {
+        float m = f.get ();
+        FLOAT temp = x - m;
+        return temp;
+
+    }
+
+    FLOAT operator  * (FLOAT f)
+    {
+        float m = f.get ();
+        FLOAT temp = x * m;
+        return temp;
+
+    }
+
+    FLOAT operator / (FLOAT f)
+    {
+        float m = f.get ();
+        FLOAT temp = x / m;
+        return temp;
+
+    }
+
+    float get ()
+    {
+        return x;
+    }
+};
+
+int main ()
+{
+    float a;
+    FLOAT f1,f2,f3(0);
+    f3 = f1 + f2;
+    a = f3.get ();
+    cout<<endl<<" f1 + f2 = "<<a;
+    f3 = f1 - f2;
+    a= f3.get ();
+    cout<<endl<<" f1 - f2 = "<<a;
+    f3 = f1 * f2 ;
+    a = f3.get ();
+    cout<<endl<<" f1 X f2 = "<<a;
+    f3 = f1 / f2;
+    a= f3.get ();
+    cout<<endl<<" f1 / f2 = "<<a;
+    return 0;
+
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Define a class Rectangle and overload area function for different types of data type. 
+
+ans 2 )
+
+#include<iostream>
+using namespace std;
+class rectangle
+{
+public :
+
+   int  area (int a,int b)
+    {
+       return a*b;
+    }
+
+    float area (float a, float b)
+    {
+        return a*b;
+    }
+
+    float area (float a ,int b)
+    {
+        return a*b;
+    }
+    float area (int a, float b)
+    {
+        return a*b;
+    }
+};
+
+int main ()
+{
+    rectangle r;
+    int x=r.area (3,4);
+    cout<<endl<<x;
+    float y=r.area (3.1f,4.0f);
+    cout<<endl<<y;
+    float m = r.area(3.13f,5);
+    cout<<endl<<m;
+    float n = r.area (3,5.6f);
+    cout<<endl<<n;
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Define a base class Animals having member function sound() . Define another derived class from Animals class named Dogs. You need to override the sound function of the base class in the derived class. 
+
+ans 3 )
+
+#include<iostream>
+using namespace std;
+
+class animal
+{
+public:
+    sound ()
+    {
+        cout<<endl<<" Hi, sound function of Animal class ";
+    }
+};
+class dogs : public animal
+{
+public :
+    sound ()
+    {
+        cout<<endl<<" Hi, sound function of Dog class ";
+    }
+};
+
+int main ()
+{
+    dogs d;
+    d.sound ();
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Define a class Addition that can add 2 or 3 numbers of different data types using function overloading. 
+
+ans 4 )
+
+#include<iostream>
+using namespace std;
+
+class Addition
+{
+public :
+
+    Addition (int a,int b,int c=0)
+    {
+        cout<<endl<<" The sum of integers is : "<<a+b+c;
+    }
+
+    Addition (float a, float b, float c=0)
+    {
+        cout<<endl<<" The sum of real numbers is : "<<a+b+c;
+    }
+
+};
+
+int main ()
+{
+    Addition a1(5,6),a2(3,8,9),a3(5.1f,6.2f),a4(2.0f,3.0f,7.0f);
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Define a class A having multiple constructors. Define another class B derived from class A. Create derived class constructors and show use of constructor in this single inheritance. 
+
+ans 5 )
+
+#include<iostream>
+using namespace std;
+
+class A
+{
+public:
+    A ()
+    {
+        cout<<endl<<"ANTI BODY CONSTRUCTOR OF BASE CLASS ";
+    }
+
+};
+class B : public A
+{
+public :
+
+     B ()
+    {
+        cout<<endl<<"ANTI BODY CONSTRUCTOR OF DERIVED CLASS ";
+    }
+    B (int b,int c)
+    {
+        cout<<endl<<" PARAMETARIZED CONSTRUCTOR OF DERIVED CLASS ";
+    }
+};
+
+int main ()
+{
+    B b1,b2(2,4);
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. C++ Program to illustrate the use of Constructors in multilevel inheritance of your choice. 
+
+ans 6 )
+
+#include<iostream>
+using namespace std;
+
+class A
+{
+public:
+    A ()
+    {
+        cout<<endl<<"ANTI BODY CONSTRUCTOR OF BASE CLASS ";
+    }
+
+};
+class B : public A
+{
+public :
+
+     B ()
+    {
+        cout<<endl<<"ANTI BODY CONSTRUCTOR OF DERIVED CLASS ";
+    }
+};
+class C : public B
+{
+public:
+
+    C ()
+    {
+        cout<<endl<<"ANTI BODY CONSTRUCTOR OF C CLASS ";
+    }
+
+};
+
+int main ()
+{
+    C c;
+  cout<<endl<<" The calling of constructors in multilevel inheritance is from child to base but execution is from Base to derived classes !";
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. C++ Program to illustrate the use of Constructors in single inheritance of your choice. 
+
+ans 7 )
+
+#include<iostream>
+using namespace std;
+
+class A
+{
+public:
+    A ()
+    {
+        cout<<endl<<"ANTI BODY CONSTRUCTOR OF BASE CLASS ";
+    }
+
+};
+class B : public A
+{
+public :
+
+     B ()
+    {
+        cout<<endl<<"ANTI BODY CONSTRUCTOR OF DERIVED CLASS ";
+    }
+
+};
+
+int main ()
+{
+    B b;
+  cout<<endl<<" The calling of constructors in multilevel inheritance is from child to base but execution is from Base to derived classes !";
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Write a C++ program to find the factorial of a number using copy constructor 
+
+ans 8 )
+
+#include<iostream>
+using namespace std;
+
+class A
+{
+    int x;
+public :
+    A (int &a)
+    {
+        int y=1;
+        x=a;
+        for (int i= a;i>0;i--)
+        {
+            y = y * a;
+            a--;
+        }
+        cout<<endl<<" The factorial of "<<x<<" is : "<<y;
+    }
+};
+
+int main ()
+{
+    int x;
+    cout<<endl<<" Enter a number, you want factorial of ";
+    cin>>x;
+    A a1=x;
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Write a C++ program to calculate the area of triangle, rectangle and circle using constructor overloading. The program should be menu driven. 
+
+ans 9 )
+
+#include<iostream>
+using namespace std;
+
+class area
+{
+    int a,b,c;
+    float r,s;
+public :
+
+    AREA (float R)
+    {
+        r = R;
+        cout<<endl<<" The area of the circle is : "<<(3.14f*r*r);
+
+    }
+
+    AREA (int x,int y, int z )
+    {
+        a=x;
+        b=y;
+        c=z;
+        s=0.5f*a*b;
+        cout<<endl<<" The area of the triangle is : "<<s;
+    }
+    AREA (int x, int y)
+    {
+        cout<<endl<<" The area of rectangle is : "<<(x*y);
+    }
+};
+
+int main ()
+{
+    int m;
+    cout<<endl<<" 1) area of circle "<<endl<<" 2) area of triangle "<<endl<<" 3) area of rectangle "<<endl<<" ENTER YOUR CHOICE : ";
+    cin>>m;
+    switch (m)
+    {
+    case 1 :
+        {
+            float o;
+            cout<<endl<<" Enter the radius : ";
+            cin>>o;
+            area a;
+            a.AREA (o);
+            break;
+        }
+    case 2 :
+        {
+            int m,n,p;
+            cout<<endl<<" Enter 3 sides of triangle, leading 2 sides should be height and base only !! ";
+            cin>>m>>n>>p;
+            area a;
+            a.AREA (m,n,p);
+            break;
+        }
+
+    case 3 :
+        {
+            int a,b;
+            cout<<endl<<" Enter length and breadth of the rectangle : ";
+            cin>>a>>b;
+            area z;
+            z.AREA (a,b);
+            break;
+        }
+    default :
+        cout<<endl<<" INVALID CHOICE ";
+    }
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Create a C++ class for player objects with the following attributes: player no., name, number of matches and number of goals done in each match. The number of matches varies for each player. Write a parameterized constructor which initializes player no., name, number of matches and creates an array for number of goals and number of matches dynamically.
+
+ans 10 )
+
+#include<iostream>
+using namespace std;
+
+class player
+{
+    string name;
+    int pn,mn,*m;
+public:
+    player ( int x, string NAME, int y)
+    {
+        pn = x;
+        name = NAME;
+        mn = y;
+        m =  new int (mn);
+        cout<<endl<<" Enter the number of goals per match of the player : "<<endl;
+        for (int i=0;i<mn;i++)
+        {
+            cin>>*(m+i);
+        }
+    }
+
+    display ()
+    {
+        cout<<endl<<" NAME : "<<name;
+        cout<<endl<<" PLAYER NUMBER : "<<pn;
+        cout<<endl<<" NUMBER OF MATCHES PLAYED BY "<<name<<" : "<<mn;
+        cout<<endl<<" SCORE/GOALS PER MATCH : ";
+        for (int i=0;i<mn;i++)
+        {
+            cout<<endl<<i+1<<" : "<<*(m+i);
+        }
+    }
+};
+
+int main ()
+{
+    int A,B;
+    string Q;
+    cout<<endl<<" Enter player number : ";
+    cin>>A;
+    cout<<endl<<" Enter player's name : ";
+    cin>>Q;
+    cout<<endl<<" Enter number of matches played by the player : ";
+    cin>>B;
+    player p(A,Q,B);
+    p.display ();
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

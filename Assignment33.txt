@@ -1,0 +1,723 @@
+Assignment -33 A Job Ready Bootcamp in C++, DSA and IOT 
+
+MySirG
+
+Virtual Function, Abstract Class
+
+1. Create a base class called shape. Use this class to store two double type values that could be used to compute the area of figures. Derive two specific classes called
+triangle and rectangle from the base shape. Add to the base class, a member function get_data() to initialise base class data members and another member function display_area() to compute and display the area of figures. Make display_area() as a virtual function and redefine this function in the derived classes to suit their requirements.
+Using these three classes, design a program that will accept dimensions of a triangle or a rectangle interactively, and display the area.
+Remember the two values given as input will be treated as lengths of two sides in the case of rectangles, and as base and height in the case of the triangles, and used as follows:
+Area of rectangle = x * y Area of triangle = 1/2 * x * y
+
+ans 1 )
+
+#include<iostream>
+using namespace std;
+
+class shape
+{
+    protected :
+    double x,y;
+    public :
+        get_data()
+        {
+            cout<<endl<<" Enter the dimensions : ";
+            cin>>x>>y;
+        }
+        virtual display_area()=0;
+
+};
+class triangle : public shape
+
+{
+
+public :
+    display_area()
+    {
+        cout<<endl<<" The area of the triangle is : "<<(0.5*x*y);
+    }
+
+};
+
+class rectangle : public shape
+
+{
+
+    public :
+    display_area()
+    {
+        cout<<endl<<" The area of the rectangle is : "<<(x*y);
+    }
+
+};
+
+int main ()
+{
+    int i;
+    cout<<endl<<" 1) area of triangle "<<endl<<" 2) area of rectangle "<<endl<<" Enter your choice : ";
+    cin>>i;
+    switch (i)
+    {
+   case 1 :
+    {
+        shape *p;
+        triangle t;
+        p = &t;
+        p-> get_data();
+        p-> display_area();
+        break;
+    }
+   case 2 :
+    {
+        shape *p;
+        rectangle r;
+        p = &r;
+        p-> get_data();
+        p-> display_area();
+        break;
+    }
+
+   default :
+    cout<<endl<<" INVALID CHOICE ! ";
+    }
+    return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+2. Extend the above program to display the area of circles. This requires the addition of a new derived class 'circle' that computes the area of a circle. Remember, for a circle
+we need only one value, its radius, but the get_data() function in the base class requires two values to be passed. (Hint: Make the second argument of get_data()function as a default one with zero value.)
+
+ans 2 )
+
+#include<iostream>
+using namespace std;
+
+class shape
+{
+    protected :
+    double x,y;
+    public :
+        get_data(double a, double b=0)
+        {
+           x=a;
+           y=b;
+
+        }
+        virtual display_area()=0;
+
+};
+class triangle : public shape
+
+{
+
+public :
+    display_area()
+    {
+        cout<<endl<<" The area of the triangle is : "<<(0.5*x*y);
+    }
+
+};
+
+class circle : public shape
+
+{
+
+public :
+    display_area()
+    {
+        cout<<endl<<" The area of the circle is : "<<(3.14*x*x);
+    }
+
+};
+
+
+class rectangle : public shape
+
+{
+
+    public :
+    display_area()
+    {
+        cout<<endl<<" The area of the rectangle is : "<<(x*y);
+    }
+
+};
+
+int main ()
+{
+    int i;
+    cout<<endl<<" 1) area of triangle "<<endl<<" 2) area of rectangle "<<endl<<" 3) area of circle "<<endl<<" Enter your choice : ";
+    cin>>i;
+    switch (i)
+    {
+   case 1 :
+    {
+        double i,j;
+        shape *p;
+        triangle t;
+        p = &t;
+        cout<<endl<<" Enter the dimensions (height and base ) : ";
+        cin>>i>>j;
+        p-> get_data(i,j);
+        p-> display_area();
+        break;
+    }
+   case 2 :
+    {
+        double i,j;
+        shape *p;
+        rectangle r;
+        p = &r;
+        cout<<endl<<" Enter the dimensions (length and breadth) : ";
+        cin>>i>>j;
+        p-> get_data(i,j);
+        p-> display_area();
+        break;
+    }
+
+   case 3 :
+    {
+        double i;
+         shape *p;
+        circle c;
+        p = &c;
+        cout<<endl<<" Enter the radius : ";
+        cin>>i;
+        p-> get_data(i);
+        p-> display_area();
+        break;
+    }
+   default :
+    cout<<endl<<" INVALID CHOICE ! ";
+    }
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+3. Using the concept of pointers, write a function that swaps the private data values of two objects of the same class type.
+
+ans 3 )
+
+#include<iostream>
+using namespace std;
+
+class A
+{
+    int a;
+public :
+    int *p=&a;
+    set_data(int x)
+    {
+       *p=x;
+    }
+   int get_data ()
+    {
+        return *p;
+    }
+
+    swapping (A temp)
+    {
+        int b;
+        b= temp.get_data ();
+      A t;
+      t.set_data(*p);
+      this->set_data(b);
+      temp.set_data (t.get_data());
+    }
+};
+int main ()
+{
+    int x,y;
+    A a1,a2;
+    a1.set_data(3);
+    a2.set_data(4);
+    x=a1.get_data();
+    y=a2.get_data();
+     cout<<endl<<" The data before swapping is : "<<x<<" " <<y;
+    a1.swapping(a2);
+    x=a1.get_data();
+    y=a2.get_data();
+    cout<<endl<<" The data after swapping is : "<<x<<" " <<y;
+
+   return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+4. Create a base class called shape. Use this class to store 2 double type values that could be used to compute the area of figures. Derive 2 specific classes called triangle
+and rectangle from the base shape. Add to the base class a member function get_data() to initialise base class data members and another member function display_area() to compute and display the area of figures. Make display_area() as a virtual function and redefine this function in derived classes to suit their requirements. Using these 3 classes, design a program that will accept the dimensions of the shapes interactively and display area.
+
+ans 4 )
+
+#include<iostream>
+using namespace std;
+
+class shape
+{
+    protected :
+    double x,y;
+    public :
+        get_data()
+        {
+            cout<<endl<<" Enter the dimensions : ";
+            cin>>x>>y;
+        }
+        virtual display_area()=0;
+
+};
+class triangle : public shape
+
+{
+
+public :
+    display_area()
+    {
+        cout<<endl<<" The area of the triangle is : "<<(0.5*x*y);
+    }
+
+};
+
+class rectangle : public shape
+
+{
+
+    public :
+    display_area()
+    {
+        cout<<endl<<" The area of the rectangle is : "<<(x*y);
+    }
+
+};
+
+int main ()
+{
+    int i;
+    cout<<endl<<" 1) area of triangle "<<endl<<" 2) area of rectangle "<<endl<<" Enter your choice : ";
+    cin>>i;
+    switch (i)
+    {
+   case 1 :
+    {
+        shape *p;
+        triangle t;
+        p = &t;
+        p-> get_data();
+        p-> display_area();
+        break;
+    }
+   case 2 :
+    {
+        shape *p;
+        rectangle r;
+        p = &r;
+        p-> get_data();
+        p-> display_area();
+        break;
+    }
+
+   default :
+    cout<<endl<<" INVALID CHOICE ! ";
+    }
+    return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+5. Create a base class called Photon. Use this class to store double type value of wavelength that could be used to calculate photon energy. Create class calculate_photonEnergy which will photon energy. Using these classes, calculate photon energy.
+
+ans 5)
+
+#include<iostream>
+using namespace std;
+class photon
+{
+protected :
+
+    double wavelength;
+public :
+    set_wavelength ()
+    {
+        cout<<endl<<" Enter wavelength : ";
+        cin>>wavelength;
+    }
+
+};
+class calculate_photonEnergy : public photon
+{
+   public :
+       calculate ()
+       {
+           cout<<endl<<" photon energy = h X c X wavelength = "<< (6.626 * 3 * wavelength )<<" X 10^-26 Js";
+       }
+};
+int main ()
+{
+    calculate_photonEnergy c;
+    c.set_wavelength ();
+    c.calculate();
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+6. Extend above to display the area of circles. For a circle, only one value is needed i.e. radius but in get_data() function 2 values are passed.
+
+ans 6 )
+
+#include<iostream>
+using namespace std;
+
+class shape
+{
+    protected :
+    double x,y;
+    public :
+        get_data(double a, double b=0)
+        {
+           x=a;
+           y=b;
+
+        }
+        virtual display_area()=0;
+
+};
+class triangle : public shape
+
+{
+
+public :
+    display_area()
+    {
+        cout<<endl<<" The area of the triangle is : "<<(0.5*x*y);
+    }
+
+};
+
+class circle : public shape
+
+{
+
+public :
+    display_area()
+    {
+        cout<<endl<<" The area of the circle is : "<<(3.14*x*x);
+    }
+
+};
+
+
+class rectangle : public shape
+
+{
+
+    public :
+    display_area()
+    {
+        cout<<endl<<" The area of the rectangle is : "<<(x*y);
+    }
+
+};
+
+int main ()
+{
+    int i;
+    cout<<endl<<" 1) area of triangle "<<endl<<" 2) area of rectangle "<<endl<<" 3) area of circle "<<endl<<" Enter your choice : ";
+    cin>>i;
+    switch (i)
+    {
+   case 1 :
+    {
+        double i,j;
+        shape *p;
+        triangle t;
+        p = &t;
+        cout<<endl<<" Enter the dimensions (height and base ) : ";
+        cin>>i>>j;
+        p-> get_data(i,j);
+        p-> display_area();
+        break;
+    }
+   case 2 :
+    {
+        double i,j;
+        shape *p;
+        rectangle r;
+        p = &r;
+        cout<<endl<<" Enter the dimensions (length and breadth) : ";
+        cin>>i>>j;
+        p-> get_data(i,j);
+        p-> display_area();
+        break;
+    }
+
+   case 3 :
+    {
+        double i;
+         shape *p;
+        circle c;
+        p = &c;
+        cout<<endl<<" Enter the radius : ";
+        cin>>i;
+        p-> get_data(i);
+        p-> display_area();
+        break;
+    }
+   default :
+    cout<<endl<<" INVALID CHOICE ! ";
+    }
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Create a base class called Matrix. Use this class to store 4 int type values that could be used to calculate determinants and create matrices. Create class calculate_determinant which will calculate the determinant of a matrix. Using these classes, calculate the determinant of the matrix.
+
+ans 7 )
+
+#include<iostream>
+using namespace std;
+class Matrix
+{
+protected :
+
+    int a,b,c,d;
+public :
+    Matrix ()
+    {
+        cout<<endl<<" Enter 4 integer values of a 1X1 matrix : ";
+        cin>>a>>b>>c>>d;
+    }
+};
+class calculate_determinant : public Matrix
+{
+public :
+    calculate ()
+    {
+        cout<<endl<<" Determinant = "<<((a*c)-(b*d));
+    }
+};
+int main ()
+{
+    calculate_determinant c;
+    c.calculate();
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Create a base class called proof. Use this class to store two int type values that could be used to prove that triangle is a right angled triangle. Create a class compute
+which will determine whether a triangle is a right angled triangle. Using these classes, design a program that will accept dimensions of a triangle, and
+display the result. (Summary: Prove that triangle is a right angled triangle using pythagoras theorem).
+
+ans 8 ) 
+
+#include<iostream>
+using namespace std;
+class proof
+{
+protected :
+
+    int a[3];
+public :
+    proof ()
+    {
+        cout<<endl<<" Enter three dimensions of the triangle : ";
+        cin>>a[0]>>a[1]>>a[2];
+        for (int i=0;i<3;i++)
+        {
+            for (int j=i+1;j<3;i++)
+            {
+                if (a[i]>a[j])
+                {
+                    int temp;
+                    temp=a[i];
+                    a[i]=a[j];
+                    a[j]=temp;
+                }}}
+
+
+                }
+};
+
+class compute : public proof
+
+{
+public :
+    compute ()
+    {
+         if (a[2]*a[2]==a[1]*a[1]+a[0]*a[0])
+                    cout<<endl<<" It is a right angled triangle ";
+                else
+                    cout<<endl<<" It is not a right angled triangle ";
+
+    }
+};
+
+int main ()
+{
+    compute c;
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Create a base class called volume. Use this class to store two double type values that could be used to compute the volume of figures. Derive two specific classes called cube and sphere from the base shape. Add to the base class, a member function get_data() to initialise base class data members and another member function display_volume() to compute and display the volume of figures. Make display_volume() as a virtual function and redefine this function in the derived classes to suit their requirements. Using these three classes, design a program that will accept dimensions of a cube or a sphere interactively, and display the volume.
+
+ans 9 )
+
+#include<iostream>
+using namespace std;
+class volume
+{ protected :
+
+    double a;
+public :
+    get_data()
+    {
+       cout<<endl<<" Enter the dimension : ";
+            cin>>a;
+    }
+    virtual display_volume()=0;
+
+};
+class cube : public volume
+{
+public :
+
+    display_volume()
+    {
+        cout<<endl<<" The volume of the cube is : "<<(a*a*a);
+    }
+};
+class sphere : public volume
+{
+public :
+
+    display_volume()
+    {
+        cout<<endl<<" The volume of the sphere : "<<(4/3*3.14*a*a*a);
+    }
+};
+
+int main ()
+{
+    int i;
+    cout<<endl<<" 1) volume of cube "<<endl<<" 2) volume of sphere "<<endl<<" Enter your choice : ";
+    cin>>i;
+    switch (i)
+    {
+   case 1 :
+    {
+        volume *p;
+        cube t;
+        p = &t;
+        p-> get_data();
+        p-> display_volume();
+        break;
+    }
+   case 2 :
+    {
+        volume *p;
+        sphere r;
+        p = &r;
+        p-> get_data();
+        p-> display_volume();
+        break;
+    }
+
+   default :
+    cout<<endl<<" INVALID CHOICE ! ";
+    }
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Create a base class called shape. Use this class to store two double type values that could be used to compute the area of figures. Derive two specific classes called
+square and parallelogram from the base shape. Add to the base class, a member function get_data() to initialise base class data members and another member
+function display_area() to compute and display the area of figures. Make display_area() as a virtual function and redefine this function in the derived classes to
+suit their requirements. Using these three classes, design a program that will accept dimensions of a square or a parallelogram interactively, and display the area.
+
+ans 10 )
+
+#include<iostream>
+using namespace std;
+
+class shape
+{
+    protected :
+    double x,y;
+    public :
+        get_data(double a, double b=0)
+        {
+           x=a;
+           y=b;
+
+        }
+        virtual display_area()=0;
+
+};
+class square : public shape
+
+{
+
+public :
+    display_area()
+    {
+        cout<<endl<<" The area of the square is : "<<(x*x);
+    }
+
+};
+
+class parallelogram : public shape
+
+{
+
+    public :
+    display_area()
+    {
+        cout<<endl<<" The area of the parallelogram is : "<<(x*y);
+    }
+
+};
+
+int main ()
+{
+    int i;
+    cout<<endl<<" 1) area of square  "<<endl<<" 2) area of parallelogram "<<endl<<" Enter your choice : ";
+    cin>>i;
+    switch (i)
+    {
+   case 1 :
+    {
+        shape *p;
+        square s;
+        p = &s;
+        double a;
+        cout<<endl<<" Enter the side of the square : ";
+        cin>>a;
+        p-> get_data(a);
+        p-> display_area();
+        break;
+    }
+   case 2 :
+    {
+        shape *p;
+        parallelogram r;
+        p = &r;
+        double a,b;
+        cout<<endl<<" Enter the 2 sides of the parallelogram : ";
+        cin>>a>>b;
+        p-> get_data(a,b);
+        p-> display_area();
+        break;
+    }
+
+   default :
+    cout<<endl<<" INVALID CHOICE ! ";
+    }
+    return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

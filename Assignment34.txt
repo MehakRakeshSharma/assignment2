@@ -1,0 +1,512 @@
+Assignment -34 A Job Ready Bootcamp in C++, DSA and IOT 
+
+MySirG
+
+File Handling
+
+1. Write a C++ program to create a file and print “File created successfully” and throw an error if file is not created.
+
+ans 1)
+
+#include<iostream>
+#include<fstream>
+#include<conio.h>
+using namespace std;
+int main ()
+{
+    ofstream fout;
+    fout.open ("d:/abc/xyz.txt");
+    if (fout)
+       { cout<<endl<<" File opened successfully ";
+         fout.close ();}    
+else
+        cout<<endl<<"ERROR : FILE NOT FOUND ";
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Write a C++ program to read a text file and count the number of characters in it.
+
+ans 2 )
+
+#include<iostream>
+#include<fstream>
+#include<conio.h>
+using namespace std;
+int main ()
+{
+    ofstream fout;
+    fout.open ("C:/file/xyz.txt");
+    if (fout)
+        {cout<<endl<<" File opened successfully ";
+        fout<<" My name is Mehak.";
+        fout.close ();
+        }
+    else
+        cout<<endl<<"ERROR : FILE NOT FOUND ";
+
+        ifstream fin;
+        fin.open ("C:/file/xyz.txt");
+        fin.seekg(0,ios_base :: beg);
+        char ch;
+        int i, c=0, sp=0,x;
+        while (!fin.eof())
+        {
+            fin.get(ch);
+            if ((ch>63 && ch<91)|| (ch>96 &&ch <123))
+                {
+                    c++;
+                }
+                else
+                    {
+                        if (ch == ' ')
+                            sp++;
+                    }
+        }
+        cout<<endl<<" No. of characters in the file : "<<c;
+        cout<<"\n No. of spaces between words in the file : "<<sp;
+        fin.close();
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Write a C++ program to open an output file 'a.txt' and append data to it.
+
+ans 3 )
+
+#include<iostream>
+#include<fstream>
+#include<conio.h>
+using namespace std;
+int main ()
+{
+    ofstream fout;
+    ifstream fin;
+    fin.open("C:/file/xyz.txt");
+    fout.open("C:/file/xyz.txt",ios :: app);
+    if(fin.is_open ())
+        fout<<" Writing to a file opened from program.\n";
+    cout<<endl<<" Data has been appended to the file ";
+    fin.close();
+    fout.close ();
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Write a program to copy the contents of one text file to another while changing the case of every alphabet.
+
+ans 4 )
+
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+int main ()
+{
+    ifstream fin;
+    fin.open("C:/file/xyz.txt");
+    ofstream fout;
+    fout.open ("C:/file/new.txt");
+    char ch;
+    while (!fin.eof())
+    {
+        fin.get(ch);
+        if (ch>97 && ch< 122)
+        {
+            ch=toupper(ch);
+        }
+        else if (ch>65 && ch<90)
+        {
+            ch=tolower(ch);
+        }
+        fout<<ch;
+
+    }
+    cout<<"\n Data has been copied ";
+    fin.close();
+    fout.close();
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Write a C++ program to merge the two files.
+
+ans 5 )
+
+#include<iostream>
+#include<fstream>
+#include<stdio.h>
+#include<stdlib.h>
+using namespace std;
+int main ()
+{
+    ifstream fin1, fin2;
+    ofstream fout;
+    string ch, filename1, filename2, filename3;
+    cout<<"\n Enter first file name with extension '.txt' ";
+    getline(cin,filename1);
+    cout<<"\n Enter second file name with extension '.txt' ";
+    getline(cin,filename2);
+     cout<<"\n Enter third file name (which will merge the data from the other two files ) with extension '.txt' ";
+     getline (cin,filename3);
+
+     fin1.open(filename1);
+     fin2.open(filename2);
+     if (!fin1 || !fin2)
+     {
+         cout<<endl<<" NO such file name or directory exists ";
+         exit (0);
+     }
+     while (!fin1.eof())
+            {
+                getline(fin1,ch);
+                    fout<<ch;
+            }
+
+    while (!fin2.eof())
+    {
+        getline (fin2,ch);
+        fout<<ch;
+    }
+
+    cout<<endl<<" The 2 files have been merged in third file : "<<filename3;
+    fin1.close();
+    fin2.close();
+    fout.close();
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Write a C++ program that counts the total number of characters, words and lines in the file.
+
+ans 6 )
+
+#include<iostream>
+#include<fstream>
+#include<stdio.h>
+#include<stdlib.h>
+using namespace std;
+int main ()
+{
+    ifstream fin;
+    ofstream fout;
+     if (fout)
+     {
+    fout.open("C:/file/xyz.txt",ios::app);
+    fout<<"\n I am doing a bootcamp of C, C++ and DSA \n END'.";
+    fout.close();
+     }
+     else
+        cout<<endl<<"ERROR : FILE NOT FOUND ";
+
+        fin.open("C:/file/xyz.txt");
+     fin.seekg(0,ios_base :: beg);
+        char ch;
+        int i, c=0, w=0,x=0;
+        while (!fin.eof())
+        {
+            fin.get(ch);
+            if ((ch>63 && ch<91)|| (ch>96 &&ch <123))
+                {
+                    c++;
+                }
+                else
+                    {
+                        if (ch == ' ')
+                            w++;
+
+                            else if (ch == 13 )
+                                x++;
+                    }
+        }
+        cout<<endl<<" No. of characters in the file : "<<c;
+        cout<<"\n No. of words in the file : "<<w;
+        cout<<"\n No. of lines in the file : "<<x;
+        fin.close();
+
+    fin.open("C:/file/xyz.txt");
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. There are 50 records in a file. Each record contains 6-character item-code, 20 characters for item-name and an integer price. Write a program to read these
+records, arrange them in the descending order of price and write them in the same file, overwriting the earlier records.
+
+ans 7 )
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+struct Record {
+    string code;
+    string name;
+    int price;
+};
+
+int main() {
+    fstream file("filename.txt", ios::in | ios::out);
+
+    if (!file.is_open()) {
+        cout << "Error opening file\n";
+        return 0;
+    }
+
+    Record records[50];
+    for (int i = 0; i < 50; i++) {
+        file >> records[i].code >> records[i].name >> records[i].price;
+    }
+
+    sort(records, records + 50, [](const Record& a, const Record& b) {
+        return a.price > b.price;
+    });
+
+    file.seekp(0);
+    for (int i = 0; i < 50; i++) {
+        file << records[i].code << " " << records[i].name << " " << records[i].price << "\n";
+    }
+    file.close();
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. A file 'Employee.txt' contains empno and empname. Write a C++ program to add and read contents of this file and search for an employee whose name is 'XYZ'.
+
+ans 8 )
+
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+struct Employee {
+    int empno;
+    string empname;
+};
+
+int main() {
+    
+    fstream file("Employee.txt", ios::in | ios::out | ios::app);
+
+    
+    if (!file.is_open()) {
+        cout << "Error opening file\n";
+        return 0;
+    }
+
+    Employee newEmployee;
+    cout << "Enter employee number: ";
+    cin >> newEmployee.empno;
+    cout << "Enter employee name: ";
+    cin >> newEmployee.empname;
+    file << newEmployee.empno << " " << newEmployee.empname << endl;
+
+    file.seekg(0);
+    Employee employeeList[50];
+    int i = 0;
+    while (file >> employeeList[i].empno >> employeeList[i].empname) {
+        i++;
+    }
+
+    bool found = false;
+    for (int j = 0; j < i; j++) {
+        if (employeeList[j].empname == "XYZ") {
+            found = true;
+            cout << "Employee found with number: " << employeeList[j].empno << endl;
+        }
+    }
+    if (!found) {
+        cout << "Employee not found\n";
+    }
+
+    file.close();
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. A company has following details of their employees in the file 'emp.dat'
+a. Emp Id
+b. Emp Name
+c. Emp Address
+d. Emp Dept (Admin/Sales/Production/IT)
+e. Emp Phone
+f. Emp Age
+Write a C++ program to read the above file. Create a new file such as Adm.dat, Sal.dat, Pro.dat, IT.dat respectively to store the employee details according to their department.
+
+ans 9 )
+
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+
+struct Employee {
+    int empId;
+    string empName;
+    string empAddress;
+    string empDept;
+    string empPhone;
+    int empAge;
+};
+
+int main() {
+  
+    ifstream inFile("emp.dat");
+  
+    if (!inFile.is_open()) {
+        cout << "Error opening file\n";
+        return 0;
+    }
+
+    ofstream admFile("Adm.dat");
+    ofstream salFile("Sal.dat");
+    ofstream proFile("Pro.dat");
+    ofstream itFile("IT.dat");
+    if (!admFile.is_open() || !salFile.is_open() || !proFile.is_open() || !itFile.is_open()) {
+        cout << "Error creating files\n";
+        return 0;
+    }
+
+    Employee emp;
+    while (inFile >> emp.empId >> emp.empName >> emp.empAddress >> emp.empDept >> emp.empPhone >> emp.empAge) {
+        if (emp.empDept == "Admin") {
+            admFile << emp.empId << " " << emp.empName << " " << emp.empAddress << " " << emp.empDept << " " << emp.empPhone << " " << emp.empAge << endl;
+        }
+        else if (emp.empDept == "Sales") {
+            salFile << emp.empId << " " << emp.empName << " " << emp.empAddress << " " << emp.empDept << " " << emp.empPhone << " " << emp.empAge << endl;
+        }
+        else if (emp.empDept == "Production") {
+            proFile << emp.empId << " " << emp.empName << " " << emp.empAddress << " " << emp.empDept << " " << emp.empPhone << " " << emp.empAge << endl;
+        }
+        else if (emp.empDept == "IT") {
+            itFile << emp.empId << " " << emp.empName << " " << emp.empAddress << " " << emp.empDept << " " << emp.empPhone << " " << emp.empAge << endl;
+        }
+    }
+
+    inFile.close();
+    admFile.close();
+    salFile.close();
+    proFile.close();
+    itFile.close();
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Write a C++ program to create a file which has information Name, Account number,
+Balance and perform following operations:
+a. Add record
+b. Display content of file
+c. Display name of person having balance > 10,000
+
+ans 10 )
+
+
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+// Define a struct to hold each account's information
+struct Account {
+    string name;
+    int accNo;
+    double balance;
+};
+
+int main() {
+    // Open the file for writing
+    ofstream outFile("accounts.txt");
+    // Check if the file was opened successfully
+    if (!outFile.is_open()) {
+        cout << "Error creating file\n";
+        return 0;
+    }
+
+    // Define a variable to hold user's choice
+    char choice;
+
+    // Perform operations on the file
+    do {
+        cout << "\nEnter your choice:\n";
+        cout << "a - Add record\n";
+        cout << "b - Display content of file\n";
+        cout << "c - Display name of person having balance > 10,000\n";
+        cout << "q - Quit\n";
+        cin >> choice;
+
+        switch (choice) {
+            case 'a': { // Add record
+                Account acc;
+                cout << "\nEnter name: ";
+                cin >> acc.name;
+                cout << "Enter account number: ";
+                cin >> acc.accNo;
+                cout << "Enter balance: ";
+                cin >> acc.balance;
+                outFile << acc.name << " " << acc.accNo << " " << acc.balance << endl;
+                break;
+            }
+            case 'b': { // Display content of file
+                // Close the output file stream and open the file for reading
+                outFile.close();
+                ifstream inFile("accounts.txt");
+                // Check if the file was opened successfully
+                if (!inFile.is_open()) {
+                    cout << "Error opening file\n";
+                    return 0;
+                }
+                // Read and display each record in the file
+                Account acc;
+                while (inFile >> acc.name >> acc.accNo >> acc.balance) {
+                    cout << acc.name << " " << acc.accNo << " " << acc.balance << endl;
+                }
+                // Close the input file stream
+                inFile.close();
+                // Open the file again for writing
+                outFile.open("accounts.txt", ios::app);
+                break;
+            }
+            case 'c': { // Display name of person having balance > 10,000
+                // Close the output file stream and open the file for reading
+                outFile.close();
+                ifstream inFile("accounts.txt");
+                // Check if the file was opened successfully
+                if (!inFile.is_open()) {
+                    cout << "Error opening file\n";
+                    return 0;
+                }
+                // Read each record in the file and check if balance is greater than 10,000
+                Account acc;
+                bool found = false;
+                while (inFile >> acc.name >> acc.accNo >> acc.balance) {
+                    if (acc.balance > 10000) {
+                        cout << "\n" << acc.name << endl;
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    cout << "\nNo accounts found with balance > 10,000\n";
+                }
+                // Close the input file stream
+                inFile.close();
+                // Open the file again for writing
+                outFile.open("accounts.txt", ios::app);
+                break;
+            }
+            case 'q': { // Quit
+                break;
+            }
+            default: {
+                cout << "\nInvalid choice\n";
+                break;
+            }
+        }
+    } while (choice != 'q');

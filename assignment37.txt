@@ -1,0 +1,304 @@
+Assignment - 37 A Job Ready Bootcamp in C++, DSA and IOT
+
+STL: vector
+
+1. Declare a vector with Initialization and print the elements.
+
+ans 1 )
+
+#include<iostream>
+#include<vector>
+using namespace std;
+
+int main ()
+{
+    vector<int> my_vector = {1, 2, 3, 4, 5};
+
+  cout << "My vector: ";
+  for (int i = 0; i < my_vector.size(); ++i) {
+    cout << my_vector[i] << " ";
+  }
+ 
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Declare a vector without initialization, insert some elements and print
+
+ans 2)
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+  // Declare a vector without initialization
+  vector<int> my_vector;
+
+  // Insert elements into the vector
+  my_vector.push_back(1);
+  my_vector.push_back(2);
+  my_vector.push_back(3);
+  my_vector.push_back(4);
+  my_vector.push_back(5);
+
+  // Print the elements of the vector
+  cout << "My vector: ";
+  for (int i = 0; i < my_vector.size(); ++i) {
+    cout << my_vector[i] << " ";
+  }
+  cout << endl;
+
+  return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Write a function to print the element of a vector and take input from the user.
+
+ans 3 )
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    int a;
+    vector <int> v;
+cout<<" Enter the number of elements of the vector : ";
+cin>>a;
+cout<<endl<<" Enter the elements : "<<endl;
+v.resize(a);
+for (auto i=v.begin();i!=v.end();i++)
+{
+    cin>>*i;
+
+}
+cout<<endl<<" The elements are :";
+for (int m=0;m<v.size();m++)
+{
+    cout<<endl<<v.at(m);
+}
+  return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Write a program to Copy one vector’s elements to another vector.
+
+ans 4 )
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+  vector<int> my_vector1 = {1, 2, 3, 4, 5};
+  vector<int> my_vector2 = {6,7,8};
+   cout<<endl<<" vector 1 and 2 before swapping : ";
+  for (int i = 0; i < my_vector1.size(); ++i) {
+    cout << my_vector1[i] << " ";
+  }
+  cout<<endl<<endl;
+  for (int i = 0; i < my_vector2.size(); ++i) {
+    cout << my_vector2[i] << " ";
+  }
+
+  my_vector1.swap(my_vector2);
+  cout<<endl<<" vector 1 and 2 after swapping : ";
+  for (int i = 0; i < my_vector1.size(); ++i) {
+    cout << my_vector1[i] << " ";
+  }
+  cout<<endl<<endl;
+  for (int i = 0; i < my_vector2.size(); ++i) {
+    cout << my_vector2[i] << " ";
+  }
+
+
+  return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+5. Find largest and smallest elements in a vector
+
+ans 5 )
+
+#include <iostream>
+#include <vector>
+#include<algorithm>
+using namespace std;
+
+int main()
+{
+  vector<int> my_vector = {7,3,8,9,2,5,6};
+  sort(my_vector.begin(),my_vector.end());
+  cout<<endl<<" The smallest number of the vector is : "<<*(my_vector.begin());
+  cout<<endl<<" The largest number of the vector is : "<<*(my_vector.end());
+  return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+6. Write a program to reverse vector elements
+
+ans 6 )
+
+#include <iostream>
+#include <vector>
+#include<algorithm>
+using namespace std;
+
+int main()
+{
+  vector<int> my_vector = {7,3,8,9,2,5,6};
+  cout<<endl<<" vector before reversing  : ";
+  for (int i=0;i!=my_vector.size();i++)
+  {
+      cout<<" "<<my_vector.at(i);
+  }
+  reverse(my_vector.begin(),my_vector.end());
+  cout<<endl<<" vector after reversing  : ";
+   for (int i=0;i!=my_vector.size();i++)
+  {
+      cout<<" "<<my_vector.at(i);
+  }
+
+  return 0;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Write a program to find sum of vector elements
+
+ans 7 )
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+  vector<int> a = {7,3,8,9,2,5,6};
+    cout << "Vector: ";
+    for (int i = 0; i < a.size(); i++)
+        cout << a[i] << " ";
+    cout << endl;
+    cout << "\nSum = "<< accumulate(a.begin(), a.end(), 0);
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Write a program to find common elements between two vectors.
+
+ans 8 )
+
+  #include <bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    vector<int> vector1 = { 1, 45, 54, 71, 76, 12 };
+    vector<int> vector2 = { 1, 7, 5, 4, 6, 12 };
+
+    // Sort
+    sort(vector1.begin(), vector1.end());
+    sort(vector2.begin(), vector2.end());
+
+    cout << "First Vector: ";
+    for (int i = 0; i < vector1.size(); i++)
+        cout << vector1[i] << " ";
+    cout << endl;
+
+    cout << "Second Vector: ";
+    for (int i = 0; i < vector2.size(); i++)
+        cout << vector2[i] << " ";
+    cout << endl;
+
+    // Initialise a vector
+    // to store the common values
+    // and an iterator
+    // to traverse this vector
+    vector<int> v(vector1.size() + vector2.size());
+    vector<int>::iterator it, st;
+
+    it = set_intersection(vector1.begin(),
+                          vector1.end(),
+                          vector2.begin(),
+                          vector2.end(),
+                          v.begin());
+
+    cout << "\nCommon elements:\n";
+    for (st = v.begin(); st != it; ++st)
+        cout << *st << ", ";
+    cout << '\n';
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+9. Write a program to Push and print elements in a float vector
+
+ans 9 )
+
+
+#include <iostream>
+#include <vector> 
+using namespace std;
+
+int main()
+{
+   
+    vector<float> v1;
+
+    // adding 5 elements
+    v1.push_back(10.20f);
+    v1.push_back(89.30f);
+    v1.push_back(12.11f);
+    v1.push_back(33.33f);
+    v1.push_back(22.19f);
+
+    // print all elements
+    cout << "vector elements are: ";
+    for (int i = 0; i < v1.size(); ++i) {
+        cout << v1[i] << ' ';
+    }
+    cout << endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Write a program to check whether an element exists in a vector or not.
+
+ans 10 )
+
+
+#include <iostream>
+#include <vector> // 
+#include <algorithm> // 
+using namespace std;
+
+int main()
+{
+
+    int element; 
+    vector<int> v1{ 10, 20, 30, 40, 50 };
+
+    cout << "Enter an element to search: ";
+    cin >> element;
+
+    vector<int>::iterator it = find(v1.begin(), v1.end(), element);
+    if (it != v1.end()) {
+        cout << "Element " << element << " found at position : ";
+        cout << it - v1.begin() + 1 << endl;
+    }
+    else {
+        cout << "Element " << element << " does not found" << endl;
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////

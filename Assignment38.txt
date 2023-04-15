@@ -1,0 +1,432 @@
+Assignment - 38 A Job Ready Bootcamp in C++, DSA and IOT
+
+list
+
+1. List functions in C++ STL (Standard Template Library)
+
+ans1 ) 
+
+
+empty()	  Checks whether given list is empty or not. It returns 1 (true) if list is empty else it returns 0 (false).	list.empty();
+size()	  Returns size of the list	                                                                                    list.size();
+sort()	  Sorts the list in ascending order	                                                                              list.sort();
+reverse()	  Reverses the list (elements of the list)	                                                                  list.reverse();
+remove()	  Removes all occurrences of given elements from the list.	                                                      list.remove(element);
+remove_if()   Remove set of the elements based on the test condition (if test condition is true for the element, element will be removed and it is applicable on all the occurrences of the                   element which satisfy the test condition).	                                                                              list.remove_if(test_condition);
+front()	  Returns the first element of the list	                                                                        list.front();
+back()	  Returns the last element of the list	                                                                        list.back();
+push_front()  Inserts the element at the front (beginning) to the list	                                                      list.push_front(element);
+push_back()	  Insert the element at the back (end) to the list	                                                            list.push_back(element);
+pop_front()   Removes the element from the front (beginning) of the list	                                                list.pop_front();
+pop_back()	  Removes the element from the back (end) of the list	                                                            list.pop_back();
+insert()	  Inserts the element at specified index/position	                                                            list.insert(iterator_position, element);
+OR
+                                                                                                                              list.insert(iterator_positon, number_of_elements, element);
+begin, end    Return the iterator pointing first and last element of the list	                                                list.begin(); and list.end();
+rbegin, rend  Return the iterator pointing first and last element of the list (in reverse order) i.e. first element will be considered as last and last will be consider as first	                                                                                                                                                                             l                                                                                                                             list.rbegin(); and list.rend();
+assign()	Assigns the new set of elements or replaces the current with the new set of elements	                        list.assign(n, element)
+//will assign ‘element’, ‘n’ times to the list
+merge()	It merges two lists.	                                                                                          list1.merge(list2);
+unique()	It removes consecutive elements from the list.	                                                                  list.unique();
+erase()	It removes the specified index or index from the given range (index1, index2), this function can be used by defining the positions using iterator.	  list.erase(iterator_position);
+OR
+                                                                                                                              list.erase(iterator_position1, iterator_position2);
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+2. Assign the elements to the list (different methods) - Example of list::assign() | C++ STL
+
+ans 2 )
+
+
+#include<iostream>
+#include<list>
+using namespace std;
+
+int main ()
+{
+    list <int> l;
+    cout<<endl<<" elements in list is " ;
+    if (l.empty()==true)
+        cout<<"=0";
+    else
+        cout<<" not equal to 0 ";
+
+    // assigning elements by push:
+    l.push_front(4);
+    l.push_back(5);
+    l.push_back(6);
+    cout<<endl<<" elements in list is " ;
+    if (l.empty()==true)
+        cout<<"=0";
+    else
+        cout<<" not equal to 0 ";
+        for (auto i=l.begin();i!=l.end();i++)
+    {
+        cout<<endl<<*i;
+    }
+    cout<<endl<<endl;
+    // assigning by assign :
+    l.assign(2,1);
+    for (auto i=l.begin();i!=l.end();i++)
+    {
+        cout<<endl<<*i;
+    }
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Iterate a list C++ STL
+
+ans 3 )
+
+
+#include <iostream>
+#include <list>
+using namespace std;
+int main ()
+{
+   list <int> l={1,2,3,4,5};
+   list <int>::iterator x;
+    x=l.begin();
+    cout<<" The list initially : ";
+    for (int i=0;i<l.size();i++)
+    {
+        cout<<" "<<*x+i;
+    }
+    x++;
+    l.insert(x,6);
+    l.insert(x,2,1);
+    list <int> L = {8,9};
+    l.insert (x,L.begin(),L.end());
+    cout<<endl<<" The list after performing insertion function : ";
+
+    for (auto j=l.begin();j!=l.end();j++)
+    {
+        cout<<" "<<*j;
+    }
+  return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Iterate a list in reverse order C++ STL
+
+ans 4 )
+
+#include<iostream>
+#include<list>
+using namespace std;
+ list <int> l={1,2,3,4,5};
+int main ()
+{
+    for (auto x=l.rbegin();x!=l.rend();x++)
+    {
+        cout<<" "<<*x+i;
+    }
+      return 0;
+
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+5. Input and add elements to a list C++ STL
+
+ans 5 )
+
+#include <iostream>
+#include <list>
+#include <string>
+using namespace std;
+
+int main()
+{
+	list<string> lstr;
+	list<string>::iterator l_iter;
+	string str;
+	while(true)
+	{
+		cout<<"Enter string (\"EXIT\" to quit): ";
+		getline(cin, str);
+		if(str=="EXIT")
+			break;
+
+
+		lstr.push_back(str);
+	}
+	cout<<"List elements are"<<endl;
+	for (l_iter = lstr.begin(); l_iter != lstr.end(); l_iter++)
+		cout<< *l_iter<<endl;
+
+	return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Get the first and last element of the list C++ STL
+
+ans 6 )
+
+#include <iostream>
+#include <list>
+using namespace std;
+
+int main() 
+{
+	list<int> iList = {10, 20, 30, 40, 50};
+	
+	cout<<"First element: "<<iList.front()<<endl;
+	cout<<"Last element: "<<iList.back()<<endl;
+	
+	return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Insert the element at beginning and end of the list | C++ STL
+
+ans 7 )
+
+#include <iostream>
+#include <list>
+#include <string>
+using namespace std;
+
+int main() 
+{
+	list<int>iList = {10, 20, 30, 40, 50};
+	list<int>::iterator l_iter; 
+	iList.push_front(100);
+	iList.push_back(200);
+
+	cout<<"List elements are"<<endl;
+	for (l_iter = iList.begin(); l_iter != iList.end(); l_iter++)
+		cout<< *l_iter<<endl;
+
+	return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+8. Remove all occurrences of an element and remove set of some specific from the list C++ STL
+
+
+ans 8 )
+
+#include <iostream>
+#include <list>
+#include <string>
+using namespace std;
+
+int main()
+{
+    int i;
+    list<int> l;
+	list<int>::iterator x = l.begin();
+	cout<<endl<<" Enter the number of elements : ";
+	cin>>i;
+	cout<<endl<<" Enter the elements : ";
+    for(int j=0;j<i;j++)
+    {
+        int a;
+        cin>>a;
+        l.insert(x, a);
+        x++;
+    }
+     for (auto x=l.begin();x!=l.end();x++)
+    {
+        cout<<endl<<*x;
+    }
+
+    l.remove(5);
+    cout<<endl<<" After removing element '5' from the list : ";
+
+     for (auto x=l.begin();x!=l.end();x++)
+    {
+        cout<<endl<<*x;
+    }
+    x=l.begin();
+    list<int>::iterator y;
+    y= l.begin();
+    y++;
+    l.erase (x,y++);
+    cout<<endl<<" After erasing set of elements from index 1 to last from the list : ";
+
+     for (auto x=l.begin();x!=l.end();x++)
+    {
+        cout<<endl<<*x;
+    }
+
+	return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Remove all consecutive duplicate elements from the list | C++ STL
+
+
+ans 9 )
+
+#include <iostream>
+#include <list>
+using namespace std;
+int main ()
+{
+  list<double> mylist { 12.15,  2.72, 73.0,  12.77,  3.14,
+                       12.77, 73.35, 72.25, 15.3,  72.25 };;
+
+  mylist.sort();
+  mylist.unique();
+  cout << "mylist contains:";
+  for (list<double>::iterator it=mylist.begin(); it!=mylist.end(); ++it)
+cout << ' ' << *it;
+cout << '\n';
+
+
+  return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Merge two lists C++ STL
+
+ans 10 )
+
+#include <iostream>
+#include <list>
+using namespace std;
+int main ()
+{
+    list<double> first, second;
+
+  first.push_back (3.1);
+  first.push_back (2.2);
+  first.push_back (2.9);
+
+  second.push_back (3.7);
+  second.push_back (7.1);
+  second.push_back (1.4);
+
+  first.sort();
+  second.sort();
+
+  first.merge(second);
+  cout << "first contains:";
+   for (list<double>::iterator it=first.begin(); it!=first.end(); ++it)
+    cout << ' ' << *it;
+
+  return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+11. Create a list by assigning the all elements of another list C++ STL
+
+ans 11 )
+
+#include <iostream>
+#include <list>
+using namespace std;
+int main ()
+{
+   list<int> first, second;
+   first.assign (7,100);
+
+  second.assign (first.begin(),first.end());
+  list <int> myints={1776,7,4};
+
+  first = myints;
+  cout<<endl<<" first list : "<<endl;
+  for (auto i=first.begin();i!=first.end();i++)
+  {
+      cout<<" "<<*i;
+  }
+  cout<<endl<<" second list : "<<endl;
+  for (auto i=second.begin();i!=second.end();i++)
+  {
+      cout<<" "<<*i;
+  }
+  return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+12. Assign a list with array elements C++ STL
+
+ans 12 )
+
+#include <iostream>
+#include <list>
+using namespace std;
+int main ()
+{
+ list<int> first, second;
+  first.assign (7,100);                      
+
+  second.assign (first.begin(),first.end()); 
+
+  int myints[]={1776,7,4};
+  first.assign (myints,myints+3);            
+
+ cout << "Size of first: " << int (first.size()) << '\n';
+ cout << "Size of second: " << int (second.size()) << '\n';
+cout<<endl<<" first list : "<<endl;
+  for (auto i=first.begin();i!=first.end();i++)
+  {
+      cout<<" "<<*i;
+  }
+  cout<<endl<<" second list : "<<endl;
+  for (auto i=second.begin();i!=second.end();i++)
+  {
+      cout<<" "<<*i;
+  }
+  return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+13. Push characters in a list and print them separated by space in C++ STL
+
+
+ans 13 )
+
+
+#include <iostream>
+#include <list>
+using namespace std;
+
+int main()
+{
+    list<char> clist;
+    for (char i = 'A'; i <= 'Z'; ++i) {
+        clist.push_back(i);
+    }
+    cout << "list (clist) elements: " << endl;
+    for (char x : clist)
+        cout << x << ' ';
+    cout << endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+14. Access elements of a characters list using const_iterator in C++
+
+
+ans 14 )
+
+#include <iostream>
+#include <list> 
+using namespace std;
+
+int main()
+{
+    list<char> clist;
+    for (char i = 'A'; i <= 'Z'; ++i) {
+        clist.push_back(i);
+    }
+    list<char>::const_iterator it;
+    cout << "list (clist) elements: " << endl;
+    for (it = clist.begin(); it != clist.end(); ++it) {
+        cout << *it << ' ';
+    }
+    cout << endl;
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

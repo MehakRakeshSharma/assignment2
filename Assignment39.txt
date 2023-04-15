@@ -1,0 +1,282 @@
+Assignment - 39 A Job Ready Bootcamp in C++, DSA and IOT
+
+forward_list
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+1. Write a c++ code, to demonstrate the forward list.
+
+ans 1 ) 
+
+// CPP Program to demonstrate forward list
+#include <bits/stdc++.h>
+using namespace std;
+
+// Driver Code
+int main()
+{
+    // Declaring forward list
+    forward_list<int> flist1;
+
+    // Assigning values using assign()
+    flist1.assign({ 10, 12, 13, 15 });
+
+    // Displaying forward list
+    cout << "The elements of forward list are : ";
+    for (auto a : flist1)
+        cout << a << " ";
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Write a c++ code, in which create a forward list and assign values to it at the time of initialization and print it on the console screen.
+
+ans 2 )
+
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int sum=0;
+    forward_list<int> flist1 ={1,2,3,4,5,6,7,8,9,10};
+
+    cout << "The elements of forward list are : ";
+
+         for (auto i=flist1.begin();i!=flist1.end();i++)
+        {
+            cout<<" "<<*i;
+            sum += *i;
+        }
+        cout<<endl<<" The sum of all the elements is : "<<sum;
+    return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Create a forward list insert elements from 1 to 10 and find the sum of elements.
+
+ans 3 ) 
+
+#include <bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int sum=0;
+    forward_list<int> flist1={0};
+    forward_list<int>::iterator x =flist1.begin();
+    for (int a=10;a>=1;a--)
+    {
+       x= flist1.insert_after(flist1.before_begin(),a);
+       x++;
+    }
+
+    cout << "The elements of forward list are : ";
+
+         for (auto i=flist1.begin();i!=flist1.end();i++)
+        {
+            cout<<" "<<*i;
+            sum += *i;
+        }
+        cout<<endl<<" The sum of all the elements is : "<<sum;
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Write a program to reverse forward list elements.
+
+ans 4 )
+
+#include <iostream>
+#include <forward_list>
+using namespace std;
+int main ()
+{
+ forward_list<int> mylist = {10, 20, 30, 40};
+
+  mylist.reverse();
+
+  cout << "mylist contains:";
+  for (int& x: mylist) std::cout << ' ' << x;
+  cout <<endl;
+
+  return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Write a program remove all consecutive duplicate elements from the forward list
+
+ans  5 )
+
+
+#include <iostream>
+#include <forward_list>
+using namespace std;
+int main ()
+{
+forward_list<double> mylist = { 15.2, 73.0, 3.14, 15.85, 69.5,
+                                       73.0, 3.99, 15.2, 69.2,  18.5 };
+
+  mylist.sort();
+  mylist.unique();
+  cout << "mylist contains:";
+  for (double& x: mylist)
+  cout << ' ' << x;
+  cout << '\n';
+  return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+6. Create two forward lists of int type, and merge them.
+
+ans 6)
+
+
+#include <iostream>
+#include <forward_list>
+using namespace std;
+int main ()
+{
+forward_list<int> f1={5,6,7,8},f2={1,2,3,4};
+cout<<endl<<" lists before merging : "<<endl<<" f1 : ";
+for (auto i=f1.begin();i!=f1.end();i++)
+    cout<<" "<<*i;
+    cout<<endl<<" f2 : ";
+for (auto i=f2.begin();i!=f2.end();i++)
+    cout<<" "<<*i;
+f2.merge(f1);
+cout<<endl<<" lists after merging : ";
+for (auto i=f2.begin();i!=f2.end();i++)
+    cout<<" "<<*i;
+  return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+7. Below are two forward lists, first sort them and then merge them. forwardlist1={3,2,9} forwardlist2={8,1,2}
+
+ans 7 )
+
+#include <iostream>
+#include <forward_list>
+using namespace std;
+int main ()
+{
+forward_list<int> f1={3,2,9},f2={8,1,2};
+cout<<endl<<" lists before merging : "<<endl<<" f1 : ";
+for (auto i=f1.begin();i!=f1.end();i++)
+    cout<<" "<<*i;
+    cout<<endl<<" f2 : ";
+for (auto i=f2.begin();i!=f2.end();i++)
+    cout<<" "<<*i;
+    f1.sort();
+    f2.sort();
+    cout<<endl<<" sorted lists before merging : "<<endl<<" f1 : ";
+for (auto i=f1.begin();i!=f1.end();i++)
+    cout<<" "<<*i;
+    cout<<endl<<" f2 : ";
+for (auto i=f2.begin();i!=f2.end();i++)
+    cout<<" "<<*i;
+f1.merge(f2);
+
+cout<<endl<<" list after merging : ";
+for (auto i=f1.begin();i!=f1.end();i++)
+    cout<<" "<<*i;
+    f1.sort();
+  return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Create two forward lists of int type, and swap the elements of both forward lists with each other.
+
+ans 8 )
+
+#include <iostream>
+#include <forward_list>
+using namespace std;
+int main ()
+{
+forward_list<int> f1={5,6,7,8},f2={1,2,3,4};
+cout<<endl<<" lists before swapping : "<<endl<<" f1 : ";
+for (auto i=f1.begin();i!=f1.end();i++)
+    cout<<" "<<*i;
+    cout<<endl<<" f2 : ";
+for (auto i=f2.begin();i!=f2.end();i++)
+    cout<<" "<<*i;
+f2.swap(f1);
+cout<<endl<<" lists after swapping : "<<endl<<" f1 : ";;
+for (auto i=f1.begin();i!=f1.end();i++)
+    cout<<" "<<*i;
+    cout<<endl<<" f2 : ";
+for (auto i=f2.begin();i!=f2.end();i++)
+    cout<<" "<<*i;
+  return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Write a C++ code to demonstrate working of splice_after() in forward list.
+
+ans 9 )
+
+// forward_list::splice_after
+#include <iostream>
+#include <forward_list>
+
+int main ()
+{
+  std::forward_list<int> first = { 1, 2, 3 };
+  std::forward_list<int> second = { 10, 20, 30 };
+
+  auto it = first.begin();  // points to the 1
+
+  first.splice_after ( first.before_begin(), second );
+                          // first: 10 20 30 1 2 3
+                          // second: (empty)
+                          // "it" still points to the 1 (now first's 4th element)
+
+  second.splice_after ( second.before_begin(), first, first.begin(), it);
+                          // first: 10 1 2 3
+                          // second: 20 30
+
+  first.splice_after ( first.before_begin(), second, second.begin() );
+                          // first: 30 10 1 2 3
+                          // second: 20
+                          // * notice that what is moved is AFTER the iterator
+
+  std::cout << "first contains:";
+  for (int& x: first) std::cout << " " << x;
+  std::cout << std::endl;
+
+  std::cout << "second contains:";
+  for (int& x: second) std::cout << " " << x;
+  std::cout << std::endl;
+
+  return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Write a program to assign values in forward_list using the values of another list
+
+ans 10 )
+
+#include <forward_list>
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    forward_list<int> sample1;
+    forward_list<int> sample2;
+    sample1.assign(5, 3);
+    sample2.assign(sample1.begin(), sample1.end());
+    cout << "sample1: ";
+    for (int& x : sample1)
+        cout << x << " ";
+
+    cout << endl;
+    cout << "sample2: ";
+    for (int& x : sample2)
+        cout << x << " ";
+        return 0;
+}
+.////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

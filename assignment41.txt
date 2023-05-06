@@ -1,0 +1,453 @@
+Assignment - 41 A Job Ready Bootcamp in C++, DSA and IOT
+
+Stack
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+1. Create a stack of int type, push 5 elements in it and print it on the console screen.
+
+ans 1 )
+
+ #include<iostream>
+#include<stack>
+using namespace std;
+int main ()
+{
+    stack<int> mystack;
+
+  for (int i=0; i<5; ++i)
+    mystack.push(i);
+
+  cout << "Printing elements on  console screen : ";
+  while (!mystack.empty())
+  {
+     cout << ' ' << mystack.top();
+     mystack.pop();
+  }
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Create a stack of int type, and find the top most element in a stack.
+
+ans 2 )
+
+#include<iostream>
+#include<stack>
+using namespace std;
+int main ()
+{
+    stack<int> mystack;
+
+  for (int i=0; i<5; ++i)
+    mystack.push(i);
+
+  cout << "Printing elements on  console screen : ";
+  while (!mystack.empty())
+  {
+     cout << ' ' << mystack.top();
+     mystack.pop();
+  }
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Create a stack, and implement main operations like push(), pop(), peek(), empty() and size().
+
+ans 3 )
+
+#include <iostream>
+#include <vector>
+
+class Stack {
+private:
+    std::vector<int> items;
+
+public:
+    void push(int item) {
+        items.push_back(item);
+    }
+
+    int pop() {
+        if (empty()) {
+            throw std::out_of_range("pop from an empty stack");
+        }
+        int item = items.back();
+        items.pop_back();
+        return item;
+    }
+
+    int peek() {
+        if (empty()) {
+            throw std::out_of_range("peek from an empty stack");
+        }
+        return items.back();
+    }
+
+    bool empty() {
+        return items.empty();
+    }
+
+    int size() {
+        return items.size();
+    }
+};
+
+int main() {
+    Stack stack;
+
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+
+    std::cout << "Size of the stack: " << stack.size() << std::endl;
+
+    std::cout << "Peek: " << stack.peek() << std::endl;
+
+    while (!stack.empty()) {
+        std::cout << stack.pop() << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "Size of the stack: " << stack.size() << std::endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Reverse the Words of a String using Stack. example: Input: str = “I Love To Code” Output: Code To Love I
+
+ans 4 )
+
+#include <iostream>
+#include <stack>
+#include <string>
+
+std::string reverseWords(const std::string& str) {
+    std::stack<std::string> words;
+    std::string currentWord = "";
+    for (char c : str) {
+        if (c == ' ') {
+            if (!currentWord.empty()) {
+                words.push(currentWord);
+                currentWord = "";
+            }
+        }
+        else {
+            currentWord += c;
+        }
+    }
+    if (!currentWord.empty()) {
+        words.push(currentWord);
+    }
+    std::string reversedStr = "";
+    while (!words.empty()) {
+        reversedStr += words.top();
+        words.pop();
+        if (!words.empty()) {
+            reversedStr += ' ';
+        }
+    }
+    return reversedStr;
+}
+
+int main() {
+    std::string str = "I Love To Code";
+    std::string reversedStr = reverseWords(str);
+    std::cout << "Input: " << str << std::endl;
+    std::cout << "Output: " << reversedStr << std::endl;
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Create stack1 of int type, and create another stack of the same type with name stack2 and copy all the elements of stack1 into stack2 in the same order.
+
+ans 5 ) 
+
+#include <iostream>
+#include <stack>
+
+int main() {
+    std::stack<int> stack1;
+    stack1.push(1);
+    stack1.push(2);
+    stack1.push(3);
+
+    std::stack<int> stack2;
+    std::stack<int> tempStack;
+
+    // Copy elements from stack1 to tempStack in the same order
+    while (!stack1.empty()) {
+        tempStack.push(stack1.top());
+        stack1.pop();
+    }
+
+    // Copy elements from tempStack to stack2 in the same order
+    while (!tempStack.empty()) {
+        stack2.push(tempStack.top());
+        tempStack.pop();
+    }
+
+    // Print the elements in stack2
+    while (!stack2.empty()) {
+        std::cout << stack2.top() << " ";
+        stack2.pop();
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+6. Reverse a string using a stack. Example: Input: str = "Reverse me" Output: em esreveR
+
+ans 6 )
+
+
+#include <iostream>
+#include <stack>
+#include <string>
+
+std::string reverseString(const std::string& str) {
+    std::stack<char> charStack;
+    for (char c : str) {
+        charStack.push(c);
+    }
+
+    std::string reversedString;
+    while (!charStack.empty()) {
+        reversedString += charStack.top();
+        charStack.pop();
+    }
+
+    return reversedString;
+}
+
+int main() {
+    std::string str = "Reverse me";
+    std::string reversedStr = reverseString(str);
+    std::cout << "Original string: " << str << std::endl;
+    std::cout << "Reversed string: " << reversedStr << std::endl;
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Create a stack of int type and sort it.
+
+ans 7 )
+
+#include <bits/stdc++.h>
+using namespace std;
+stack<int> sortStack(stack<int> &input)
+{
+    stack<int> tmpStack;
+
+    while (!input.empty())
+    {
+        int tmp = input.top();
+        input.pop();
+        while (!tmpStack.empty() && tmpStack.top() > tmp)
+        {
+            input.push(tmpStack.top());
+            tmpStack.pop();
+        }
+        tmpStack.push(tmp);
+    }
+
+    return tmpStack;
+}
+int main()
+{
+    stack<int> input;
+    input.push(34);
+    input.push(3);
+    input.push(31);
+    input.push(98);
+    input.push(92);
+    input.push(23);
+
+
+    stack<int> tmpStack = sortStack(input);
+    cout << "Sorted numbers are:\n";
+
+    while (!tmpStack.empty())
+    {
+        cout << tmpStack.top()<< " ";
+        tmpStack.pop();
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Create a stack of int type and sort it in descending order.
+
+ans 8 )
+
+#include <iostream>
+#include <stack>
+#include <vector>
+#include <algorithm>
+
+void sortStack(std::stack<int>& s) {
+    std::vector<int> vec;
+
+    // Copy stack elements to a vector
+    while (!s.empty()) {
+        vec.push_back(s.top());
+        s.pop();
+    }
+
+    // Sort the vector in descending order
+    std::sort(vec.begin(), vec.end(), std::greater<int>());
+
+    // Copy the sorted elements back to the stack
+    for (const auto& num : vec) {
+        s.push(num);
+    }
+}
+
+int main() {
+    std::stack<int> s;
+    s.push(5);
+    s.push(2);
+    s.push(8);
+    s.push(1);
+    s.push(3);
+
+    std::cout << "Stack before sorting: ";
+    while (!s.empty()) {
+        std::cout << s.top() << " ";
+        s.pop();
+    }
+
+    std::cout << std::endl;
+
+    // Sort the stack in descending order
+    sortStack(s);
+
+    std::cout << "Stack after sorting: ";
+    while (!s.empty()) {
+        std::cout << s.top() << " ";
+        s.pop();
+    }
+
+    std::cout << std::endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Create back button functionality using stack.
+
+ans 9 )
+
+#include <iostream>
+#include <stack>
+#include <string>
+
+// Current page history stack
+std::stack<std::string> history;
+
+// Forward page history stack
+std::stack<std::string> forwardHistory;
+
+// Function to visit a new page
+void visitPage(const std::string& page) {
+    // Push the current page onto the history stack
+    history.push(page);
+    std::cout << "Visited page: " << page << std::endl;
+}
+
+// Function to go back to the previous page
+void goBack() {
+    if (history.size() <= 1) {
+        std::cout << "Cannot go back any further." << std::endl;
+        return;
+    }
+    // Pop the current page from the history stack
+    std::string current = history.top();
+    history.pop();
+    // Push the current page onto the forward history stack
+    forwardHistory.push(current);
+    // Get the previous page from the top of the history stack
+    std::string previous = history.top();
+    std::cout << "Going back to page: " << previous << std::endl;
+}
+
+// Function to go forward to the next page
+void goForward() {
+    if (forwardHistory.empty()) {
+        std::cout << "Cannot go forward any further." << std::endl;
+        return;
+    }
+    // Pop the current page from the forward history stack
+    std::string current = forwardHistory.top();
+    forwardHistory.pop();
+    // Push the current page onto the history stack
+    history.push(current);
+    std::cout << "Going forward to page: " << current << std::endl;
+}
+
+int main() {
+    // Visit some pages
+    visitPage("Homepage");
+    visitPage("About");
+    visitPage("Contact");
+    visitPage("Blog");
+
+    // Go back to the previous page twice
+    goBack();
+    goBack();
+
+    // Go forward to the next page once
+    goForward();
+
+    // Visit a new page
+    visitPage("Shop");
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Given an array, print the Next Greater Element (NGE) for every element using stack.
+Example:
+Input: arr[] = [ 4 , 5 , 2 , 25 ]
+Output: 4 –> 5
+5 –> 25
+2 –> 25
+25 –> -1
+
+ans 10 )
+
+#include <iostream>
+#include <stack>
+#include <vector>
+
+void printNGE(const std::vector<int>& arr) {
+    std::stack<int> s;
+    int n = arr.size();
+
+    // iterate through the array
+    for (int i = 0; i < n; i++) {
+        // while the stack is not empty and the current element is greater than the top element
+        while (!s.empty() && arr[i] > s.top()) {
+            std::cout << s.top() << " -> " << arr[i] << std::endl;
+            s.pop();
+        }
+
+        // push the current element onto the stack
+        s.push(arr[i]);
+    }
+
+    // remaining elements in the stack have no NGE
+    while (!s.empty()) {
+        std::cout << s.top() << " -> " << "-1" << std::endl;
+        s.pop();
+    }
+}
+
+int main() {
+    std::vector<int> arr = {4, 5, 2, 25};
+    printNGE(arr);
+
+    return 0;
+}

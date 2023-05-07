@@ -1,0 +1,302 @@
+Assignment - 44 A Job Ready Bootcamp in C++, DSA and IOT
+
+set
+
+1. Find the total number of elements of the set container.
+
+ans 1)
+
+#include <iostream>
+#include <set>
+
+using namespace std;
+
+int main() {
+    set<int> s {1, 2, 3, 4, 5};
+
+    cout << "Total elements in set: " << s.size() << endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Using inbuilt function and insert an element to the set container.
+
+ans 2 )
+
+#include <iostream>
+#include <set>
+
+using namespace std;
+
+int main() {
+    set<int> s {1, 2, 3, 4, 5};
+
+    cout << "Before inserting element: ";
+    for (int x : s) {
+        cout << x << " ";
+    }
+
+    s.insert(6);
+
+    cout << "\nAfter inserting element: ";
+    for (int x : s) {
+        cout << x << " ";
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Erase an element from a set.
+
+ans 3 )
+
+#include <iostream>
+#include <set>
+
+int main() {
+  std::set<int> mySet{1, 2, 3, 4, 5};
+
+  // Erase element with value 3
+  mySet.erase(3);
+
+  // Print remaining elements in set
+  for (auto elem : mySet) {
+    std::cout << elem << " ";
+  }
+  std::cout << std::endl;
+
+  return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Checks whether the set is empty or not.if it is empty insert 5 elements in the set
+
+ans 4 )
+
+#include <iostream>
+#include <set>
+
+int main() {
+    std::set<int> mySet;
+
+    // Check if the set is empty
+    if (mySet.empty()) {
+        std::cout << "Set is empty." << std::endl;
+
+        // Insert 5 elements into the set
+        for (int i = 1; i <= 5; i++) {
+            mySet.insert(i * 10);
+        }
+    } else {
+        std::cout << "Set is not empty." << std::endl;
+    }
+
+    // Print the elements of the set
+    std::cout << "Set contains: ";
+    for (auto it = mySet.begin(); it != mySet.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Make a c++ program to insert unique element in set
+
+ans 5 )
+
+#include <iostream>
+#include <set>
+
+int main() {
+    std::set<int> mySet;
+    
+    // insert unique elements in the set
+    mySet.insert(5);
+    mySet.insert(10);
+    mySet.insert(15);
+    mySet.insert(20);
+    mySet.insert(25);
+
+    // try to insert a duplicate element
+    auto result = mySet.insert(10);
+
+    if (result.second) {
+        std::cout << "Element " << *result.first << " inserted successfully!" << std::endl;
+    } else {
+        std::cout << "Element " << *result.first << " already exists in the set." << std::endl;
+    }
+    
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. How to find the lower bound of any desired element from the set.
+
+ans 6 )
+
+#include <iostream>
+#include <set>
+
+int main() {
+    std::set<int> myset {1, 2, 4, 5, 6};
+    
+    int desired_element = 3;
+    
+    auto lower_it = myset.lower_bound(desired_element);
+    
+    if (lower_it != myset.end() && *lower_it == desired_element) {
+        std::cout << "Element found in set!" << std::endl;
+    } else {
+        std::cout << "Element not found in set. Lower bound: " << *lower_it << std::endl;
+    }
+    
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. how to find the upper bound of any desired element from the set.
+
+ans 7 )
+
+#include <iostream>
+#include <set>
+
+using namespace std;
+
+int main() {
+    set<int> s = {1, 2, 4, 5, 6, 8};
+
+    // Find the upper bound of 3
+    set<int>::iterator it = s.upper_bound(3);
+
+    if (it != s.end()) {
+        cout << "The upper bound of 3 is " << *it << endl;
+    }
+    else {
+        cout << "There is no element greater than 3" << endl;
+    }
+
+    // Find the upper bound of 10
+    it = s.upper_bound(10);
+
+    if (it != s.end()) {
+        cout << "The upper bound of 10 is " << *it << endl;
+    }
+    else {
+        cout << "There is no element greater than 10" << endl;
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Create a function to search the element in the set.
+
+ans 8 )
+
+#include <iostream>
+#include <set>
+
+bool searchElement(const std::set<int>& mySet, int element) {
+    // Using find function to search for the element in the set
+    auto it = mySet.find(element);
+
+    // If element is found, return true, otherwise return false
+    return (it != mySet.end());
+}
+
+int main() {
+    std::set<int> mySet = { 5, 10, 15, 20, 25 };
+
+    int element = 10;
+    if (searchElement(mySet, element)) {
+        std::cout << "Element " << element << " found in set" << std::endl;
+    }
+    else {
+        std::cout << "Element " << element << " not found in set" << std::endl;
+    }
+
+    element = 30;
+    if (searchElement(mySet, element)) {
+        std::cout << "Element " << element << " found in set" << std::endl;
+    }
+    else {
+        std::cout << "Element " << element << " not found in set" << std::endl;
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Converting String into Set in C++ STL
+
+ans 9 )
+
+#include <iostream>
+#include <set>
+#include <string>
+
+using namespace std;
+
+int main() {
+    string str = "hello world";
+    set<char> charSet(str.begin(), str.end());
+
+    // Print the elements of the set
+    for (auto ch : charSet) {
+        cout << ch << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. You have a set of integer s, which originally contains all the numbers from 1 to n. Unfortunately, due to some error, one of the numbers in s got duplicated to another number in the set, which results in repetition of one number and loss of another number.You are given an integer array nums representing the data status of this set after the error.Find the number that occurs twice and the number that is missing and return them in the form of an array.
+
+
+ans 10 )
+
+#include <iostream>
+#include <set>
+#include <vector>
+
+using namespace std;
+
+vector<int> findErrorNums(vector<int>& nums) {
+    set<int> s; // create an empty set to store unique elements
+    int n = nums.size();
+    int duplicate, missing;
+
+    for (int i = 0; i < n; i++) {
+        // check if the current element is already in the set
+        if (s.count(nums[i])) {
+            // if yes, it is the duplicate number
+            duplicate = nums[i];
+        } else {
+            s.insert(nums[i]); // insert the current element into the set
+        }
+    }
+
+    // find the missing number by subtracting the sum of elements in the set from the sum of first n natural numbers
+    int sum = n * (n + 1) / 2;
+    for (int elem : s) {
+        sum -= elem;
+    }
+    missing = sum;
+
+    // return the result as a vector
+    return {duplicate, missing};
+}
+
+int main() {
+    vector<int> nums = {1, 2, 2, 4};
+    vector<int> result = findErrorNums(nums);
+    cout << "Duplicate: " << result[0] << ", Missing: " << result[1] << endl;
+    return 0;
+}

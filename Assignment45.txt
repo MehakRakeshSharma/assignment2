@@ -1,0 +1,252 @@
+Assignment - 45 A Job Ready Bootcamp in C++, DSA and IOT
+
+multiset
+
+1. Create a c++ program using multiset and returns an iterator to the first element in the multiset –> O(1)
+
+ans 1 )
+
+#include <iostream>
+#include <set>
+
+int main() {
+    std::multiset<int> numbers {5, 2, 8, 2, 1, 9, 3};
+
+    // Get iterator to first element in multiset
+    auto it = numbers.begin();
+
+    // Output the value of the first element
+    std::cout << "The first element is: " << *it << std::endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Create a c++ program using multiset and returns an iterator to the theoretical element that follows the last element in the multiset –> O(1)
+
+ans 2 )
+
+#include <iostream>
+#include <set>
+
+int main() {
+    std::multiset<int> numbers {5, 2, 8, 2, 1, 9, 3};
+
+    // Get iterator to theoretical element that follows the last element in multiset
+    auto it = numbers.end();
+
+    // Output the value of the theoretical element
+    std::cout << "The theoretical element that follows the last element is: " << *it << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Create a c++ program using multiset and returns the number of elements in the multiset –> O(1)
+
+ans 3 )
+
+#include <iostream>
+#include <set>
+
+int main() {
+    std::multiset<int> numbers {5, 2, 8, 2, 1, 9, 3};
+
+    // Get number of elements in multiset
+    int size = numbers.size();
+
+    // Output the number of elements
+    std::cout << "The number of elements in the multiset is: " << size << std::endl;
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
+4. Create a c++ program using multiset and returns the maximum number of elements that the multiset can hold –> O(1)
+
+ans 4 )
+
+#include <iostream>
+#include <set>
+
+int main() {
+    std::multiset<int> numbers {5, 2, 8, 2, 1, 9, 3};
+
+    // Get the maximum number of elements the multiset can hold
+    int max_size = numbers.max_size();
+
+    // Output the maximum number of elements
+    std::cout << "The maximum number of elements that the multiset can hold is: " << max_size << std::endl;
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Create a c++ program using multiset and returns whether the multiset is empty –> O(1)
+
+ans 5 )
+
+#include <iostream>
+#include <set>
+
+int main() {
+    std::multiset<int> numbers {5, 2, 8, 2, 1, 9, 3};
+
+    // Check if the multiset is empty
+    bool is_empty = numbers.empty();
+
+    // Output whether the multiset is empty or not
+    if (is_empty) {
+        std::cout << "The multiset is empty" << std::endl;
+    } else {
+        std::cout << "The multiset is not empty" << std::endl;
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Create a c++ program using multiset and inserts the element x in the multiset –> O(log n)
+
+ans 6 )
+
+#include <iostream>
+#include <set>
+
+int main() {
+    std::multiset<int> numbers {5, 2, 8, 2, 1, 9, 3};
+
+    // Insert an element in the multiset
+    int x = 7;
+    numbers.insert(x);
+
+    // Output the multiset
+    std::cout << "The multiset contains:";
+    for (auto i : numbers) {
+        std::cout << " " << i;
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Create a c++ program using multiset and removes all the elements from the multiset -> O(n)
+
+ans 7 )
+
+#include <iostream>
+#include <set>
+
+int main() {
+    std::multiset<int> numbers {5, 2, 8, 2, 1, 9, 3};
+
+    // Remove all elements from the multiset
+    numbers.clear();
+
+    // Output the multiset
+    std::cout << "The multiset contains:";
+    for (auto i : numbers) {
+        std::cout << " " << i;
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Create a c++ program using multiset and removes all the occurrences of x –> O(log n)
+
+
+ans 8 )
+
+#include <iostream>
+#include <set>
+
+int main() {
+    std::multiset<int> numbers {5, 2, 8, 2, 1, 9, 3};
+
+    // Remove all occurrences of x
+    int x = 2;
+    numbers.erase(x);
+
+    // Output the multiset
+    std::cout << "The multiset contains:";
+    for (auto i : numbers) {
+        std::cout << " " << i;
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Create a c++ program using multiset and remove only one instance of element from multiset having same value
+
+ans 9 )
+
+#include <iostream>
+#include <set>
+
+int main() {
+    std::multiset<int> numbers {5, 2, 8, 2, 1, 9, 3};
+
+    // Remove one occurrence of x
+    int x = 2;
+    auto it = numbers.find(x);
+    if (it != numbers.end()) {
+        numbers.erase(it);
+    }
+
+    // Output the multiset
+    std::cout << "The multiset contains:";
+    for (auto i : numbers) {
+        std::cout << " " << i;
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Unlike a set, a multiset may contain multiple occurrences of same number. The multiset equivalence problem states to check if two given multisets are equal or not. For example let A = {1, 2, 3} and B = {1, 1, 2, 3}. Here A is set but B is not (1 occurs twice in B), whereas A and B are both multisets. More formally, “Are the sets of pairs defined as \(A' = \{ (a, frequency(a)) | a \in \mathbf{A} \}\) equal for the two given multisets?” Given two multisets A and B, write a program to check if the two multisets are equal.
+
+ans 10 )
+
+
+#include <iostream>
+#include <set>
+
+bool areMultisetsEqual(const std::multiset<int>& A, const std::multiset<int>& B) {
+    // Create sets of pairs (a, frequency(a)) for A and B
+    std::multiset<std::pair<int, int>> A_prime, B_prime;
+    for (auto it = A.begin(); it != A.end(); ++it) {
+        int freq = A.count(*it);
+        A_prime.insert(std::make_pair(*it, freq));
+    }
+    for (auto it = B.begin(); it != B.end(); ++it) {
+        int freq = B.count(*it);
+        B_prime.insert(std::make_pair(*it, freq));
+    }
+
+    // Check if the sets of pairs are equal
+    return A_prime == B_prime;
+}
+
+int main() {
+    std::multiset<int> A {1, 2, 3};
+    std::multiset<int> B {1, 1, 2, 3};
+
+    // Check if A and B are equal as multisets
+    bool result = areMultisetsEqual(A, B);
+
+    // Output the result
+    std::cout << "A and B are ";
+    if (!result) {
+        std::cout << "not ";
+    }
+    std::cout << "equal as multisets" << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

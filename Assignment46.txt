@@ -1,0 +1,347 @@
+Assignment-46: A Job Ready Bootcamp in c++,DSA and IOT
+
+map
+
+1. Create a map, insert at least 5 pairs of keys and values and print it.
+
+ans 1)
+
+#include <iostream>
+#include <map>
+
+int main() {
+    // Create a map of string keys and integer values
+    std::map<std::string, int> myMap;
+
+    // Insert at least 5 pairs of keys and values into the map
+    myMap.insert(std::make_pair("apple", 1));
+    myMap.insert(std::make_pair("banana", 2));
+    myMap.insert(std::make_pair("cherry", 3));
+    myMap.insert(std::make_pair("date", 4));
+    myMap.insert(std::make_pair("elderberry", 5));
+
+    // Print the map
+    for (auto it = myMap.begin(); it != myMap.end(); ++it) {
+        std::cout << it->first << ": " << it->second << std::endl;
+    }
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Create a map, where insert keys and values as string type and integer type respectively and print it on the screen.
+
+ans 2 )
+
+#include <iostream>
+#include <map>
+#include <string>
+
+int main() {
+    // Create a map with string keys and integer values
+    std::map<std::string, int> myMap;
+
+    // Insert key-value pairs into the map
+    myMap.insert(std::make_pair("apple", 5));
+    myMap.insert(std::make_pair("banana", 2));
+    myMap.insert(std::make_pair("cherry", 8));
+    myMap.insert(std::make_pair("date", 3));
+    myMap.insert(std::make_pair("elderberry", 1));
+
+    // Print the map
+    for (auto it = myMap.begin(); it != myMap.end(); ++it) {
+        std::cout << it->first << ": " << it->second << std::endl;
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Create a map, insert some pairs and print all elements in reverse order using rbegin and rend function.
+
+ans 3 )
+
+#include <iostream>
+#include <map>
+#include <string>
+
+int main() {
+    // Create a map with string keys and integer values
+    std::map<std::string, int> myMap;
+
+    // Insert key-value pairs into the map
+    myMap.insert(std::make_pair("apple", 5));
+    myMap.insert(std::make_pair("banana", 2));
+    myMap.insert(std::make_pair("cherry", 8));
+    myMap.insert(std::make_pair("date", 3));
+    myMap.insert(std::make_pair("elderberry", 1));
+
+    // Print the map in reverse order
+    for (auto it = myMap.rbegin(); it != myMap.rend(); ++it) {
+        std::cout << it->first << ": " << it->second << std::endl;
+    }
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Create a map, and insert some pairs and find one pair out of the inserted pair and replace it with another pair and print map.
+
+ans 4 )
+
+#include <iostream>
+#include <map>
+#include <string>
+
+int main() {
+    // Create a map with string keys and integer values
+    std::map<std::string, int> myMap;
+
+    // Insert key-value pairs into the map
+    myMap.insert(std::make_pair("apple", 5));
+    myMap.insert(std::make_pair("banana", 2));
+    myMap.insert(std::make_pair("cherry", 8));
+    myMap.insert(std::make_pair("date", 3));
+    myMap.insert(std::make_pair("elderberry", 1));
+
+    // Find and replace a key-value pair
+    auto it = myMap.find("banana");
+    if (it != myMap.end()) {
+        it->second = 10;
+    }
+
+    // Print the updated map
+    for (const auto& pair : myMap) {
+        std::cout << pair.first << ": " << pair.second << std::endl;
+    }
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Create a map, insert some pairs and Find the occurrence of each pair and print it on the screen.
+
+ans 5 )
+
+#include <iostream>
+#include <map>
+#include <string>
+
+int main() {
+    // Create a map with string keys and integer values
+    std::map<std::string, int> myMap;
+
+    // Insert key-value pairs into the map
+    myMap.insert(std::make_pair("apple", 5));
+    myMap.insert(std::make_pair("banana", 2));
+    myMap.insert(std::make_pair("cherry", 8));
+    myMap.insert(std::make_pair("date", 3));
+    myMap.insert(std::make_pair("elderberry", 1));
+    myMap.insert(std::make_pair("apple", 7));
+
+    // Find the occurrence of each pair
+    for (const auto& pair : myMap) {
+        std::cout << pair.first << ": " << pair.second << " occurrence(s)" << std::endl;
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Create a map, use a member function to tell whether a map is empty or not and then insert some pairs into the map and find the size of map.
+
+ans 6 )
+
+#include <iostream>
+#include <map>
+#include <string>
+
+int main() {
+    // Create an empty map with string keys and integer values
+    std::map<std::string, int> myMap;
+
+    // Check if the map is empty using the empty() member function
+    if (myMap.empty()) {
+        std::cout << "The map is empty" << std::endl;
+    } else {
+        std::cout << "The map is not empty" << std::endl;
+    }
+
+    // Insert some key-value pairs into the map
+    myMap["apple"] = 5;
+    myMap["banana"] = 2;
+    myMap["cherry"] = 8;
+    myMap["date"] = 3;
+
+    // Find the size of the map using the size() member function
+    std::cout << "The size of the map is " << myMap.size() << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Sort a given map in descending order based on values instead of keys in C++ STL. Key value
+1 6
+2 8
+6 3
+8 2
+
+
+ans 7 )
+
+#include <iostream>
+#include <map>
+#include <algorithm>
+#include <vector>
+
+int main() {
+    // Create a map with integer keys and values
+    std::map<int, int> myMap;
+
+    // Insert some key-value pairs into the map
+    myMap[1] = 6;
+    myMap[2] = 8;
+    myMap[6] = 3;
+    myMap[8] = 2;
+
+    // Create a vector of pairs from the map
+    std::vector<std::pair<int, int>> vec(myMap.begin(), myMap.end());
+
+    // Sort the vector in descending order based on the second element of each pair
+    std::sort(vec.begin(), vec.end(), [](const std::pair<int, int>& a, const std::pair<int, int>& b) {
+        return a.second > b.second;
+    });
+
+    // Create a new map from the sorted vector
+    std::map<int, int> sortedMap;
+    for (const auto& pair : vec) {
+        sortedMap.insert(pair);
+    }
+
+    // Print the sorted map
+    for (const auto& pair : sortedMap) {
+        std::cout << pair.first << " " << pair.second << std::endl;
+    }
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Given a string s of length N, containing digits written in words but in jumbled form, the task is to find out the digits present in the string in word form and arrange them in
+sorted order using map Example: Input: s = “ozerotwneozero” Output: 0012 Explanation: The string can be arranged as “zerozeroonetwo”. Therefore the digits are 0, 0, 1 and 2.
+
+ans 8 )
+
+#include <iostream>
+#include <map>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+int main()
+{
+    string s = "ozerotwneozero";
+    map<char, int> mp;
+
+    // count the occurrences of each digit
+    for (char c : s) {
+        if (isdigit(c)) {
+            mp[c]++;
+        }
+    }
+
+    // construct the sorted string of digits
+    string digits;
+    for (auto it : mp) {
+        digits += string(it.second, it.first);
+    }
+    sort(digits.begin(), digits.end());
+
+    cout << digits << endl;
+
+    return 0;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Given two maps map1 and map2 having a string as the key and arrays of integers as values, the task is to merge them in one map such that if a key is common in both the
+maps, the respective arrays should be merged. Example: Input: map1 = { (“key1”, {0, 1}), (“key2”, {0, 1}) }, map2 = { (“key2”, {1, 2}) }; Output: { (key1, {0, 1}), (key2, {0, 1, 2}) }
+Explanation: After merging key1 array will become {0, 1} and for key2 after merging array will become {0, 1, 2}
+
+ans 9 )
+
+#include <iostream>
+#include <map>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    map<string, vector<int>> map1 { {"key1", {0, 1}}, {"key2", {0, 1}} };
+    map<string, vector<int>> map2 { {"key2", {1, 2}} };
+    
+    // Merge the two maps
+    for(auto& [key, value] : map2) {
+        if(map1.find(key) != map1.end()) {
+            // Key is present in both maps, so merge the values
+            for(auto& v : value) {
+                map1[key].push_back(v);
+            }
+        } else {
+            // Key is not present in map1, so insert the key-value pair
+            map1.insert({key, value});
+        }
+    }
+    
+    // Print the merged map
+    for(auto& [key, value] : map1) {
+        cout << key << ": { ";
+        for(auto& v : value) {
+            cout << v << " ";
+        }
+        cout << "}" << endl;
+    }
+    
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Given a positive integer N, the task is to check whether N can be represented as the difference between two positive perfect cubes or not. If found to be true, then print “Yes”. Otherwise, print “No” using a map. Example: Input: N = 124 Output: Yes Explanation: Since 124 can be represented as (125 – 1) = (53 – 13). Therefore, print Yes.
+
+ans 10 )
+
+#include <iostream>
+#include <map>
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    map<int, int> cubes;
+
+    // populating the map with all possible cubes
+    for (int i = 1; i * i * i <= n; i++) {
+        cubes[i * i * i] = i;
+    }
+
+    // checking if N can be represented as the difference between two cubes
+    for (auto it1 = cubes.begin(); it1 != cubes.end(); it1++) {
+        for (auto it2 = it1; it2 != cubes.end(); it2++) {
+            int diff = it2->first - it1->first;
+            if (diff == n) {
+                cout << "Yes";
+                return 0;
+            }
+            else if (diff > n) {
+                break;
+            }
+        }
+    }
+
+    cout << "No";
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,0 +1,364 @@
+Assignment-48: A Job Ready Bootcamp in c++,DSA and IOT
+
+multimap
+
+1. Write a c++ program to demonstrate the implementation of multimap
+
+ans 1 )
+
+#include <iostream>
+#include <map>
+
+int main() {
+    std::multimap<int, std::string> m;
+
+    // insert elements into multimap
+    m.insert(std::make_pair(1, "John"));
+    m.insert(std::make_pair(2, "Mary"));
+    m.insert(std::make_pair(3, "Bob"));
+    m.insert(std::make_pair(1, "Mike"));
+    m.insert(std::make_pair(2, "Alice"));
+
+    // print the multimap
+    std::cout << "Multimap elements:\n";
+    for (auto it = m.begin(); it != m.end(); it++) {
+        std::cout << it->first << " " << it->second << std::endl;
+    }
+
+    // find elements with key = 2
+    auto range = m.equal_range(2);
+    std::cout << "\nElements with key = 2:\n";
+    for (auto it = range.first; it != range.second; it++) {
+        std::cout << it->first << " " << it->second << std::endl;
+    }
+
+    // erase elements with key = 1
+    m.erase(1);
+    std::cout << "\nAfter erasing elements with key = 1:\n";
+    for (auto it = m.begin(); it != m.end(); it++) {
+        std::cout << it->first << " " << it->second << std::endl;
+    }
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Declare a multimap m1 of key-value pairs of integer type and then insert some pair type data. Now print the multimap values of m1, and also create another multimap m2 of the same type as m1 using m1.begin() and m1.end() as parameters.
+
+ans 2 )
+
+#include <iostream>
+#include <map>
+
+using namespace std;
+
+int main() {
+    // Declare a multimap of key-value pairs of integer type
+    multimap<int, int> m1;
+
+    // Insert some pair type data
+    m1.insert(make_pair(1, 10));
+    m1.insert(make_pair(2, 20));
+    m1.insert(make_pair(3, 30));
+    m1.insert(make_pair(2, 40));
+    m1.insert(make_pair(3, 50));
+
+    // Print the multimap values of m1
+    cout << "m1:" << endl;
+    for (auto it = m1.begin(); it != m1.end(); it++) {
+        cout << "(" << it->first << ", " << it->second << ")" << endl;
+    }
+
+    // Create another multimap m2 of the same type as m1 using m1.begin() and m1.end() as parameters
+    multimap<int, int> m2(m1.begin(), m1.end());
+
+    // Print the multimap values of m2
+    cout << "m2:" << endl;
+    for (auto it = m2.begin(); it != m2.end(); it++) {
+        cout << "(" << it->first << ", " << it->second << ")" << endl;
+    }
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Write a c++ code for illustration of multimap::swap() function.
+
+ans 3 )
+
+#include <iostream>
+#include <map>
+
+int main() {
+    // create two empty multimaps
+    std::multimap<int, std::string> m1, m2;
+
+    // insert some elements in m1
+    m1.insert({1, "apple"});
+    m1.insert({2, "banana"});
+    m1.insert({3, "orange"});
+
+    // insert some elements in m2
+    m2.insert({4, "peach"});
+    m2.insert({5, "grape"});
+    m2.insert({6, "lemon"});
+
+    // print the elements of both multimaps before swap
+    std::cout << "m1 before swap:\n";
+    for (auto const& [key, value] : m1) {
+        std::cout << key << ": " << value << "\n";
+    }
+    std::cout << "\nm2 before swap:\n";
+    for (auto const& [key, value] : m2) {
+        std::cout << key << ": " << value << "\n";
+    }
+
+    // swap the elements of m1 and m2
+    m1.swap(m2);
+
+    // print the elements of both multimaps after swap
+    std::cout << "\nm1 after swap:\n";
+    for (auto const& [key, value] : m1) {
+        std::cout << key << ": " << value << "\n";
+    }
+    std::cout << "\nm2 after swap:\n";
+    for (auto const& [key, value] : m2) {
+        std::cout << key << ": " << value << "\n";
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Write a program to erase all the entries of the key.
+
+ans 4 )
+
+#include <iostream>
+#include <map>
+
+int main() {
+    std::multimap<int, char> m {{1, 'a'}, {2, 'b'}, {3, 'c'}, {1, 'd'}, {4, 'e'}};
+
+    int key = 1;
+
+    // Displaying the elements of the multimap before erasing
+    std::cout << "Multimap elements before erasing: \n";
+    for (auto const& i : m) {
+        std::cout << i.first << " : " << i.second << '\n';
+    }
+
+    // Erase all entries with key
+    m.erase(key);
+
+    // Displaying the elements of the multimap after erasing
+    std::cout << "Multimap elements after erasing " << key << ":\n";
+    for (auto const& i : m) {
+        std::cout << i.first << " : " << i.second << '\n';
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////mnbn
+
+5. Write a program to erase only a single value based on position.
+
+ans 5 )
+
+#include <iostream>
+#include <map>
+
+int main() {
+    // Create a multimap and insert some values
+    std::multimap<int, std::string> myMap;
+    myMap.insert(std::make_pair(1, "apple"));
+    myMap.insert(std::make_pair(2, "banana"));
+    myMap.insert(std::make_pair(3, "cherry"));
+    myMap.insert(std::make_pair(2, "orange"));
+    myMap.insert(std::make_pair(4, "grape"));
+
+    // Print the original multimap
+    std::cout << "Original multimap:\n";
+    for (const auto& elem : myMap) {
+        std::cout << elem.first << " " << elem.second << "\n";
+    }
+
+    // Erase the second value with key 2 (using an iterator)
+    auto it = myMap.find(2);
+    if (it != myMap.end()) {
+        myMap.erase(it);
+    }
+
+    // Print the modified multimap
+    std::cout << "\nModified multimap:\n";
+    for (const auto& elem : myMap) {
+        std::cout << elem.first << " " << elem.second << "\n";
+    }
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Write a program to find some key value pairs and print on the console.
+
+ans 6 )
+
+#include <iostream>
+#include <map>
+
+int main() {
+  // Create a multimap of string keys and int values
+  std::multimap<std::string, int> my_map = {{"apple", 5}, {"orange", 7}, {"banana", 3}, {"apple", 2}, {"banana", 4}};
+
+  // Find all pairs with key "apple" and print them
+  auto range = my_map.equal_range("apple");
+  std::cout << "Pairs with key \"apple\":\n";
+  for (auto it = range.first; it != range.second; ++it) {
+    std::cout << it->first << ": " << it->second << '\n';
+  }
+
+  // Find all pairs with value 4 and print them
+  std::cout << "Pairs with value 4:\n";
+  for (auto& [key, value] : my_map) {
+    if (value == 4) {
+      std::cout << key << ": " << value << '\n';
+    }
+  }
+
+  return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Write a program to find a lower bound.
+
+ans 7 )
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+int main() {
+    // Input vector of numbers
+    std::vector<int> numbers = {5, 2, 9, 1, 7};
+
+    // Find the lower bound using std::min_element
+    auto lower = std::min_element(numbers.begin(), numbers.end());
+
+    // Print the lower bound
+    std::cout << "Lower bound: " << *lower << std::endl;
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+8. Write a program to find the upper bound.
+
+ans 8 )
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+
+int main() {
+    // Input vector of numbers
+    std::vector<int> numbers = {5, 2, 9, 1, 7};
+
+    // Target value
+    int target = 3;
+
+    // Find the upper bound using std::upper_bound
+    auto upper = std::upper_bound(numbers.begin(), numbers.end(), target);
+
+    // Check if an upper bound was found
+    if (upper != numbers.end()) {
+        // Print the upper bound
+        std::cout << "Upper bound: " << *upper << std::endl;
+    } else {
+        std::cout << "No upper bound found" << std::endl;
+    }
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. You are given an array A of size N. You need to insert the elements of A into a multimap(element as key and index as value) and display the results. Also, you need
+to erase a given element x from the multimap and print "erased x" if successfully erased, else print "not found".
+
+ans 9 )
+
+#include <iostream>
+#include <map>
+
+int main() {
+    // Input array of numbers
+    int arr[] = {5, 2, 9, 1, 7};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    // Create a multimap to store the elements and their indices
+    std::multimap<int, int> mm;
+
+    // Insert the elements of the array into the multimap
+    for (int i = 0; i < n; i++) {
+        mm.insert(std::make_pair(arr[i], i));
+    }
+
+    // Print the elements of the multimap
+    std::cout << "Elements of the multimap:" << std::endl;
+    for (auto it = mm.begin(); it != mm.end(); it++) {
+        std::cout << it->first << " => " << it->second << std::endl;
+    }
+
+    // Erase an element from the multimap
+    int x = 5;
+    auto range = mm.equal_range(x);
+    bool found = false;
+    for (auto it = range.first; it != range.second; it++) {
+        if (it->first == x) {
+            mm.erase(it);
+            std::cout << "Erased " << x << std::endl;
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        std::cout << "Not found" << std::endl;
+    }
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+10. Write a program that checks whether a given multimap is empty or not.
+
+ans 10 )
+
+#include <iostream>
+#include <map>
+
+int main() {
+    // Create an empty multimap
+    std::multimap<int, int> mm;
+
+    // Check if the multimap is empty
+    if (mm.empty()) {
+        std::cout << "The multimap is empty" << std::endl;
+    } else {
+        std::cout << "The multimap is not empty" << std::endl;
+    }
+
+    // Insert some elements into the multimap
+    mm.insert(std::make_pair(5, 1));
+    mm.insert(std::make_pair(5, 2));
+
+    // Check if the multimap is empty again
+    if (mm.empty()) {
+        std::cout << "The multimap is empty" << std::endl;
+    } else {
+        std::cout << "The multimap is not empty" << std::endl;
+    }
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

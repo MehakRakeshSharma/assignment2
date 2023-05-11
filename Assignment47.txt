@@ -1,0 +1,678 @@
+Assignment-47: A Job Ready Bootcamp in c++,DSA and IOT
+
+Pair and Tuple
+
+Given an array of pairs arr[] of size N (N ≥ 3) where each element of pair is at most N and each pair is unique, the task is to determine the number of ways to select triplets from the given N pairs that satisfy at least one of the following conditions:
+
+1. The first value (a) of each pair should be distinct.
+
+ans 1 )
+
+#include <iostream>
+#include <map>
+#include <vector>
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;
+    vector<pair<int, int>> arr(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i].first >> arr[i].second;
+    }
+    map<int, int> mp;
+    for (int i = 0; i < n; i++)
+    {
+        mp[arr[i].first]++;
+    }
+    int ans = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (mp[arr[i].first] > 1)
+        {
+            ans += (mp[arr[i].first] * (n - mp[arr[i].second]));
+        }
+    }
+    cout << ans/3 << endl;
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. The second value (b) of each pair should be distinct.
+
+
+ans 2 )
+
+#include <iostream>
+#include <vector>
+#include <map>
+
+using namespace std;
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<pair<int, int>> arr(n);
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i].first >> arr[i].second;
+    }
+
+    map<int, int> freq;
+    for (int i = 0; i < n; i++) {
+        freq[arr[i].second]++;
+    }
+
+    int ans = 0;
+    for (auto p : freq) {
+        int f = p.second;
+        if (f >= 3) {
+            ans += (f * (f - 1) * (f - 2)) / 6;
+        }
+        for (auto q : freq) {
+            if (p.first == q.first) continue;
+            int g = q.second;
+            if (g >= 2) {
+                ans += (f * (g * (g - 1)) / 2);
+            }
+        }
+    }
+
+    cout << ans << endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Sorting Vector of Pairs by 1st element in ascending and 2nd element in descending.
+
+ans 2 )
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+bool comp(const pair<int,int>& a, const pair<int,int>& b) {
+    if (a.first != b.first) {
+        return a.first < b.first;
+    } else {
+        return a.second > b.second;
+    }
+}
+
+int main() {
+    vector<pair<int,int>> v = {{1,5}, {2,2}, {1,3}, {2,1}, {3,4}};
+
+    sort(v.begin(), v.end(), comp);
+
+    for (auto p : v) {
+        cout << p.first << " " << p.second << endl;
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Create a C++ program to implement the deque of pairs.
+
+ans 3 )
+
+#include <iostream>
+#include <deque>
+
+using namespace std;
+
+int main()
+{
+    deque<pair<int, int>> myDeque;
+
+    // inserting elements at the back of the deque
+    myDeque.push_back(make_pair(1, 2));
+    myDeque.push_back(make_pair(3, 4));
+    myDeque.push_back(make_pair(5, 6));
+
+    // inserting elements at the front of the deque
+    myDeque.push_front(make_pair(7, 8));
+    myDeque.push_front(make_pair(9, 10));
+
+    // iterating through the deque
+    for (auto it = myDeque.begin(); it != myDeque.end(); it++)
+    {
+        cout << "(" << it->first << ", " << it->second << ")" << endl;
+    }
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Given an array of pairs A[][] of size N, the task is to find the longest subsequences where the first element is increasing and the second element is decreasing.
+Examples: Input: A[]={{1, 2}, {2, 2}, {3, 1}}, N = 3 Output: 2 Explanation: The longest subsequence satisfying the conditions is of length 2 and consists of {1, 2} and {3, 1};
+Input: A[] = {{1, 3}, {2, 5}, {3, 2}, {5, 2}, {4, 1}}, N = 5 Output: 3
+
+ans 4 )
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int longestSubsequence(vector<pair<int, int>> A) {
+    int n = A.size();
+    vector<int> dp(n, 1);
+
+    for (int i = 1; i < n; i++) {
+        for (int j = 0; j < i; j++) {
+            if (A[j].first < A[i].first && A[j].second > A[i].second) {
+                dp[i] = max(dp[i], dp[j]+1);
+            }
+        }
+    }
+
+    return *max_element(dp.begin(), dp.end());
+}
+
+int main() {
+    int N = 3;
+    vector<pair<int, int>> A = {{1, 2}, {2, 2}, {3, 1}};
+    cout << longestSubsequence(A) << endl; // Output: 2
+
+    N = 5;
+    A = {{1, 3}, {2, 5}, {3, 2}, {5, 2}, {4, 1}};
+    cout << longestSubsequence(A) << endl; // Output: 3
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+5. Given an array arr[] consisting of N integers and an integer X, the task is to perform integer division on the array elements by X and print the indices of the array in
+non-decreasing order of their quotients obtained. Examples: Input: N = 3, X = 3, order[] = {2, 7, 4} Output: 1 3 2
+Explanation: After dividing the array elements by 3, the array modifies to {0, 2, 1}. Therefore, the required order of output is 1 3 2. Input: N = 5, X = 6, order[] = {9, 10, 4, 7, 2}
+Output: 3 5 1 2 4 Explanation: After dividing the array elements by 6, the array elements modify to 1 1 0 1 0. Therefore, the required sequence is 3 5 1 2 4.
+
+ans 5 )
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <utility>
+
+using namespace std;
+
+bool cmp(pair<int, int> a, pair<int, int> b) {
+    return a.second < b.second;
+}
+
+int main() {
+    int n, x;
+    cin >> n >> x;
+
+    vector<pair<int, int>> arr(n);
+    for(int i=0; i<n; i++) {
+        cin >> arr[i].first;
+        arr[i].second = arr[i].first/x; // store quotient in second element
+    }
+
+    // sort the array of pairs based on the second element in non-decreasing order
+    sort(arr.begin(), arr.end(), cmp);
+
+    // print the indices in the order of the sorted array
+    for(int i=0; i<n; i++) {
+        cout << arr[i].first << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+6. Implementation of lower_bound() and upper_bound() in List of Pairs in C++
+
+ans 6 )
+
+#include <iostream>
+#include <list>
+using namespace std;
+
+// function to find lower bound of a given value in a list of pairs
+list<pair<int, int>>::iterator lower_bound(list<pair<int, int>>& lst, int value) {
+    auto it = lst.begin();
+    while (it != lst.end()) {
+        if ((*it).first >= value) {
+            return it;
+        }
+        it++;
+    }
+    return lst.end();
+}
+
+// function to find upper bound of a given value in a list of pairs
+list<pair<int, int>>::iterator upper_bound(list<pair<int, int>>& lst, int value) {
+    auto it = lst.begin();
+    while (it != lst.end()) {
+        if ((*it).first > value) {
+            return it;
+        }
+        it++;
+    }
+    return lst.end();
+}
+
+// main function to test the above functions
+int main() {
+    // creating a list of pairs
+    list<pair<int, int>> lst = {{1, 10}, {3, 20}, {5, 30}, {7, 40}, {9, 50}};
+    int val = 6;
+    auto it1 = lower_bound(lst, val);
+    auto it2 = upper_bound(lst, val);
+    if (it1 != lst.end()) {
+        cout << "Lower Bound: (" << (*it1).first << ", " << (*it1).second << ")" << endl;
+    } else {
+        cout << "Lower Bound not found!" << endl;
+    }
+    if (it2 != lst.end()) {
+        cout << "Upper Bound: (" << (*it2).first << ", " << (*it2).second << ")" << endl;
+    } else {
+        cout << "Upper Bound not found!" << endl;
+    }
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Implementation of lower_bound() and upper_bound() in Array of Pairs in C++
+
+ans 7 )
+
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n = 5;
+    pair<int, int> arr[n] = {{1, 4}, {2, 6}, {4, 8}, {5, 10}, {7, 12}};
+
+    // Sorting the array of pairs
+    sort(arr, arr + n);
+
+    // Finding lower bound
+    pair<int, int> key1 = {4, 0}; // {key, value}
+    auto lb = lower_bound(arr, arr + n, key1);
+    if(lb != arr + n && lb->first == key1.first)
+        cout << "Lower bound of {" << key1.first << ", " << key1.second << "} is {" << lb->first << ", " << lb->second << "}" << endl;
+    else
+        cout << "Element not found in the array" << endl;
+
+    // Finding upper bound
+    pair<int, int> key2 = {4, 0}; // {key, value}
+    auto ub = upper_bound(arr, arr + n, key2);
+    if(ub != arr + n && ub->first == key2.first)
+        cout << "Upper bound of {" << key2.first << ", " << key2.second << "} is {" << ub->first << ", " << ub->second << "}" << endl;
+    else
+        cout << "Element not found in the array" << endl;
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Priority queue of pairs in C++ with ordering by first and second element
+
+ans 8 )
+
+#include <iostream>
+#include <queue>
+#include <vector>
+using namespace std;
+
+int main() {
+    // Define a vector of pairs
+    vector<pair<int, int>> v = {{3, 4}, {1, 5}, {2, 3}, {1, 2}};
+
+    // Define a custom comparator to order pairs by first and second element
+    auto cmp = [](const pair<int, int>& p1, const pair<int, int>& p2) {
+        if (p1.first == p2.first) {
+            return p1.second > p2.second; // compare second element if first element is equal
+        }
+        return p1.first > p2.first; // compare first element otherwise
+    };
+
+    // Define a priority queue of pairs with custom comparator
+    priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(cmp)> pq(cmp);
+
+    // Insert pairs into the priority queue
+    for (auto& p : v) {
+        pq.push(p);
+    }
+
+    // Pop and print pairs from the priority queue
+    while (!pq.empty()) {
+        auto p = pq.top();
+        pq.pop();
+        cout << p.first << " " << p.second << endl;
+    }
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Check if a given pair of Numbers are Betrothed numbers or not
+
+ans 9 )
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> getProperDivisors(int n) {
+    vector<int> divisors;
+    for (int i = 1; i < n; i++) {
+        if (n % i == 0) {
+            divisors.push_back(i);
+        }
+    }
+    return divisors;
+}
+
+bool areBetrothed(int num1, int num2) {
+    int sum1 = 0, sum2 = 0;
+    vector<int> divisors1 = getProperDivisors(num1);
+    vector<int> divisors2 = getProperDivisors(num2);
+    for (int divisor : divisors1) {
+        sum1 += divisor;
+    }
+    for (int divisor : divisors2) {
+        sum2 += divisor;
+    }
+    return (sum1 == num2 && sum2 == num1);
+}
+
+int main() {
+    int num1, num2;
+    cout << "Enter the two numbers: ";
+    cin >> num1 >> num2;
+    if (areBetrothed(num1, num2)) {
+        cout << "The given pair of numbers are betrothed numbers." << endl;
+    } else {
+        cout << "The given pair of numbers are not betrothed numbers." << endl;
+    }
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Sort an Array of Points by their distance from a reference Point
+
+ans 10 )
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+
+using namespace std;
+
+struct Point {
+    int x;
+    int y;
+};
+
+double distance(Point p1, Point p2, Point ref) {
+    double dx1 = p1.x - ref.x;
+    double dy1 = p1.y - ref.y;
+    double dx2 = p2.x - ref.x;
+    double dy2 = p2.y - ref.y;
+    return sqrt(dx1*dx1 + dy1*dy1) < sqrt(dx2*dx2 + dy2*dy2);
+}
+
+bool comparePoints(Point p1, Point p2, Point ref) {
+    return distance(p1, p2, ref);
+}
+
+int main() {
+    Point ref = {0, 0};
+    vector<Point> points = {{1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}};
+    sort(points.begin(), points.end(), [&](const Point& p1, const Point& p2) {
+        return comparePoints(p1, p2, ref);
+    });
+    for (auto p : points) {
+        cout << "(" << p.x << ", " << p.y << ") ";
+    }
+    cout << endl;
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+11. create a tuple and demonstrate all the inbuilt functions of tuples
+
+ans 11 )
+
+#include <iostream>
+#include <tuple>
+#include <string>
+using namespace std;
+
+int main() {
+    // create a tuple of three elements
+    tuple<int, string, double> t1(10, "hello", 3.14);
+
+    // access elements of tuple using get() function
+    cout << "t1 = (" << get<0>(t1) << ", " << get<1>(t1) << ", " << get<2>(t1) << ")" << endl;
+
+    // size of tuple using tuple_size
+    cout << "size of tuple t1 = " << tuple_size<decltype(t1)>::value << endl;
+
+    // create a tuple using make_tuple()
+    auto t2 = make_tuple("world", 4, 2.71);
+
+    // concatenate two tuples using tuple_cat()
+    auto t3 = tuple_cat(t1, t2);
+
+    // access elements of concatenated tuple
+    cout << "t3 = (" << get<0>(t3) << ", " << get<1>(t3) << ", " << get<2>(t3) << ", "
+         << get<3>(t3) << ", " << get<4>(t3) << ", " << get<5>(t3) << ")" << endl;
+
+    // swap two tuples
+    swap(t1, t2);
+    cout << "t1 after swap = (" << get<0>(t1) << ", " << get<1>(t1) << ", " << get<2>(t1) << ")" << endl;
+    cout << "t2 after swap = (" << get<0>(t2) << ", " << get<1>(t2) << ", " << get<2>(t2) << ")" << endl;
+
+    // compare two tuples lexicographically using tuple comparisons
+    cout << "t1 < t2 lexicographically: " << (t1 < t2 ? "true" : "false") << endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+12. Create an unordered_map of tuples in C++
+
+ans 12 )
+
+#include <iostream>
+#include <unordered_map>
+#include <tuple>
+
+int main() {
+  // Create an unordered_map of tuples
+  std::unordered_map<std::string, std::tuple<int, double, char>> myMap;
+
+  // Insert values into the map
+  myMap.insert({"tuple1", std::make_tuple(10, 3.14, 'A')});
+  myMap.insert({"tuple2", std::make_tuple(20, 6.28, 'B')});
+
+  // Access values from the map
+  std::cout << "Value of tuple1: (" << std::get<0>(myMap["tuple1"]) << ", "
+            << std::get<1>(myMap["tuple1"]) << ", "
+            << std::get<2>(myMap["tuple1"]) << ")" << std::endl;
+
+  // Modify values in the map
+  std::get<0>(myMap["tuple2"]) = 30;
+  std::get<2>(myMap["tuple2"]) = 'C';
+
+  // Print all the elements in the map
+  for (const auto& [key, value] : myMap) {
+    std::cout << "Key: " << key << ", Value: (" << std::get<0>(value) << ", "
+              << std::get<1>(value) << ", " << std::get<2>(value) << ")"
+              << std::endl;
+  }
+
+  return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+14. Sorting of Vector of Tuple in C++ (Descending Order)
+
+ans 14 )
+
+#include <iostream>
+#include <vector>
+#include <tuple>
+#include <algorithm>
+
+using namespace std;
+
+bool compare(const tuple<int, int, int>& a, const tuple<int, int, int>& b) {
+    return get<1>(a) > get<1>(b);
+}
+
+int main() {
+    // create a vector of 3-tuples
+    vector<tuple<int, int, int>> v = {{1, 3, 2}, {2, 2, 3}, {3, 1, 1}, {4, 4, 4}};
+
+    // sort the vector in descending order based on the second element of each tuple
+    sort(v.begin(), v.end(), compare);
+
+    // print the sorted vector
+    for (auto t : v) {
+        cout << get<0>(t) << " " << get<1>(t) << " " << get<2>(t) << endl;
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+15. Sorting of Vector of Tuple in C++ (Ascending Order)
+
+ans 15 )
+
+#include <iostream>
+#include <vector>
+#include <tuple>
+#include <algorithm>
+
+bool tuple_compare(const std::tuple<int, int, int>& t1, const std::tuple<int, int, int>& t2) {
+    // Compare the first elements of the tuples
+    if (std::get<0>(t1) < std::get<0>(t2)) {
+        return true;
+    }
+    else if (std::get<0>(t1) > std::get<0>(t2)) {
+        return false;
+    }
+    else {
+        // If the first elements are equal, compare the second elements
+        if (std::get<1>(t1) < std::get<1>(t2)) {
+            return true;
+        }
+        else if (std::get<1>(t1) > std::get<1>(t2)) {
+            return false;
+        }
+        else {
+            // If the first and second elements are equal, compare the third elements
+            if (std::get<2>(t1) < std::get<2>(t2)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+}
+
+int main() {
+    std::vector<std::tuple<int, int, int>> v = {std::make_tuple(2, 3, 1),
+                                                std::make_tuple(1, 2, 3),
+                                                std::make_tuple(3, 2, 1),
+                                                std::make_tuple(2, 1, 3)};
+                                                
+    std::sort(v.begin(), v.end(), tuple_compare);
+    
+    // Print the sorted vector of tuples
+    for (const auto& t : v) {
+        std::cout << "(" << std::get<0>(t) << ", " << std::get<1>(t) << ", " << std::get<2>(t) << ")" << std::endl;
+    }
+    
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+16. Create a C++ program to demonstrate the working of forward list of tuples.
+
+ans 16 )
+
+#include <iostream>
+#include <forward_list>
+#include <tuple>
+
+int main() {
+    // Define a forward list of tuples
+    std::forward_list<std::tuple<int, std::string, float>> my_list;
+
+    // Insert elements into the list
+    my_list.push_front(std::make_tuple(1, "apple", 1.23f));
+    my_list.push_front(std::make_tuple(2, "banana", 0.45f));
+    my_list.push_front(std::make_tuple(3, "cherry", 2.36f));
+
+    // Iterate over the list and print the values
+    std::cout << "Elements in the forward list of tuples:" << std::endl;
+    for (auto const& item : my_list) {
+        std::cout << std::get<0>(item) << " "
+                  << std::get<1>(item) << " "
+                  << std::get<2>(item) << std::endl;
+    }
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+17. Create a C++ program to implement max-heap priority queues of tuples.
+
+ans 17 )
+
+
+#include <iostream>
+#include <queue>
+#include <tuple>
+
+using namespace std;
+
+// Define a tuple with three elements: a string, an integer, and a float
+typedef tuple<string, int, float> myTuple;
+
+// Define a comparison function to compare two tuples based on their second element
+struct CompareTuples {
+    bool operator()(const myTuple& t1, const myTuple& t2) const {
+        return get<1>(t1) < get<1>(t2);
+    }
+};
+
+int main() {
+    // Create a priority queue of tuples with the comparison function
+    priority_queue<myTuple, vector<myTuple>, CompareTuples> pq;
+
+    // Push some tuples into the priority queue
+    pq.push(make_tuple("tuple1", 5, 2.3));
+    pq.push(make_tuple("tuple2", 3, 4.5));
+    pq.push(make_tuple("tuple3", 7, 1.2));
+
+    // Print the top element of the priority queue
+    cout << "Top element: " << get<0>(pq.top()) << " " << get<1>(pq.top()) << " " << get<2>(pq.top()) << endl;
+
+    // Pop the top element from the priority queue
+    pq.pop();
+
+    // Print the new top element of the priority queue
+    cout << "New top element: " << get<0>(pq.top()) << " " << get<1>(pq.top()) << " " << get<2>(pq.top()) << endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

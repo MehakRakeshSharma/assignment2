@@ -1,0 +1,386 @@
+
+Assignment-49: A Job Ready Bootcamp in c++,DSA and IOT
+
+unordered_set
+
+1. Count of distinct pair sums in a given Array arr[] of size N, the task is to find the total number of unique pair sums possible from the array elements.
+
+ans 1 )
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int countDistinctPairSums(int arr[], int N) {
+    unordered_set<int> pairSums;
+    for(int i=0; i<N; i++) {
+        for(int j=i+1; j<N; j++) {
+            pairSums.insert(arr[i] + arr[j]);
+        }
+    }
+    return pairSums.size();
+}
+
+int main() {
+    int arr[] = {1, 2, 3, 4, 5};
+    int N = sizeof(arr) / sizeof(arr[0]);
+    cout << countDistinctPairSums(arr, N) << endl; // Output: 9
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. C++ Program to Print all triplets in sorted array that form AP(or Arithmetic Progression) Example..Input : arr[] = { 2, 6, 9, 12, 17, 22, 31, 32, 35, 42 }; Output :
+6 9 12
+2 12 22
+12 17 22
+2 17 32
+12 22 32
+9 22 35
+2 22 42
+22 32 42
+
+ans 2)
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void findTriplets(int arr[], int n) {
+    for(int j=1; j<n-1; j++) {
+        int i = j-1, k = j+1;
+        while(i >= 0 && k < n) {
+            if(arr[i] + arr[k] == 2 * arr[j]) {
+                cout << arr[i] << " " << arr[j] << " " << arr[k] << endl;
+                i--;
+                k++;
+            }
+            else if(arr[i] + arr[k] < 2 * arr[j]) {
+                k++;
+            }
+            else {
+                i--;
+            }
+        }
+    }
+}
+
+int main() {
+    int arr[] = {2, 6, 9, 12, 17, 22, 31, 32, 35, 42};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    findTriplets(arr, n);
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. C++ Program for Number of unique triplets whose XOR is zero. Input : a[] = {1, 3, 5, 10, 14, 15}; Output : 2 Explanation : {1, 14, 15} and {5, 10, 15} are the
+unique triplets whose XOR is 0. {1, 14, 15} and all other combinations of 1, 14, 15 are considered as 1 only. Input : a[] = {4, 7, 5, 8, 3, 9}; Output : 1 Explanation : {4, 7, 3} is the only triplet whose XOR is 0
+
+
+ans 3 )
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int countTriplets(int arr[], int n) {
+    unordered_map<int, int> freq;
+    for(int i=0; i<n; i++) {
+        freq[arr[i]]++;
+    }
+    int count = 0;
+    for(auto it1 : freq) {
+        for(auto it2 : freq) {
+            int x = it1.first ^ it2.first;
+            if(freq.find(x) != freq.end() && x < it1.first) {
+                count += it1.second * it2.second * freq[x];
+            }
+        }
+    }
+    return count;
+}
+
+int main() {
+    int arr[] = {1, 3, 5, 10, 14, 15};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    cout << countTriplets(arr, n) << endl; // Output: 2
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. C++ Program to give two arrays with size n, maximise the first array by using the elements from the second array such that the new array formed contains n greatest
+but unique elements of both the arrays giving the second array priority (All elements of second array appear before first array). The order of appearance of elements is kept the same in output as in input. Examples: Input : arr1[] = {2, 4, 3} arr2[] = {5, 6, 1} Output : 5 6 4
+As 5, 6 and 4 are maximum elements from two arrays giving the second array higher priority. Order of elements is the same in output as in input. Input : arr1[] = {7, 4, 8, 0, 1}
+arr2[] = {9, 7, 2, 3, 6} Output : 9 7 6 4 8
+
+ans 4 )
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void maximiseArray(int arr1[], int arr2[], int n) {
+    unordered_set<int> set;
+    stack<int> st;
+    for(int i=0; i<n; i++) {
+        if(set.find(arr2[i]) == set.end()) {
+            st.push(arr2[i]);
+            set.insert(arr2[i]);
+        }
+    }
+    for(int i=0; i<n; i++) {
+        if(set.find(arr1[i]) == set.end()) {
+            st.push(arr1[i]);
+            set.insert(arr1[i]);
+        }
+    }
+    for(int i=0; i<n; i++) {
+        cout << st.top() << " ";
+        st.pop();
+    }
+}
+
+int main() {
+    int arr1[] = {2, 4, 3};
+    int arr2[] = {5, 6, 1};
+    int n = sizeof(arr1) / sizeof(arr1[0]);
+    maximiseArray(arr1, arr2, n); // Output: 5 6 4
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. C++ Program to given an array of positive and negative numbers, find if there is a subarray (of size at-least one) with 0 sum. Examples : Input: {4, 2, -3, 1, 6}
+Output: true Explanation: There is a subarray with zero sum from index 1 to 3. Input: {4, 2, 0, 1, 6} Output: true Explanation: There is a subarray with zero sum from index 2 to 2.
+
+ans 5 )
+
+#include <bits/stdc++.h>
+using namespace std;
+
+bool hasZeroSumSubarray(int arr[], int n) {
+    unordered_set<int> set;
+    int prefixSum = 0;
+    for(int i=0; i<n; i++) {
+        prefixSum += arr[i];
+        if(prefixSum == 0 || set.find(prefixSum) != set.end())
+            return true;
+        set.insert(prefixSum);
+    }
+    return false;
+}
+
+int main() {
+    int arr[] = {4, 2, -3, 1, 6};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    if(hasZeroSumSubarray(arr, n))
+        cout << "true";
+    else
+        cout << "false";
+    // Output: true
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Given an array arr[] consisting of N positive integers, the task is to find the number of pairs such that the Greatest Common Divisor(GCD) of the pairs is not a prime number. The pair (i, j) and (j, i) are considered the same. Examples: Input: arr[] ={ 2, 3, 9} Output: 10 Explanation:
+Following are the possible pairs whose GCD is not prime: (0, 1): The GCD of arr[0](= 2) and arr[1](= 3) is 1. (0, 2): The GCD of arr[0](= 2) and arr[2](= 9) is 1. Therefore, the total count of pairs is 2. Input: arr[] = {3, 5, 2, 10} Output: 4
+
+ans 6 )
+
+#include<bits/stdc++.h>
+using namespace std;
+
+bool isPrime(int n) {
+    if(n < 2)
+        return false;
+    for(int i = 2; i <= sqrt(n); i++) {
+        if(n % i == 0)
+            return false;
+    }
+    return true;
+}
+
+int gcd(int a, int b) {
+    if(b == 0)
+        return a;
+    return gcd(b, a % b);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    int arr[n];
+    for(int i = 0; i < n; i++)
+        cin >> arr[i];
+    int count = 0;
+    unordered_map<int, int> mp;
+    for(int i = 0; i < n; i++) {
+        for(int j = i+1; j < n; j++) {
+            int gc = gcd(arr[i], arr[j]);
+            if(gc > 1 && !isPrime(gc) && mp[gc] == 0) {
+                count++;
+                mp[gc]++;
+            }
+        }
+    }
+    cout << count << endl;
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Given an array of strings arr[] of size N, the task is to print all the distinct strings present in the given array.
+Examples: Input: arr[] = { “Good”, “God”, “Good”, “God”, “god” }
+Output: god Good God
+
+ans 7 )
+
+#include <iostream>
+#include <unordered_set>
+#include <vector>
+using namespace std;
+
+void printDistinctStrings(vector<string> arr) {
+    unordered_set<string> uniqueStrings;
+
+    for (string str : arr) {
+        uniqueStrings.insert(str);
+    }
+
+    for (auto str : uniqueStrings) {
+        cout << str << " ";
+    }
+}
+
+int main() {
+    vector<string> arr = {"Good", "God", "Good", "God", "god"};
+
+    printDistinctStrings(arr);
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Find all matrix elements which are minimum in their row and maximum in their column
+
+ans 8 )
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void findMinMaxElements(vector<vector<int>>& matrix) {
+    int m = matrix.size();
+    int n = matrix[0].size();
+
+    vector<int> rowMin(m, INT_MAX);
+    vector<int> colMax(n, INT_MIN);
+
+    // Find the minimum element in each row
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            rowMin[i] = min(rowMin[i], matrix[i][j]);
+        }
+    }
+
+    // Find the maximum element in each column
+    for (int j = 0; j < n; j++) {
+        for (int i = 0; i < m; i++) {
+            colMax[j] = max(colMax[j], matrix[i][j]);
+        }
+    }
+
+    // Find the elements that are both minimum in their row and maximum in their column
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] == rowMin[i] && matrix[i][j] == colMax[j]) {
+                cout << matrix[i][j] << " ";
+            }
+        }
+    }
+}
+
+int main() {
+    vector<vector<int>> matrix = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+
+    findMinMaxElements(matrix);
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Given N strings of equal lengths. The strings contain only digits (1 to 9). The task is to count the number of strings that have an index position such that the digit at this
+index position is greater than the digits at the same index position of all the other strings.
+Examples: Input: arr[] = {“223”, “232”, “112”} Output: 2
+First digit of the 1st and 2nd strings are the largest. Second digit of the string 2nd is the largest. Third digit of the string 1st is the largest. Input: arr[] = {“999”, “122”, “111”}
+Output: 1
+
+ans 9 )
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int countStrings(vector<string>& arr) {
+    int n = arr.size();
+    int count = 0;
+    for (int i = 0; i < arr[0].size(); i++) {
+        char max_char = '0';
+        for (int j = 0; j < n; j++) {
+            if (arr[j][i] > max_char) {
+                max_char = arr[j][i];
+            }
+        }
+        bool flag = true;
+        for (int j = 0; j < n; j++) {
+            if (arr[j][i] == max_char) {
+                if (!flag) {
+                    break;
+                }
+                flag = false;
+            }
+        }
+        if (!flag) {
+            count++;
+        }
+    }
+    return count;
+}
+
+int main() {
+    vector<string> arr = {"223", "232", "112"};
+    int ans = countStrings(arr);
+    cout << ans << endl; // Output: 2
+
+    arr = {"999", "122", "111"};
+    ans = countStrings(arr);
+    cout << ans << endl; // Output: 1
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Unordered_set operators in C++ STL(== and !=)
+
+
+ans 10 )
+
+#include <iostream>
+#include <unordered_set>
+
+using namespace std;
+
+int main()
+{
+    unordered_set<int> set1 = {1, 2, 3, 4, 5};
+    unordered_set<int> set2 = {5, 4, 3, 2, 1};
+    unordered_set<int> set3 = {1, 2, 3, 4};
+    
+    if (set1 == set2) {
+        cout << "set1 and set2 are equal" << endl;
+    } else {
+        cout << "set1 and set2 are not equal" << endl;
+    }
+    
+    if (set1 != set3) {
+        cout << "set1 and set3 are not equal" << endl;
+    } else {
+        cout << "set1 and set3 are equal" << endl;
+    }
+    
+    return 0;
+}
+

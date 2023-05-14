@@ -1,0 +1,310 @@
+Assignment-51: A Job Ready Bootcamp in c++,DSA and IOT
+
+unordered_multiset
+
+1. Write a C++ program to initialise the unordered_multiset and print it on the screen.
+
+ans 1 )
+
+#include <iostream>
+#include <unordered_set>
+
+int main() {
+    std::unordered_multiset<int> my_set = {3, 5, 7, 5, 3, 8, 9};
+
+    std::cout << "Elements of the unordered_multiset: ";
+    for (auto it = my_set.begin(); it != my_set.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Write a C++ program to delete all copies from an unordered_multiset. Example:
+Input - 6 4 2 7 3 3 1 1 1 Output - 6 4 2 7 3 1
+
+ans 2 )
+
+#include <iostream>
+#include <unordered_set>
+
+int main() {
+    std::unordered_multiset<int> my_set;
+
+    // Get input integers from user
+    int n;
+    std::cout << "Enter integers (press -1 to stop): ";
+    while (true) {
+        std::cin >> n;
+        if (n == -1) {
+            break;
+        }
+        my_set.insert(n);
+    }
+
+    // Remove duplicates from the set
+    for (auto it = my_set.begin(); it != my_set.end();) {
+        if (my_set.count(*it) > 1) {
+            it = my_set.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    // Print the remaining elements of the set
+    std::cout << "Elements after removing duplicates: ";
+    for (auto it = my_set.begin(); it != my_set.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Given an array arr[] of N integer elements, the task is to change the minimum number of elements of this array such that it contains first N terms of the Catalan Sequence. Thus, find the minimum changes required using unordered_multiset. First few Catalan numbers are 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, .....
+Examples: Input: arr[] = {4, 1, 2, 33, 213, 5} Output: 3
+We have to replace 4, 33, 213 with 1, 14, 42 to make the first 6 terms of Catalan sequence.
+Input: arr[] = {1, 1, 2, 5, 41} Output: 1 Simply change 41 with 14
+
+ans 3 )
+
+#include <iostream>
+#include <unordered_set>
+
+int main() {
+    std::unordered_multiset<int> my_set;
+
+    // Get input integers from user
+    int n;
+    std::cout << "Enter integers (press -1 to stop): ";
+    while (true) {
+        std::cin >> n;
+        if (n == -1) {
+            break;
+        }
+        my_set.insert(n);
+    }
+
+    // Remove duplicates from the set
+    for (auto it = my_set.begin(); it != my_set.end();) {
+        if (my_set.count(*it) > 1) {
+            it = my_set.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    // Print the remaining elements of the set
+    std::cout << "Elements after removing duplicates: ";
+    for (auto it = my_set.begin(); it != my_set.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Write a C++ program to illustrate the swapping of data between two unordered_multiset.
+
+ans 4 )
+
+#include <iostream>
+#include <unordered_set>
+
+using namespace std;
+
+int main() {
+    unordered_multiset<int> set1 = {1, 2, 3};
+    unordered_multiset<int> set2 = {4, 5, 6};
+
+    cout << "Before swapping:" << endl;
+    cout << "set1: ";
+    for (int x : set1) {
+        cout << x << " ";
+    }
+    cout << endl;
+
+    cout << "set2: ";
+    for (int x : set2) {
+        cout << x << " ";
+    }
+    cout << endl;
+
+    set1.swap(set2);
+
+    cout << "After swapping:" << endl;
+    cout << "set1: ";
+    for (int x : set1) {
+        cout << x << " ";
+    }
+    cout << endl;
+
+    cout << "set2: ";
+    for (int x : set2) {
+        cout << x << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Write a C++ program to count the frequency of elements in unordered_multiset.
+
+ans 5 )
+
+#include <iostream>
+#include <unordered_set>
+
+using namespace std;
+
+int main() {
+    unordered_multiset<int> myset = {1, 2, 2, 3, 3, 3};
+
+    // count the frequency of each element in the unordered_multiset
+    for (int x : myset) {
+        cout << x << " occurs " << myset.count(x) << " times" << endl;
+    }
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Write a C++ program to illustrate the emplace() function in unordered_multiset.
+
+ans 6 )
+
+ #include <iostream>
+#include <unordered_set>
+
+using namespace std;
+
+class Person {
+public:
+    Person(int age, string name) : age(age), name(name) {}
+
+    int age;
+    string name;
+};
+
+int main() {
+    unordered_multiset<Person> myset = {{20, "Alice"}, {25, "Bob"}};
+
+    // insert a new Person object using emplace()
+    myset.emplace(30, "Charlie");
+
+    // print the contents of the unordered_multiset
+    for (const auto& p : myset) {
+        cout << p.age << " " << p.name << endl;
+    }
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Write a C++ program to illustrate the find() function in unordered_multiset.
+
+ans 7 )
+
+#include <iostream>
+#include <unordered_set>
+
+using namespace std;
+
+int main() {
+    unordered_multiset<int> myset = {1, 2, 2, 3, 3, 3};
+
+    // search for an element in the unordered_multiset
+    auto it = myset.find(2);
+
+    // check if element was found
+    if (it != myset.end()) {
+        cout << "Found " << *it << endl;
+    } else {
+        cout << "Not found" << endl;
+    }
+
+    // search for a non-existent element in the unordered_multiset
+    it = myset.find(4);
+
+    // check if element was found
+    if (it != myset.end()) {
+        cout << "Found " << *it << endl;
+    } else {
+        cout << "Not found" << endl;
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Write a C++ program to illustrate the bucket_count() function in unordered_multiset.
+
+ans 8 )
+
+#include <iostream>
+#include <unordered_set>
+
+using namespace std;
+
+int main() {
+    unordered_multiset<int> myset = {1, 2, 2, 3, 3, 3};
+
+    // get the number of buckets in the unordered_multiset
+    size_t num_buckets = myset.bucket_count();
+
+    cout << "Number of buckets: " << num_buckets << endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Write a C++ program to illustrate the load_factor() function in unordered_multiset.
+
+ans 9 )
+
+#include <iostream>
+#include <unordered_set>
+
+using namespace std;
+
+int main() {
+    unordered_multiset<int> myset = {1, 2, 2, 3, 3, 3};
+
+    // get the load factor of the unordered_multiset
+    float lf = myset.load_factor();
+
+    cout << "Load factor: " << lf << endl;
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Write a C++ program to illustrate the reverse() function in unordered_multiset.
+
+
+ans 10 )
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    vector<int> myvector = {1, 2, 3, 4, 5};
+
+    // reverse the elements in the vector
+    reverse(myvector.begin(), myvector.end());
+
+    // print the elements in the vector
+    for (int i : myvector) {
+        cout << i << " ";
+    }
+    cout << endl;
+
+    return 0;
+}

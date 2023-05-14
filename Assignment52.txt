@@ -1,0 +1,317 @@
+Assignment-52: A Job Ready Bootcamp in c++,DSA and IOT
+
+unordered_multimap
+
+1. Write a C++ program to initialise the unordered_map and print it on the screen.
+
+ans 1 )
+
+#include <iostream>
+#include <unordered_map>
+#include <string>
+
+using namespace std;
+
+int main() {
+    unordered_map<string, int> mymap = { {"apple", 5}, {"banana", 2}, {"orange", 4} };
+
+    // print the elements in the unordered_map
+    for (auto it = mymap.begin(); it != mymap.end(); ++it) {
+        cout << it->first << " => " << it->second << endl;
+    }
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Write a C++ program to copy the data of one unordered_map into another and print it on the screen.
+
+ans 2 )
+
+#include <iostream>
+#include <unordered_map>
+#include <string>
+
+using namespace std;
+
+int main() {
+    unordered_map<string, int> source = { {"apple", 5}, {"banana", 2}, {"orange", 4} };
+    unordered_map<string, int> dest;
+
+    // copy the elements from source to dest
+    dest = source;
+
+    // print the elements in dest
+    for (auto it = dest.begin(); it != dest.end(); ++it) {
+        cout << it->first << " => " << it->second << endl;
+    }
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Write a C++ program to illustrate the reverse function in unordered_multimap.
+
+ans 3 )
+
+#include <iostream>
+#include <unordered_map>
+#include <string>
+
+using namespace std;
+
+int main() {
+    unordered_multimap<string, int> mymap = { {"apple", 5}, {"banana", 2}, {"orange", 4}, {"apple", 7} };
+
+    // print the elements in reverse order
+    for (auto it = mymap.rbegin(); it != mymap.rend(); ++it) {
+        cout << it->first << " => " << it->second << endl;
+    }
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+5. Given an array arr[] of size N and three integers X, Y and K, the task is to count the number of pairs (i, j) where i < j such that (arr[i] * X + + arr[j] * Y) = K complete the task
+using unordered_map. Example: Input: arr[] = {3, 1, 2, 3}, X = 4, Y = 2, K = 14 Output: 2
+Explanation: The possible pairs are: (1, 2), (3, 4). For i = 1, j = 2, Value of the expression = 4 * 3 + 2 * 1 = 14. For i = 3, j = 4, Value of the expression = 4 * 2 + 2 * 3 = 14.
+Input: arr[] = [1, 3, 2], X = 1, Y = 3, K = 7 Output: 1 Explanation: The possible pairs are: (1, 2). For i = 1, j = 2, Value of the expression = 1 * 1 + 2 * 3 = 7.
+
+ans 5 )
+
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+
+using namespace std;
+
+int countPairs(vector<int>& arr, int X, int Y, int K) {
+    int count = 0;
+    unordered_map<int, int> freq;
+
+    for (int i = 0; i < arr.size(); i++) {
+        if (freq.find(K - arr[i] * X) != freq.end()) {
+            count += freq[K - arr[i] * X];
+        }
+        freq[arr[i] * Y]++;
+    }
+
+    return count;
+}
+
+int main() {
+    vector<int> arr = {3, 1, 2, 3};
+    int X = 4, Y = 2, K = 14;
+
+    cout << countPairs(arr, X, Y, K) << endl;
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Given an array arr[] consisting of N integers, the task is to find the maximum element with the minimum frequency using unordered_map.
+
+ans 6 )
+
+#include <iostream>
+#include <unordered_map>
+#include <climits>
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;
+    int arr[n];
+    unordered_map<int, int> mp;
+    int max_num = INT_MIN;
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+        mp[arr[i]]++;
+        max_num = max(max_num, arr[i]);
+    }
+    int min_freq = n+1;
+    for (auto it = mp.begin(); it != mp.end(); it++) {
+        min_freq = min(min_freq, it->second);
+    }
+    int ans = max_num;
+    for (auto it = mp.begin(); it != mp.end(); it++) {
+        if (it->second == min_freq && it->first > ans) {
+            ans = it->first;
+        }
+    }
+    cout << ans << endl;
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Given an array arr[] consisting of N positive integers, the task is to find the count of unique pairs (i, j) such that the sum of arr[i] and the reverse(arr[j]) is the same as the sum of reverse(arr[i]) and arr[j] using unordered_map.
+Example: Input: arr[] = {2, 15, 11, 7} Output: 3
+Explanation:
+The pairs are (0, 2), (0, 3) and (2, 3).
+● (0, 2): arr[0] + reverse(arr[2]) (= 2 + 11 = 13) and reverse(arr[0]) + arr[2](=2 +
+11 = 13).
+● (0, 3): arr[0] + reverse(arr[3]) (= 2 + 7 = 9) and reverse(arr[0]) + arr[3](= 2 + 7
+= 9).
+
+● (2, 3): arr[2] + reverse(arr[3]) (= 11 + 7 = 18) and reverse(arr[2]) + arr[3](= 11
++ 7 = 18).
+Input: A[] = {22, 115, 7, 313, 17, 23, 22} Output: 6
+
+ans 7 )
+
+#include <iostream>
+#include <unordered_map>
+#include <climits>
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;
+    int arr[n];
+    unordered_map<int, int> mp;
+    int max_num = INT_MIN;
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+        mp[arr[i]]++;
+        max_num = max(max_num, arr[i]);
+    }
+    int min_freq = n+1;
+    for (auto it = mp.begin(); it != mp.end(); it++) {
+        min_freq = min(min_freq, it->second);
+    }
+    int ans = max_num;
+    for (auto it = mp.begin(); it != mp.end(); it++) {
+        if (it->second == min_freq && it->first > ans) {
+            ans = it->first;
+        }
+    }
+    cout << ans << endl;
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Given an array A[] consisting of positive integers, the task is to find the only array element with a single occurrence using unordered_map.
+
+ans 8 )
+
+#include <iostream>
+#include <unordered_map>
+using namespace std;
+
+int findSingleOccurrence(int arr[], int n) {
+    unordered_map<int, int> freqMap;
+    for (int i = 0; i < n; i++) {
+        freqMap[arr[i]]++;
+    }
+    for (int i = 0; i < n; i++) {
+        if (freqMap[arr[i]] == 1) {
+            return arr[i];
+        }
+    }
+    return -1; // No single occurrence found
+}
+
+int main() {
+    int arr[] = {2, 3, 2, 4, 5, 3, 6};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int single = findSingleOccurrence(arr, n);
+    if (single != -1) {
+        cout << "The only array element with a single occurrence is " << single << endl;
+    } else {
+        cout << "There is no array element with a single occurrence" << endl;
+    }
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Given an array arr[], the task is to find the count of array elements whose squares are already present in the array using unordered_map.
+
+ans 9 )
+
+#include <iostream>
+#include <unordered_map>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+    int arr[] = {1, 3, 5, 7, 9, 2, 4, 6, 8};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    unordered_map<int, int> freq;
+
+    for(int i=0; i<n; i++)
+    {
+        int sq = pow(arr[i], 2);
+        freq[sq]++;
+    }
+
+    int count = 0;
+    for(int i=0; i<n; i++)
+    {
+        if(freq[arr[i]] > 0)
+            count++;
+    }
+
+    cout << "Count of array elements whose squares are already present in the array: " << count << endl;
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Given string str, the task is to find the minimum count of characters that need to be
+deleted from the string such that the frequency of each character of the string is
+unique using unordered_map.
+Example:
+Input: str = “ceabaacb”
+Output: 2
+Explanation:
+The frequencies of each distinct character are as follows:
+c —> 2
+e —> 1
+a —> 3
+b —> 2
+Possible ways to make frequency of each character unique by minimum number of
+moves are:
+● Removing both occurrences of ‘c’ modifies str to “eabaab”
+● Removing an occurrence of ‘c’ and ‘e’ modifies str to “abaacb”
+Therefore, the minimum removals required is 2.
+
+ans 10 )
+
+#include <iostream>
+#include <string>
+#include <unordered_map>
+
+using namespace std;
+
+int minRemovals(string str) {
+    // Create a frequency map of characters in the string
+    unordered_map<char, int> freqMap;
+    for (char c : str) {
+        freqMap[c]++;
+    }
+
+    // Create a frequency map of frequency counts
+    unordered_map<int, int> countMap;
+    for (auto p : freqMap) {
+        countMap[p.second]++;
+    }
+
+    // Count the number of characters that need to be deleted
+    int numRemovals = 0;
+    for (auto p : countMap) {
+        if (p.second > 1) {
+            numRemovals += p.second - 1;
+        }
+    }
+    return numRemovals;
+}
+
+int main() {
+    string str = "ceabaacb";
+    cout << "Minimum number of character removals required: " << minRemovals(str) << endl;
+    return 0;
+}

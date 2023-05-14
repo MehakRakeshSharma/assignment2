@@ -1,0 +1,367 @@
+Assignment-50: A Job Ready Bootcamp in c++,DSA and IOT
+
+unordered_map
+
+1. Write a c++ program to demonstrate functionality of unordered_map.
+
+ans 1 )
+
+#include <iostream>
+#include <unordered_map>
+#include <string>
+
+int main() {
+  std::unordered_map<std::string, int> myMap;
+  
+  // Inserting key-value pairs
+  myMap.insert({"apple", 3});
+  myMap.insert({"banana", 2});
+  myMap.insert({"orange", 4});
+  
+  // Accessing values using keys
+  std::cout << "Number of apples: " << myMap["apple"] << std::endl;
+  std::cout << "Number of bananas: " << myMap["banana"] << std::endl;
+  std::cout << "Number of oranges: " << myMap["orange"] << std::endl;
+  
+  // Checking if a key exists
+  if (myMap.count("pear")) {
+    std::cout << "Number of pears: " << myMap["pear"] << std::endl;
+  } else {
+    std::cout << "No pears found." << std::endl;
+  }
+  
+  // Iterating over the map
+  std::cout << "Printing all key-value pairs:" << std::endl;
+  for (const auto& kv : myMap) {
+    std::cout << kv.first << ": " << kv.second << std::endl;
+  }
+  
+  return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Given a string, Find the 1st repeated word in a string using unordered_map. Example: Input : "Ravi had been saying that he had been there" Output : had Input : "Ravi had been saying that" Output : No Repetition
+
+ans 2 )
+
+#include <iostream>
+#include <unordered_map>
+#include <sstream>
+#include <string>
+
+int main() {
+  std::string str = "Ravi had been saying that he had been there";
+  std::istringstream iss(str);
+  std::unordered_map<std::string, int> wordCount;
+  
+  std::string word;
+  while (iss >> word) {
+    if (wordCount[word]++ > 0) {
+      std::cout << "First repeated word: " << word << std::endl;
+      return 0;
+    }
+  }
+  
+  std::cout << "No repetition found." << std::endl;
+  return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Write a c++ program to find freq of every word using unordered_map.
+
+
+ans 3 )
+
+#include <iostream>
+#include <unordered_map>
+#include <sstream>
+#include <string>
+
+int main() {
+  std::string str = "the quick brown fox jumps over the lazy dog";
+  std::istringstream iss(str);
+  std::unordered_map<std::string, int> wordCount;
+  
+  std::string word;
+  while (iss >> word) {
+    wordCount[word]++;
+  }
+  
+  for (const auto& kv : wordCount) {
+    std::cout << kv.first << ": " << kv.second << std::endl;
+  }
+  
+  return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Write a c++ program to demonstrate implementation of find function in unordered_map.
+
+ans 4 )
+
+#include <iostream>
+#include <unordered_map>
+#include <string>
+
+int main() {
+  std::unordered_map<std::string, int> myMap = {{"apple", 1}, {"banana", 2}, {"cherry", 3}};
+  
+  // Find an element that exists in the map
+  auto it = myMap.find("banana");
+  if (it != myMap.end()) {
+    std::cout << "The value of banana is: " << it->second << std::endl;
+  } else {
+    std::cout << "The element was not found." << std::endl;
+  }
+  
+  // Find an element that does not exist in the map
+  it = myMap.find("durian");
+  if (it != myMap.end()) {
+    std::cout << "The value of durian is: " << it->second << std::endl;
+  } else {
+    std::cout << "The element was not found." << std::endl;
+  }
+  
+  return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Given a positive integer N, the task is to print the nearest power of 2 of the frequencies of each digit present in N. If there exists two nearest powers of 2 for any frequency, print the larger one using unordered_map. Example: Input: N = 344422 Output:
+2 -> 2
+3 -> 1
+4 -> 4
+Explanation:
+Frequency of the digit 3 is 1. Nearest power of 2 is 1. 
+Frequency of the digit 4 is 3. Nearest power of 2 is 4.
+Frequency of the digit 2 is 2. Nearest power of 2 is 2.
+
+ans 5 )
+
+#include <iostream>
+#include <unordered_map>
+#include <cmath>
+
+int main() {
+  int n = 344422;
+  std::unordered_map<int, int> freq;
+  
+  // Count the frequency of each digit in n
+  while (n > 0) {
+    int digit = n % 10;
+    freq[digit]++;
+    n /= 10;
+  }
+  
+  // Find the nearest power of 2 for each frequency
+  for (const auto& kv : freq) {
+    int f = kv.second;
+    int pow2 = std::pow(2, std::ceil(std::log2(f)));
+    if (pow2 - f > f - pow2/2) {
+      pow2 /= 2;
+    }
+    std::cout << kv.first << " -> " << pow2 << std::endl;
+  }
+  
+  return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Given two integers L, R, and an integer K, the task is to print all the pairs of Prime Numbers from the given range whose difference is K using unordered_map.
+Example: Input: L = 1, R = 19, K = 6 Output: (5, 11) (7, 13) (11, 17) (13, 19)
+Explanation: The pairs of prime numbers with difference 6 are (5, 11), (7, 13), (11, 17), and (13, 19).
+
+ans 6 )
+
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+
+bool is_prime(int n) {
+  if (n < 2) {
+    return false;
+  }
+  for (int i = 2; i*i <= n; i++) {
+    if (n % i == 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+int main() {
+  int L = 1;
+  int R = 19;
+  int K = 6;
+  
+  std::vector<int> primes;
+  std::unordered_map<int, bool> is_prime_map;
+  
+  // Find all primes in the range [L, R] and store them in a vector
+  for (int n = L; n <= R; n++) {
+    if (is_prime(n)) {
+      primes.push_back(n);
+      is_prime_map[n] = true;
+    }
+  }
+  
+  // Check all pairs of primes with difference K
+  for (int i = 0; i < primes.size(); i++) {
+    int a = primes[i];
+    int b = a + K;
+    if (is_prime_map[b]) {
+      std::cout << "(" << a << ", " << b << ")" << std::endl;
+    }
+  }
+  
+  return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Create an unordered_map and Initialize it from another map using the copy constructor
+
+ans 7 )
+
+#include <iostream>
+#include <unordered_map>
+#include <map>
+
+int main() {
+  // Create a map
+  std::map<std::string, int> m {{"apple", 1}, {"banana", 2}, {"cherry", 3}};
+  
+  // Initialize an unordered_map from the map using the copy constructor
+  std::unordered_map<std::string, int> um(m.begin(), m.end());
+  
+  // Print the contents of the unordered_map
+  for (auto it = um.begin(); it != um.end(); it++) {
+    std::cout << it->first << ": " << it->second << std::endl;
+  }
+  
+  return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Create an unordered_map and Initialize it using assignment and subscript operator
+
+ans 8 )
+
+#include <iostream>
+#include <unordered_map>
+
+int main() {
+  // Create an empty unordered_map
+  std::unordered_map<std::string, int> umap;
+  
+  // Use the subscript operator to add key-value pairs
+  umap["apple"] = 1;
+  umap["banana"] = 2;
+  umap["cherry"] = 3;
+  
+  // Use the assignment operator to overwrite a value
+  umap["banana"] = 4;
+  
+  // Print the contents of the unordered_map
+  for (auto it = umap.begin(); it != umap.end(); it++) {
+    std::cout << it->first << ": " << it->second << std::endl;
+  }
+  
+  return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Given string str, the task is to find the minimum count of characters that need to be deleted from the string such that the frequency of each character of the string is
+unique using unordered_map. Example: Input: str = “ceabaacb” Output: 2 Explanation: The frequencies of each distinct character are as follows:
+
+c —> 2
+e —> 1
+a —> 3
+b —> 2
+Possible ways to make frequency of each character unique by minimum number of moves are:
+● Removing both occurrences of ‘c’ modifies str to “eabaab”
+● Removing an occurrence of ‘c’ and ‘e’ modifies str to “abaacb”
+Therefore, the minimum removals required is 2.
+
+ans 9 )
+
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <algorithm>
+
+int main() {
+    std::string str = "ceabaacb";
+    std::unordered_map<char, int> freq_map;
+    
+    // Count the frequency of each character in the string
+    for (char c : str) {
+        freq_map[c]++;
+    }
+    
+    // Extract the frequencies into a vector
+    std::vector<int> freqs;
+    for (auto freq_pair : freq_map) {
+        freqs.push_back(freq_pair.second);
+    }
+    
+    // Sort the frequencies in descending order
+    std::sort(freqs.begin(), freqs.end(), std::greater<int>());
+    
+    // Check if any two frequencies are the same
+    int removals = 0;
+    for (int i = 1; i < freqs.size(); i++) {
+        if (freqs[i] == freqs[i-1]) {
+            freqs[i]--;
+            removals++;
+        }
+    }
+    
+    std::cout << "Minimum number of characters to remove: " << removals << std::endl;
+    
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Given an array arr[] consisting of N integers, the task is to find the maximum element with the minimum frequency using unordered_map.
+Example: Input: arr[] = {2, 2, 5, 50, 1} Output: 50 Explanation: The element with minimum frequency is {1, 5, 50}. The maximum element among these element is 50.
+
+ans 10 )
+
+#include <iostream>
+#include <unordered_map>
+#include <climits>
+using namespace std;
+
+int main() {
+    int n;
+    cout << "Enter the size of the array: ";
+    cin >> n;
+    int arr[n];
+    cout << "Enter the array elements: ";
+    for (int i = 0; i < n; i++) {
+        cin >> arr[i];
+    }
+
+    unordered_map<int, int> freq;
+    for (int i = 0; i < n; i++) {
+        freq[arr[i]]++;
+    }
+
+    int min_freq = INT_MAX;
+    int max_elem = INT_MIN;
+    for (auto it = freq.begin(); it != freq.end(); it++) {
+        if (it->second < min_freq) {
+            min_freq = it->second;
+            max_elem = it->first;
+        } else if (it->second == min_freq && it->first > max_elem) {
+            max_elem = it->first;
+        }
+    }
+
+    if (max_elem == INT_MIN) {
+        cout << "No element with minimum frequency found!\n";
+    } else {
+        cout << "Maximum element with minimum frequency: " << max_elem << endl;
+    }
+
+    return 0;
+}

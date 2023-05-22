@@ -1,0 +1,850 @@
+Assignment-54: A Job Ready Bootcamp in c++,DSA and IOT
+
+DSA: Array and Dynamic Array
+
+1. Create an ADT array without using STL.
+
+ans 1 )
+
+class Array {
+private:
+    int* data;    // Pointer to dynamically allocated array
+    int size;     // Size of the array
+
+public:
+    // Constructor
+    Array(int initialSize) {
+        size = initialSize;
+        data = new int[size];
+    }
+
+    // Destructor
+    ~Array() {
+        delete[] data;
+    }
+
+    // Get the size of the array
+    int getSize() const {
+        return size;
+    }
+
+    // Get the value at a specific index
+    int getValue(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        }
+        else {
+            // Handle out-of-bounds index
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    // Set the value at a specific index
+    void setValue(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        }
+        else {
+            // Handle out-of-bounds index
+            throw std::out_of_range("Invalid index");
+        }
+    }
+};
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Create an array and implement a search function in the array.
+
+ans 2 )
+
+#include <iostream>
+
+class Array {
+private:
+    int* data;
+    int size;
+
+public:
+    Array(int initialSize) {
+        size = initialSize;
+        data = new int[size];
+    }
+
+    ~Array() {
+        delete[] data;
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    int getValue(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void setValue(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    int search(int value) const {
+        for (int i = 0; i < size; i++) {
+            if (data[i] == value) {
+                return i;
+            }
+        }
+        return -1;  // Value not found
+    }
+};
+
+int main() {
+    Array arr(5);
+
+    arr.setValue(0, 10);
+    arr.setValue(1, 20);
+    arr.setValue(2, 30);
+    arr.setValue(3, 40);
+    arr.setValue(4, 50);
+
+    int searchValue = 30;
+    int index = arr.search(searchValue);
+
+    if (index != -1) {
+        std::cout << "Found " << searchValue << " at index " << index << std::endl;
+    }
+    else {
+        std::cout << "Value " << searchValue << " not found in the array" << std::endl;
+    }
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Create a function in Array to reverse an array.
+
+ans 3 )
+
+#include <iostream>
+
+class Array {
+private:
+    int* data;
+    int size;
+
+public:
+    Array(int initialSize) {
+        size = initialSize;
+        data = new int[size];
+    }
+
+    ~Array() {
+        delete[] data;
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    int getValue(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void setValue(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void reverse() {
+        int start = 0;
+        int end = size - 1;
+
+        while (start < end) {
+            int temp = data[start];
+            data[start] = data[end];
+            data[end] = temp;
+
+            start++;
+            end--;
+        }
+    }
+};
+
+int main() {
+    Array arr(5);
+
+    arr.setValue(0, 10);
+    arr.setValue(1, 20);
+    arr.setValue(2, 30);
+    arr.setValue(3, 40);
+    arr.setValue(4, 50);
+
+    std::cout << "Original Array: ";
+    for (int i = 0; i < arr.getSize(); i++) {
+        std::cout << arr.getValue(i) << " ";
+    }
+    std::cout << std::endl;
+
+    arr.reverse();
+
+    std::cout << "Reversed Array: ";
+    for (int i = 0; i < arr.getSize(); i++) {
+        std::cout << arr.getValue(i) << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+4. Create a function in Array to sort the given array
+
+ans 4 )
+
+#include <iostream>
+
+class Array {
+private:
+    int* data;
+    int size;
+
+public:
+    Array(int initialSize) {
+        size = initialSize;
+        data = new int[size];
+    }
+
+    ~Array() {
+        delete[] data;
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    int getValue(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void setValue(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void sort() {
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                if (data[j] > data[j + 1]) {
+                    int temp = data[j];
+                    data[j] = data[j + 1];
+                    data[j + 1] = temp;
+                }
+            }
+        }
+    }
+};
+
+int main() {
+    Array arr(6);
+
+    arr.setValue(0, 10);
+    arr.setValue(1, 5);
+    arr.setValue(2, 20);
+    arr.setValue(3, 3);
+    arr.setValue(4, 15);
+    arr.setValue(5, 8);
+
+    std::cout << "Original Array: ";
+    for (int i = 0; i < arr.getSize(); i++) {
+        std::cout << arr.getValue(i) << " ";
+    }
+    std::cout << std::endl;
+
+    arr.sort();
+
+    std::cout << "Sorted Array: ";
+    for (int i = 0; i < arr.getSize(); i++) {
+        std::cout << arr.getValue(i) << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Create a function in Array to check the size of an array.
+
+ans 5 )
+
+#include <iostream>
+
+class Array {
+private:
+    int* data;
+    int size;
+
+public:
+    Array(int initialSize) {
+        size = initialSize;
+        data = new int[size];
+    }
+
+    ~Array() {
+        delete[] data;
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    int getValue(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void setValue(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    int checkSize() const {
+        int count = 0;
+        for (int i = 0; i < size; i++) {
+            if (data[i] != 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+};
+
+int main() {
+    Array arr(5);
+
+    arr.setValue(0, 10);
+    arr.setValue(1, 0);
+    arr.setValue(2, 30);
+    arr.setValue(3, 0);
+    arr.setValue(4, 50);
+
+    std::cout << "Size of the array: " << arr.checkSize() << std::endl;
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Create a Dynamic array without using STL.
+
+ans 6 )
+
+#include <iostream>
+
+class DynamicArray {
+private:
+    int* data;
+    int size;
+
+public:
+    DynamicArray(int initialSize) {
+        size = initialSize;
+        data = new int[size];
+    }
+
+    ~DynamicArray() {
+        delete[] data;
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    int getValue(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void setValue(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void resize(int newSize) {
+        int* newData = new int[newSize];
+        int elementsToCopy = newSize < size ? newSize : size;
+
+        for (int i = 0; i < elementsToCopy; i++) {
+            newData[i] = data[i];
+        }
+
+        delete[] data;
+        data = newData;
+        size = newSize;
+    }
+};
+
+int main() {
+    DynamicArray arr(5);
+
+    arr.setValue(0, 10);
+    arr.setValue(1, 20);
+    arr.setValue(2, 30);
+    arr.setValue(3, 40);
+    arr.setValue(4, 50);
+
+    std::cout << "Original Array: ";
+    for (int i = 0; i < arr.getSize(); i++) {
+        std::cout << arr.getValue(i) << " ";
+    }
+    std::cout << std::endl;
+
+    arr.resize(8);
+    arr.setValue(5, 60);
+    arr.setValue(6, 70);
+    arr.setValue(7, 80);
+
+    std::cout << "Resized Array: ";
+    for (int i = 0; i < arr.getSize(); i++) {
+        std::cout << arr.getValue(i) << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Create a function in a dynamic array to return the size of the array.
+
+ans 7 )
+
+#include <iostream>
+
+class DynamicArray {
+private:
+    int* data;
+    int size;
+
+public:
+    DynamicArray(int initialSize) {
+        size = initialSize;
+        data = new int[size];
+    }
+
+    ~DynamicArray() {
+        delete[] data;
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    int getValue(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void setValue(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void resize(int newSize) {
+        int* newData = new int[newSize];
+        int elementsToCopy = newSize < size ? newSize : size;
+
+        for (int i = 0; i < elementsToCopy; i++) {
+            newData[i] = data[i];
+        }
+
+        delete[] data;
+        data = newData;
+        size = newSize;
+    }
+};
+
+int main() {
+    DynamicArray arr(5);
+
+    arr.setValue(0, 10);
+    arr.setValue(1, 20);
+    arr.setValue(2, 30);
+    arr.setValue(3, 40);
+    arr.setValue(4, 50);
+
+    std::cout << "Size of the array: " << arr.getSize() << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Create a function in a dynamic array to return the capacity of the array.
+
+ans 8 )
+
+#include <iostream>
+
+class DynamicArray {
+private:
+    int* data;
+    int size;
+    int capacity;
+
+public:
+    DynamicArray(int initialSize) {
+        size = initialSize;
+        capacity = initialSize;
+        data = new int[capacity];
+    }
+
+    ~DynamicArray() {
+        delete[] data;
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    int getCapacity() const {
+        return capacity;
+    }
+
+    int getValue(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void setValue(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void resize(int newSize) {
+        int* newData = new int[newSize];
+        int elementsToCopy = newSize < size ? newSize : size;
+
+        for (int i = 0; i < elementsToCopy; i++) {
+            newData[i] = data[i];
+        }
+
+        delete[] data;
+        data = newData;
+        size = newSize;
+        capacity = newSize;
+    }
+};
+
+int main() {
+    DynamicArray arr(5);
+
+    arr.setValue(0, 10);
+    arr.setValue(1, 20);
+    arr.setValue(2, 30);
+    arr.setValue(3, 40);
+    arr.setValue(4, 50);
+
+    std::cout << "Capacity of the array: " << arr.getCapacity() << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Create an array and implement a search function in the array.
+
+ans 9 )
+
+#include <iostream>
+
+class Array {
+private:
+    int* data;
+    int size;
+
+public:
+    Array(int initialSize) {
+        size = initialSize;
+        data = new int[size];
+    }
+
+    ~Array() {
+        delete[] data;
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    int getValue(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void setValue(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    int search(int target) const {
+        for (int i = 0; i < size; i++) {
+            if (data[i] == target) {
+                return i;
+            }
+        }
+        return -1; // Indicates target not found
+    }
+};
+
+int main() {
+    Array arr(5);
+
+    arr.setValue(0, 10);
+    arr.setValue(1, 20);
+    arr.setValue(2, 30);
+    arr.setValue(3, 40);
+    arr.setValue(4, 50);
+
+    int target = 30;
+    int index = arr.search(target);
+
+    if (index != -1) {
+        std::cout << "Target " << target << " found at index " << index << std::endl;
+    }
+    else {
+        std::cout << "Target " << target << " not found" << std::endl;
+    }
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Create a function in Array to reverse an array.
+
+ans 10 )
+
+#include <iostream>
+
+class Array {
+private:
+    int* data;
+    int size;
+
+public:
+    Array(int initialSize) {
+        size = initialSize;
+        data = new int[size];
+    }
+
+    ~Array() {
+        delete[] data;
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    int getValue(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void setValue(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void reverse() {
+        int start = 0;
+        int end = size - 1;
+
+        while (start < end) {
+            int temp = data[start];
+            data[start] = data[end];
+            data[end] = temp;
+
+            start++;
+            end--;
+        }
+    }
+};
+
+int main() {
+    Array arr(5);
+
+    arr.setValue(0, 10);
+    arr.setValue(1, 20);
+    arr.setValue(2, 30);
+    arr.setValue(3, 40);
+    arr.setValue(4, 50);
+
+    std::cout << "Original Array: ";
+    for (int i = 0; i < arr.getSize(); i++) {
+        std::cout << arr.getValue(i) << " ";
+    }
+    std::cout << std::endl;
+
+    arr.reverse();
+
+    std::cout << "Reversed Array: ";
+    for (int i = 0; i < arr.getSize(); i++) {
+        std::cout << arr.getValue(i) << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+11. Create a function in Array to sort the given array
+
+ans 11 )
+
+#include <iostream>
+
+class Array {
+private:
+    int* data;
+    int size;
+
+public:
+    Array(int initialSize) {
+        size = initialSize;
+        data = new int[size];
+    }
+
+    ~Array() {
+        delete[] data;
+    }
+
+    int getSize() const {
+        return size;
+    }
+
+    int getValue(int index) const {
+        if (index >= 0 && index < size) {
+            return data[index];
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void setValue(int index, int value) {
+        if (index >= 0 && index < size) {
+            data[index] = value;
+        }
+        else {
+            throw std::out_of_range("Invalid index");
+        }
+    }
+
+    void sort() {
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                if (data[j] > data[j + 1]) {
+                    int temp = data[j];
+                    data[j] = data[j + 1];
+                    data[j + 1] = temp;
+                }
+            }
+        }
+    }
+};
+
+int main() {
+    Array arr(5);
+
+    arr.setValue(0, 40);
+    arr.setValue(1, 10);
+    arr.setValue(2, 30);
+    arr.setValue(3, 20);
+    arr.setValue(4, 50);
+
+    std::cout << "Original Array: ";
+    for (int i = 0; i < arr.getSize(); i++) {
+        std::cout << arr.getValue(i) << " ";
+    }
+    std::cout << std::endl;
+
+    arr.sort();
+
+    std::cout << "Sorted Array: ";
+    for (int i = 0; i < arr.getSize(); i++) {
+        std::cout << arr.getValue(i) << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+

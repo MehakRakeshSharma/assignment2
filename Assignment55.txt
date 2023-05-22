@@ -1,0 +1,645 @@
+Assignment-55 : A Job Ready Bootcamp in C++, DSA and IOT
+
+Stack
+
+1. Given a stack with push(), pop(), empty() operations, delete the middle of the stack
+without using any additional data structure.
+Middle: ceil((size_of_stack+1)/2) (1-based index)
+Example 1:
+Input:
+Stack = {1, 2, 3, 4, 5}
+Output:
+ModifiedStack = {1, 2, 4, 5}
+Explanation:
+As the number of elements is 5, hence the middle element will be the 3rd element
+which is deleted
+Example 2:
+Input:
+Stack = {1 2 3 4}
+Output:
+ModifiedStack = {1 3 4}
+Explanation:
+As the number of elements is 4, hence the middle element will be the 2nd element
+which is deleted
+
+ans 1 )
+
+#include <iostream>
+#include <stack>
+
+void deleteMiddleElement(std::stack<int>& st, int k) {
+    // Base case: reached the middle element
+    if (k == 1) {
+        st.pop();
+        return;
+    }
+
+    // Remove the top element and recur for the remaining stack
+    int temp = st.top();
+    st.pop();
+    deleteMiddleElement(st, k - 1);
+
+    // Insert the removed element back to the stack
+    st.push(temp);
+}
+
+void deleteMiddle(std::stack<int>& st) {
+    int size = st.size();
+    int k = (size + 1) / 2;
+    deleteMiddleElement(st, k);
+}
+
+void printStack(const std::stack<int>& st) {
+    std::stack<int> temp = st;
+    while (!temp.empty()) {
+        std::cout << temp.top() << " ";
+        temp.pop();
+    }
+    std::cout << std::endl;
+}
+
+int main() {
+    std::stack<int> st;
+    st.push(1);
+    st.push(2);
+    st.push(3);
+    st.push(4);
+    st.push(5);
+
+    std::cout << "Original Stack: ";
+    printStack(st);
+
+    deleteMiddle(st);
+
+    std::cout << "Modified Stack: ";
+    printStack(st);
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Given an expression string x. Examine whether the pairs and the orders of “{“,”}”,”(“,”)”,”[“,”]” are correct in exp. For example, the function should return 'true' for exp = “[()]{}{[()()]()}” and 'false' for exp = “[(])”.
+
+ans 2 )
+
+#include <iostream>
+#include <stack>
+#include <unordered_map>
+
+bool checkExpression(const std::string& exp) {
+    std::stack<char> st;
+    std::unordered_map<char, char> closingPairs = {{')', '('}, {']', '['}, {'}', '{'}};
+
+    for (char c : exp) {
+        if (c == '(' || c == '[' || c == '{') {
+            st.push(c);
+        } else if (c == ')' || c == ']' || c == '}') {
+            if (st.empty() || st.top() != closingPairs[c]) {
+                return false;
+            }
+            st.pop();
+        }
+    }
+
+    return st.empty();
+}
+
+int main() {
+    std::string exp1 = "[()]{}{[()()]()}";
+    std::string exp2 = "[(])";
+
+    std::cout << "Expression 1: " << (checkExpression(exp1) ? "Valid" : "Invalid") << std::endl;
+    std::cout << "Expression 2: " << (checkExpression(exp2) ? "Valid" : "Invalid") << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Complete the function to find spiral order traversal of a tree. For the tree below, function should return 1, 2, 3, 4, 5, 6, 7.
+
+ans 3 )
+
+#include <iostream>
+#include <queue>
+#include <stack>
+
+struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+void spiralOrderTraversal(TreeNode* root) {
+    if (root == nullptr)
+        return;
+
+    std::stack<TreeNode*> s1;
+    std::stack<TreeNode*> s2;
+
+    s1.push(root);
+
+    while (!s1.empty() || !s2.empty()) {
+        while (!s1.empty()) {
+            TreeNode* current = s1.top();
+            s1.pop();
+            std::cout << current->val << " ";
+
+            if (current->right)
+                s2.push(current->right);
+            if (current->left)
+                s2.push(current->left);
+        }
+
+        while (!s2.empty()) {
+            TreeNode* current = s2.top();
+            s2.pop();
+            std::cout << current->val << " ";
+
+            if (current->left)
+                s1.push(current->left);
+            if (current->right)
+                s1.push(current->right);
+        }
+    }
+}
+
+int main() {
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(3);
+    root->left->left = new TreeNode(4);
+    root->left->right = new TreeNode(5);
+    root->right->left = new TreeNode(6);
+    root->right->right = new TreeNode(7);
+
+    std::cout << "Spiral Order Traversal: ";
+    spiralOrderTraversal(root);
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Given a stack, the task is to sort it such that the top of the stack has the greatest element.
+Example 1:
+Input:
+Stack: 3 2 1
+Output: 3 2 1
+Example 2:
+
+Input:
+Stack: 11 2 32 3 41
+Output: 41 32 11 3 2
+
+ans 4 )
+
+#include <iostream>
+#include <stack>
+
+void sortStack(std::stack<int>& st) {
+    std::stack<int> temp;
+
+    while (!st.empty()) {
+        int current = st.top();
+        st.pop();
+
+        // Move elements from the temporary stack to the original stack
+        // until we find the correct position for the current element
+        while (!temp.empty() && temp.top() < current) {
+            st.push(temp.top());
+            temp.pop();
+        }
+
+        // Place the current element in the correct position on the temporary stack
+        temp.push(current);
+    }
+
+    // Transfer elements from the temporary stack back to the original stack
+    while (!temp.empty()) {
+        st.push(temp.top());
+        temp.pop();
+    }
+}
+
+void printStack(const std::stack<int>& st) {
+    std::stack<int> temp = st;
+    while (!temp.empty()) {
+        std::cout << temp.top() << " ";
+        temp.pop();
+    }
+    std::cout << std::endl;
+}
+
+int main() {
+    std::stack<int> st1;
+    st1.push(3);
+    st1.push(2);
+    st1.push(1);
+
+    std::cout << "Original Stack: ";
+    printStack(st1);
+
+    sortStack(st1);
+
+    std::cout << "Sorted Stack: ";
+    printStack(st1);
+
+    std::stack<int> st2;
+    st2.push(11);
+    st2.push(2);
+    st2.push(32);
+    st2.push(3);
+    st2.push(41);
+
+    std::cout << "Original Stack: ";
+    printStack(st2);
+
+    sortStack(st2);
+
+    std::cout << "Sorted Stack: ";
+    printStack(st2);
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Reverse the string using stack.
+
+ans 5 )
+
+#include <iostream>
+#include <stack>
+#include <string>
+
+std::string reverseString(const std::string& str) {
+    std::stack<char> st;
+    for (char c : str) {
+        st.push(c);
+    }
+
+    std::string reversedStr;
+    while (!st.empty()) {
+        reversedStr += st.top();
+        st.pop();
+    }
+
+    return reversedStr;
+}
+
+int main() {
+    std::string str = "Hello, World!";
+    std::cout << "Original string: " << str << std::endl;
+
+    std::string reversedStr = reverseString(str);
+    std::cout << "Reversed string: " << reversedStr << std::endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Given a string S, the task is to find the bracket numbers. Example 1: Input: S = "(aa(bdc))p(dee)â€‹" Output: 1 2 2 1 3 3
+Explanation: The highlighted brackets in the given string (aa(bdc))p(dee) has been
+assigned the numbers as: 1 2 2 1 3 3.
+Example 2:
+Input: S = "(((()(" Output: 1 2 3 4 4 5 Explanation: The highlighted brackets in
+the given string (((()( has been assigned the numbers as: 1 2 3 4 4 5
+
+ans 6 )
+
+#include <iostream>
+#include <stack>
+#include <string>
+#include <vector>
+
+std::vector<int> findBracketNumbers(const std::string& str) {
+    std::vector<int> bracketNumbers;
+    std::stack<int> st;
+    int currentNumber = 1;
+
+    for (char c : str) {
+        if (c == '(') {
+            st.push(currentNumber);
+            bracketNumbers.push_back(currentNumber);
+            currentNumber++;
+        } else if (c == ')') {
+            int topNumber = st.top();
+            st.pop();
+            bracketNumbers.push_back(topNumber);
+        }
+    }
+
+    return bracketNumbers;
+}
+
+int main() {
+    std::string str = "(aa(bdc))p(dee)";
+    std::cout << "Input: " << str << std::endl;
+
+    std::vector<int> bracketNumbers = findBracketNumbers(str);
+
+    std::cout << "Output: ";
+    for (int num : bracketNumbers) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Design a data-structure SpecialStack that supports all the stack operations like push(), pop(), isEmpty(), isFull() and an additional operation getMin() which should
+return minimum element from the SpecialStack. Your task is to complete all the functions, using stack data-Structure.
+Example 1: Input: Stack: 18 19 29 15 16 Output: 15
+Explanation: The minimum element of the stack is 15.
+
+ans 7 )
+
+#include <iostream>
+#include <stack>
+
+class SpecialStack {
+private:
+    std::stack<int> actualStack;
+    std::stack<int> minStack;
+
+public:
+    void push(int element) {
+        actualStack.push(element);
+
+        if (minStack.empty() || element <= minStack.top()) {
+            minStack.push(element);
+        }
+    }
+
+    void pop() {
+        if (actualStack.empty()) {
+            std::cout << "Stack is empty." << std::endl;
+            return;
+        }
+
+        int topElement = actualStack.top();
+        actualStack.pop();
+
+        if (topElement == minStack.top()) {
+            minStack.pop();
+        }
+    }
+
+    int getMin() {
+        if (minStack.empty()) {
+            std::cout << "Stack is empty." << std::endl;
+            return -1; // Or any suitable value to indicate an error
+        }
+
+        return minStack.top();
+    }
+
+    bool isEmpty() {
+        return actualStack.empty();
+    }
+
+    bool isFull() {
+        // Assuming the stack has unlimited capacity
+        return false;
+    }
+};
+
+int main() {
+    SpecialStack s;
+
+    s.push(18);
+    s.push(19);
+    s.push(29);
+    s.push(15);
+    s.push(16);
+
+    std::cout << "Minimum element: " << s.getMin() << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. You are given the string S . Compress the string when lower and upper cases are the same. In compressed string characters should be in lowercase.
+Example 1: Input: S = "aaABBb" Output: "3a3b"
+Explanation: As 'a' appears 3 times consecutively and 'b' also 3 times, and 'b' and 'B' are considered the same. Example 2: Input: S = "aaacca" Output: "3a2c1a"
+Explanation: As 'a' appears 3 times consecutively and 'c' also 2 times, and then 'a' 1 time.
+
+ans 8 )
+
+#include <iostream>
+#include <string>
+#include <cctype>
+
+std::string compressString(const std::string& str) {
+    std::string compressedStr;
+    int count = 1;
+    char prevChar = std::tolower(str[0]);
+
+    for (int i = 1; i < str.length(); i++) {
+        char currChar = std::tolower(str[i]);
+
+        if (currChar == prevChar) {
+            count++;
+        } else {
+            compressedStr += std::to_string(count) + prevChar;
+            count = 1;
+            prevChar = currChar;
+        }
+    }
+
+    // Append the count and the last character
+    compressedStr += std::to_string(count) + prevChar;
+
+    return compressedStr;
+}
+
+int main() {
+    std::string str = "aaABBb";
+    std::cout << "Input: " << str << std::endl;
+
+    std::string compressedStr = compressString(str);
+    std::cout << "Output: " << compressedStr << std::endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Given two strings s and t, return true if they are equal when both are typed into empty
+text editors. '#' means a backspace character. Note that after backspacing an empty
+text, the text will continue empty.
+Example 1:
+
+Input: s = "ab#c", t = "ad#c"
+Output: true
+Explanation: Both s and t become "ac".
+Example 2:
+Input: s = "ab##", t = "c#d#"
+Output: true
+Explanation: Both s and t become "".
+Example 3:
+Input: s = "a#c", t = "b"
+Output: false
+Explanation: s becomes "c" while t becomes "b".
+
+ans 9 )
+
+#include <iostream>
+#include <stack>
+#include <string>
+
+bool backspaceCompare(const std::string& s, const std::string& t) {
+    std::stack<char> stackS;
+    std::stack<char> stackT;
+
+    // Helper function to process a string and store non-backspace characters in the stack
+    auto processString = [](const std::string& str, std::stack<char>& stack) {
+        for (char c : str) {
+            if (c != '#') {
+                stack.push(c);
+            } else if (!stack.empty()) {
+                stack.pop();
+            }
+        }
+    };
+
+    processString(s, stackS);
+    processString(t, stackT);
+
+    // Compare the contents of the two stacks
+    while (!stackS.empty() && !stackT.empty()) {
+        if (stackS.top() != stackT.top()) {
+            return false;
+        }
+        stackS.pop();
+        stackT.pop();
+    }
+
+    // If both stacks are empty, the strings are equal after applying backspace operations
+    return stackS.empty() && stackT.empty();
+}
+
+int main() {
+    std::string s1 = "ab#c";
+    std::string t1 = "ad#c";
+    std::cout << "Input: s = \"" << s1 << "\", t = \"" << t1 << "\"" << std::endl;
+    std::cout << "Output: " << std::boolalpha << backspaceCompare(s1, t1) << std::endl;
+
+    std::string s2 = "ab##";
+    std::string t2 = "c#d#";
+    std::cout << "Input: s = \"" << s2 << "\", t = \"" << t2 << "\"" << std::endl;
+    std::cout << "Output: " << std::boolalpha << backspaceCompare(s2, t2) << std::endl;
+
+    std::string s3 = "a#c";
+    std::string t3 = "b";
+    std::cout << "Input: s = \"" << s3 << "\", t = \"" << t3 << "\"" << std::endl;
+    std::cout << "Output: " << std::boolalpha << backspaceCompare(s3, t3) << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Your task is to implement 2 stacks in one array efficiently.
+Example 1:
+Input:
+enqueue(2)
+enqueue(3)
+dequeue()
+enqueue(4)
+dequeue()
+Output: 2 3
+Explanation:
+enqueue(2) the queue will be {2}
+enqueue(3) the queue will be {3 2}
+dequeue() the poped element will be 2
+the stack will be {3}
+enqueue(4) the stack will be {4 3}
+dequeue() the poped element will be 3.
+Example 2:
+Input:
+enqueue(2)
+dequeue()
+dequeue()
+Output: 2 -1
+
+
+ans 10 )
+
+#include <iostream>
+
+class TwoStacks {
+private:
+    int* arr;  // Array to store the elements
+    int capacity;  // Total capacity of the array
+    int top1;  // Top index of the first stack
+    int top2;  // Top index of the second stack
+
+public:
+    // Constructor
+    TwoStacks(int size) {
+        capacity = size;
+        arr = new int[size];
+        top1 = -1;
+        top2 = size;
+    }
+
+    // Push an element to the first stack
+    void push1(int element) {
+        if (top1 + 1 < top2) {
+            top1++;
+            arr[top1] = element;
+        } else {
+            std::cout << "Stack Overflow - Unable to push element to stack 1." << std::endl;
+        }
+    }
+
+    // Push an element to the second stack
+    void push2(int element) {
+        if (top2 - 1 > top1) {
+            top2--;
+            arr[top2] = element;
+        } else {
+            std::cout << "Stack Overflow - Unable to push element to stack 2." << std::endl;
+        }
+    }
+
+    // Pop an element from the first stack and return it
+    int pop1() {
+        if (top1 >= 0) {
+            int element = arr[top1];
+            top1--;
+            return element;
+        } else {
+            std::cout << "Stack Underflow - Unable to pop element from stack 1." << std::endl;
+            return -1;
+        }
+    }
+
+    // Pop an element from the second stack and return it
+    int pop2() {
+        if (top2 < capacity) {
+            int element = arr[top2];
+            top2++;
+            return element;
+        } else {
+            std::cout << "Stack Underflow - Unable to pop element from stack 2." << std::endl;
+            return -1;
+        }
+    }
+};
+
+int main() {
+    TwoStacks twoStacks(5);
+
+    twoStacks.push1(2);
+    twoStacks.push1(3);
+    std::cout << twoStacks.pop1() << " ";
+    twoStacks.push1(4);
+    std::cout << twoStacks.pop1() << std::endl;
+
+    twoStacks.push2(2);
+    std::cout << twoStacks.pop2() << " ";
+    std::cout << twoStacks.pop2() << std::endl;
+
+    return 0;
+}

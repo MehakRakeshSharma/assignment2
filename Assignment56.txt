@@ -1,0 +1,725 @@
+Assignment-56 : A Job Ready Bootcamp in C++, DSA and IOT
+
+DSA Singly Linked List
+
+1. Given a linked list and a key ‘X‘ in, the task is to check if X is present in the linked list
+or not.
+Examples:
+Input: 14->21->11->30->10, X = 14
+Output: Yes
+Explanation: 14 is present in the linked list.
+Input: 6->21->17->30->10->8, X = 13
+Output: No
+
+ans 1 )
+
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+string isKeyPresent(Node* head, int key) {
+    Node* current = head;
+
+    while (current != nullptr) {
+        if (current->data == key) {
+            return "Yes";
+        }
+        current = current->next;
+    }
+
+    return "No";
+}
+
+int main() {
+    // Create the linked list: 14->21->11->30->10
+    Node* head = new Node();
+    head->data = 14;
+    head->next = new Node();
+    head->next->data = 21;
+    head->next->next = new Node();
+    head->next->next->data = 11;
+    head->next->next->next = new Node();
+    head->next->next->next->data = 30;
+    head->next->next->next->next = new Node();
+    head->next->next->next->next->data = 10;
+    head->next->next->next->next->next = nullptr;
+
+    int key = 14;
+    cout << isKeyPresent(head, key) << endl;  // Output: Yes
+
+    key = 13;
+    cout << isKeyPresent(head, key) << endl;  // Output: No
+
+    // Free memory
+    delete head->next->next->next->next;
+    delete head->next->next->next;
+    delete head->next->next;
+    delete head->next;
+    delete head;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Write a function that takes a list sorted in non-decreasing order and deletes any duplicate nodes from the list. The list should only be traversed once.
+For example if the linked list is 11->11->11->21->43->43->60 then removeDuplicates() should convert the list to 11->21->43->60.
+
+ans 2 )
+
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+void removeDuplicates(Node* head) {
+    if (head == nullptr) {
+        return;
+    }
+
+    Node* current = head;
+
+    while (current->next != nullptr) {
+        if (current->data == current->next->data) {
+            Node* duplicateNode = current->next;
+            current->next = current->next->next;
+            delete duplicateNode;
+        } else {
+            current = current->next;
+        }
+    }
+}
+
+void printList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " ";
+        current = current->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Create the sorted linked list: 11->11->11->21->43->43->60
+    Node* head = new Node();
+    head->data = 11;
+    head->next = new Node();
+    head->next->data = 11;
+    head->next->next = new Node();
+    head->next->next->data = 11;
+    head->next->next->next = new Node();
+    head->next->next->next->data = 21;
+    head->next->next->next->next = new Node();
+    head->next->next->next->next->data = 43;
+    head->next->next->next->next->next = new Node();
+    head->next->next->next->next->next->data = 43;
+    head->next->next->next->next->next->next = new Node();
+    head->next->next->next->next->next->next->data = 60;
+    head->next->next->next->next->next->next->next = nullptr;
+
+    cout << "Original List: ";
+    printList(head);
+
+    removeDuplicates(head);
+
+    cout << "List after removing duplicates: ";
+    printList(head);
+
+    // Free memory
+    Node* current = head;
+    while (current != nullptr) {
+        Node* nextNode = current->next;
+        delete current;
+        current = nextNode;
+    }
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Given a singly linked list, write a function to swap elements pairwise.
+Input : 1->2->3->4->5->6->NULL
+Output : 2->1->4->3->6->5->NULL
+Input : 1->2->3->4->5->NULL
+OutputOutput : 2->1->4->3->5->NULL
+Input : 1->NULL
+Output : 1->NULL
+
+ans 3 )
+
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+void swapPairwise(Node* head) {
+    Node* current = head;
+
+    while (current != nullptr && current->next != nullptr) {
+        // Swap the data of current and next nodes
+        int temp = current->data;
+        current->data = current->next->data;
+        current->next->data = temp;
+
+        // Move to the next pair of nodes
+        current = current->next->next;
+    }
+}
+
+void printList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " ";
+        current = current->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Create the singly linked list: 1->2->3->4->5->6->NULL
+    Node* head = new Node();
+    head->data = 1;
+    head->next = new Node();
+    head->next->data = 2;
+    head->next->next = new Node();
+    head->next->next->data = 3;
+    head->next->next->next = new Node();
+    head->next->next->next->data = 4;
+    head->next->next->next->next = new Node();
+    head->next->next->next->next->data = 5;
+    head->next->next->next->next->next = new Node();
+    head->next->next->next->next->next->data = 6;
+    head->next->next->next->next->next->next = nullptr;
+
+    cout << "Original List: ";
+    printList(head);
+
+    swapPairwise(head);
+
+    cout << "List after pairwise swapping: ";
+    printList(head);
+
+    // Free memory
+    Node* current = head;
+    while (current != nullptr) {
+        Node* nextNode = current->next;
+        delete current;
+        current = nextNode;
+    }
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Write a function that moves the last node to the front in a given Singly Linked List.
+Examples:
+Input: 1->2->3->4->5
+Output: 5->1->2->3->4
+Input: 3->8->1->5->7->12
+Output: 12->3->8->1->5->7
+
+ans 4 )
+
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+void moveLastToFront(Node** head) {
+    if (*head == nullptr || (*head)->next == nullptr) {
+        return;
+    }
+
+    Node* last = *head;
+    Node* secondLast = nullptr;
+
+    while (last->next != nullptr) {
+        secondLast = last;
+        last = last->next;
+    }
+
+    secondLast->next = nullptr;
+    last->next = *head;
+    *head = last;
+}
+
+void printList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        cout << current->data << " ";
+        current = current->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    // Create the singly linked list: 1->2->3->4->5
+    Node* head = new Node();
+    head->data = 1;
+    head->next = new Node();
+    head->next->data = 2;
+    head->next->next = new Node();
+    head->next->next->data = 3;
+    head->next->next->next = new Node();
+    head->next->next->next->data = 4;
+    head->next->next->next->next = new Node();
+    head->next->next->next->next->data = 5;
+    head->next->next->next->next->next = nullptr;
+
+    cout << "Original List: ";
+    printList(head);
+
+    moveLastToFront(&head);
+
+    cout << "List after moving last node to front: ";
+    printList(head);
+
+    // Free memory
+    Node* current = head;
+    while (current != nullptr) {
+        Node* nextNode = current->next;
+        delete current;
+        current = nextNode;
+    }
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Given a linked list, check if the linked list has a loop or not. The below diagram shows a linked list with a loop.
+
+ans 5 )
+
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+bool hasLoop(Node* head) {
+    if (head == nullptr || head->next == nullptr) {
+        return false;
+    }
+
+    Node* slow = head;
+    Node* fast = head->next;
+
+    while (fast != nullptr && fast->next != nullptr) {
+        if (slow == fast) {
+            return true; // Loop detected
+        }
+
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    return false; // No loop found
+}
+
+int main() {
+    // Create a linked list with a loop
+    Node* head = new Node();
+    head->data = 1;
+    head->next = new Node();
+    head->next->data = 2;
+    head->next->next = new Node();
+    head->next->next->data = 3;
+    head->next->next->next = new Node();
+    head->next->next->next->data = 4;
+    head->next->next->next->next = head; // Create a loop by pointing the last node to the head
+
+    if (hasLoop(head)) {
+        cout << "The linked list has a loop." << endl;
+    } else {
+        cout << "The linked list does not have a loop." << endl;
+    }
+
+    // Free memory
+    head->next->next->next->next = nullptr; // Break the loop
+    delete head->next->next->next;
+    delete head->next->next;
+    delete head->next;
+    delete head;
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Given a singly linked list and a key, count the number of occurrences of the given key in the linked list. For example, if the given linked list is 1->2->1->2->1->3->1 and the
+given key is 1, then the output should be 4.
+
+ans 6 )
+
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+int countOccurrences(Node* head, int key) {
+    int count = 0;
+    Node* current = head;
+
+    while (current != nullptr) {
+        if (current->data == key) {
+            count++;
+        }
+        current = current->next;
+    }
+
+    return count;
+}
+
+int main() {
+    // Create the singly linked list: 1->2->1->2->1->3->1
+    Node* head = new Node();
+    head->data = 1;
+    head->next = new Node();
+    head->next->data = 2;
+    head->next->next = new Node();
+    head->next->next->data = 1;
+    head->next->next->next = new Node();
+    head->next->next->next->data = 2;
+    head->next->next->next->next = new Node();
+    head->next->next->next->next->data = 1;
+    head->next->next->next->next->next = new Node();
+    head->next->next->next->next->next->data = 3;
+    head->next->next->next->next->next->next = new Node();
+    head->next->next->next->next->next->next->data = 1;
+    head->next->next->next->next->next->next->next = nullptr;
+
+    int key = 1;
+    int occurrences = countOccurrences(head, key);
+
+    cout << "Number of occurrences of key " << key << ": " << occurrences << endl;
+
+    // Free memory
+    Node* current = head;
+    while (current != nullptr) {
+        Node* nextNode = current->next;
+        delete current;
+        current = nextNode;
+    }
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Given a Linked List and a number N, write a function that returns the value at the Nth node from the end of the Linked List.
+Examples:
+Input: 1 -> 2 -> 3 -> 4, N = 3
+Output: 2
+Input: 35 -> 15 -> 4 -> 20, N = 4
+Output: 35
+
+ans 7 )
+
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+int getNthFromEnd(Node* head, int N) {
+    if (head == nullptr || N <= 0) {
+        return -1; // Invalid input
+    }
+
+    Node* slow = head;
+    Node* fast = head;
+
+    // Move the fast pointer N nodes ahead
+    for (int i = 0; i < N; i++) {
+        if (fast == nullptr) {
+            return -1; // N is greater than the number of nodes in the list
+        }
+        fast = fast->next;
+    }
+
+    // Move both pointers until the fast pointer reaches the end
+    while (fast != nullptr) {
+        slow = slow->next;
+        fast = fast->next;
+    }
+
+    // The slow pointer is now at the Nth node from the end
+    return slow->data;
+}
+
+int main() {
+    // Create the linked list: 1->2->3->4
+    Node* head = new Node();
+    head->data = 1;
+    head->next = new Node();
+    head->next->data = 2;
+    head->next->next = new Node();
+    head->next->next->data = 3;
+    head->next->next->next = new Node();
+    head->next->next->next->data = 4;
+    head->next->next->next->next = nullptr;
+
+    int N = 3;
+    int value = getNthFromEnd(head, N);
+
+    if (value != -1) {
+        cout << "Value at the " << N << "th node from the end: " << value << endl;
+    } else {
+        cout << "Invalid input. Unable to find the " << N << "th node from the end." << endl;
+    }
+
+    // Free memory
+    Node* current = head;
+    while (current != nullptr) {
+        Node* nextNode = current->next;
+        delete current;
+        current = nextNode;
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Create a Stack using a singly linked list.
+
+ans 8 )
+
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+class Stack {
+private:
+    Node* top; // Pointer to the top of the stack
+
+public:
+    Stack() {
+        top = nullptr;
+    }
+
+    bool isEmpty() {
+        return top == nullptr;
+    }
+
+    void push(int value) {
+        Node* newNode = new Node();
+        newNode->data = value;
+        newNode->next = top;
+        top = newNode;
+    }
+
+    int pop() {
+        if (isEmpty()) {
+            cout << "Stack is empty. Cannot pop element." << endl;
+            return -1; // Return -1 to indicate an error
+        }
+
+        Node* temp = top;
+        int poppedValue = temp->data;
+        top = top->next;
+        delete temp;
+        return poppedValue;
+    }
+
+    int peek() {
+        if (isEmpty()) {
+            cout << "Stack is empty. Cannot peek." << endl;
+            return -1; // Return -1 to indicate an error
+        }
+
+        return top->data;
+    }
+};
+
+int main() {
+    Stack stack;
+
+    // Push elements onto the stack
+    stack.push(10);
+    stack.push(20);
+    stack.push(30);
+
+    // Peek the top element
+    cout << "Top element: " << stack.peek() << endl;
+
+    // Pop elements from the stack
+    cout << "Popped element: " << stack.pop() << endl;
+    cout << "Popped element: " << stack.pop() << endl;
+
+    // Check if the stack is empty
+    if (stack.isEmpty()) {
+        cout << "Stack is empty." << endl;
+    } else {
+        cout << "Stack is not empty." << endl;
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. In a singly linked list of characters, write a function that returns true if the given list is a palindrome, else false.
+
+ans 9 )
+
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+struct Node {
+    char data;
+    Node* next;
+};
+
+bool isPalindrome(Node* head) {
+    if (head == nullptr || head->next == nullptr) {
+        return true; // Empty list or single-node list is considered a palindrome
+    }
+
+    stack<char> charStack;
+    Node* current = head;
+
+    while (current != nullptr) {
+        charStack.push(current->data);
+        current = current->next;
+    }
+
+    current = head;
+
+    while (current != nullptr) {
+        char topChar = charStack.top();
+        charStack.pop();
+
+        if (current->data != topChar) {
+            return false; // Characters don't match, not a palindrome
+        }
+
+        current = current->next;
+    }
+
+    return true; // All characters match, it's a palindrome
+}
+
+int main() {
+    // Create the linked list: 'R' -> 'A' -> 'D' -> 'A' -> 'R'
+    Node* head = new Node();
+    head->data = 'R';
+    head->next = new Node();
+    head->next->data = 'A';
+    head->next->next = new Node();
+    head->next->next->data = 'D';
+    head->next->next->next = new Node();
+    head->next->next->next->data = 'A';
+    head->next->next->next->next = new Node();
+    head->next->next->next->next->data = 'R';
+    head->next->next->next->next->next = nullptr;
+
+    if (isPalindrome(head)) {
+        cout << "The linked list is a palindrome." << endl;
+    } else {
+        cout << "The linked list is not a palindrome." << endl;
+    }
+
+    // Free memory
+    Node* current = head;
+    while (current != nullptr) {
+        Node* nextNode = current->next;
+        delete current;
+        current = nextNode;
+    }
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Given a singly linked list, find the middle of the linked list. For example, if the given linked list is 1->2->3->4->5 then the output should be 3.
+If there are even nodes, then there would be two middle nodes, we need to print the second middle element. For example, if the given linked list is 1->2->3->4->5->6 then the output should be 4
+
+ans 10 )
+
+#include <iostream>
+
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+int findMiddle(Node* head) {
+    if (head == nullptr) {
+        return -1; // Invalid input, empty list
+    }
+
+    Node* slow = head;
+    Node* fast = head;
+
+    while (fast != nullptr && fast->next != nullptr) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    return slow->data;
+}
+
+int main() {
+    // Create the linked list: 1->2->3->4->5
+    Node* head = new Node();
+    head->data = 1;
+    head->next = new Node();
+    head->next->data = 2;
+    head->next->next = new Node();
+    head->next->next->data = 3;
+    head->next->next->next = new Node();
+    head->next->next->next->data = 4;
+    head->next->next->next->next = new Node();
+    head->next->next->next->next->data = 5;
+    head->next->next->next->next->next = nullptr;
+
+    int middle = findMiddle(head);
+
+    if (middle != -1) {
+        cout << "Middle element: " << middle << endl;
+    } else {
+        cout << "Invalid input. Unable to find the middle element." << endl;
+    }
+
+    // Free memory
+    Node* current = head;
+    while (current != nullptr) {
+        Node* nextNode = current->next;
+        delete current;
+        current = nextNode;
+    }
+
+    return 0;
+}

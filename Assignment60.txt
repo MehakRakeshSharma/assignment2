@@ -1,0 +1,694 @@
+Assignment-60 : A Job Ready Bootcamp in C++, DSA and IOT
+
+Binary Tree and Binary Search Tree
+
+1. Write a program to print 3rd level all node in a tree
+
+ans 1 )
+
+#include <iostream>
+#include <queue>
+
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+void printNodesAt3rdLevel(Node* root) {
+    if (root == nullptr)
+        return;
+
+    std::queue<Node*> q;
+    q.push(root);
+
+    int currentLevel = 1;
+
+    while (!q.empty()) {
+        int size = q.size();
+
+        for (int i = 0; i < size; i++) {
+            Node* node = q.front();
+            q.pop();
+
+            if (currentLevel == 3) {
+                std::cout << node->data << " ";
+            }
+
+            if (node->left) {
+                q.push(node->left);
+            }
+
+            if (node->right) {
+                q.push(node->right);
+            }
+        }
+
+        currentLevel++;
+    }
+}
+
+int main() {
+    // Create a sample tree
+    Node* root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+    root->right->left = new Node(6);
+    root->right->right = new Node(7);
+
+    std::cout << "Nodes at the 3rd level: ";
+    printNodesAt3rdLevel(root);
+    std::cout << std::endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Write a program to search element in a BST
+
+ans 2 )
+
+#include <iostream>
+
+// Structure for a node in BST
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+// Function to search for an element in a BST
+Node* searchBST(Node* root, int key) {
+    // Base cases: root is null or key is present at root
+    if (root == nullptr || root->data == key) {
+        return root;
+    }
+
+    // Key is greater than the root's data, so search in the right subtree
+    if (key > root->data) {
+        return searchBST(root->right, key);
+    }
+
+    // Key is smaller than the root's data, so search in the left subtree
+    return searchBST(root->left, key);
+}
+
+// Function to insert a node into a BST
+Node* insertBST(Node* root, int key) {
+    if (root == nullptr) {
+        return new Node(key);
+    }
+
+    if (key < root->data) {
+        root->left = insertBST(root->left, key);
+    } else {
+        root->right = insertBST(root->right, key);
+    }
+
+    return root;
+}
+
+int main() {
+    // Create a BST
+    Node* root = nullptr;
+    root = insertBST(root, 8);
+    root = insertBST(root, 3);
+    root = insertBST(root, 1);
+    root = insertBST(root, 6);
+    root = insertBST(root, 10);
+    root = insertBST(root, 14);
+    root = insertBST(root, 4);
+    root = insertBST(root, 7);
+    root = insertBST(root, 13);
+
+    int key;
+    std::cout << "Enter the element to search in the BST: ";
+    std::cin >> key;
+
+    // Search for the element in the BST
+    Node* result = searchBST(root, key);
+
+    if (result != nullptr) {
+        std::cout << "Element " << key << " is found in the BST." << std::endl;
+    } else {
+        std::cout << "Element " << key << " is not found in the BST." << std::endl;
+    }
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Write a program to print elements of a tree at a given level using recursion.
+
+ans 3 )
+
+#include <iostream>
+
+// Structure for a node in a tree
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+// Function to print elements at a given level in a tree
+void printNodesAtLevel(Node* root, int level) {
+    if (root == nullptr) {
+        return;
+    }
+
+    if (level == 1) {
+        std::cout << root->data << " ";
+    } else if (level > 1) {
+        printNodesAtLevel(root->left, level - 1);
+        printNodesAtLevel(root->right, level - 1);
+    }
+}
+
+// Function to calculate the height of a tree
+int calculateHeight(Node* root) {
+    if (root == nullptr) {
+        return 0;
+    }
+
+    int leftHeight = calculateHeight(root->left);
+    int rightHeight = calculateHeight(root->right);
+
+    return std::max(leftHeight, rightHeight) + 1;
+}
+
+int main() {
+    // Create a sample tree
+    Node* root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+    root->right->left = new Node(6);
+    root->right->right = new Node(7);
+
+    int level;
+    std::cout << "Enter the level to print elements: ";
+    std::cin >> level;
+
+    int height = calculateHeight(root);
+
+    if (level >= 1 && level <= height) {
+        std::cout << "Elements at level " << level << ": ";
+        printNodesAtLevel(root, level);
+        std::cout << std::endl;
+    } else {
+        std::cout << "Invalid level!" << std::endl;
+    }
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Write a program to find the minimum element in a BST.
+
+ans 4 )
+
+#include <iostream>
+
+// Structure for a node in BST
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+// Function to find the minimum element in a BST
+int findMinimum(Node* root) {
+    if (root == nullptr) {
+        std::cout << "The BST is empty." << std::endl;
+        return -1; // Return a sentinel value or throw an exception to handle the empty case
+    }
+
+    if (root->left == nullptr) {
+        return root->data; // The leftmost node contains the minimum element
+    }
+
+    return findMinimum(root->left); // Recursively search in the left subtree
+}
+
+// Function to insert a node into a BST
+Node* insertBST(Node* root, int key) {
+    if (root == nullptr) {
+        return new Node(key);
+    }
+
+    if (key < root->data) {
+        root->left = insertBST(root->left, key);
+    } else {
+        root->right = insertBST(root->right, key);
+    }
+
+    return root;
+}
+
+int main() {
+    // Create a BST
+    Node* root = nullptr;
+    root = insertBST(root, 8);
+    root = insertBST(root, 3);
+    root = insertBST(root, 1);
+    root = insertBST(root, 6);
+    root = insertBST(root, 10);
+    root = insertBST(root, 14);
+    root = insertBST(root, 4);
+    root = insertBST(root, 7);
+    root = insertBST(root, 13);
+
+    // Find the minimum element in the BST
+    int minimum = findMinimum(root);
+    std::cout << "The minimum element in the BST is: " << minimum << std::endl;
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Write a program to find the maximum element in BST
+
+ans 5 )
+
+#include <iostream>
+
+// Structure for a node in BST
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+// Function to find the maximum element in a BST
+int findMaximum(Node* root) {
+    if (root == nullptr) {
+        std::cout << "The BST is empty." << std::endl;
+        return -1; // Return a sentinel value or throw an exception to handle the empty case
+    }
+
+    if (root->right == nullptr) {
+        return root->data; // The rightmost node contains the maximum element
+    }
+
+    return findMaximum(root->right); // Recursively search in the right subtree
+}
+
+// Function to insert a node into a BST
+Node* insertBST(Node* root, int key) {
+    if (root == nullptr) {
+        return new Node(key);
+    }
+
+    if (key < root->data) {
+        root->left = insertBST(root->left, key);
+    } else {
+        root->right = insertBST(root->right, key);
+    }
+
+    return root;
+}
+
+int main() {
+    // Create a BST
+    Node* root = nullptr;
+    root = insertBST(root, 8);
+    root = insertBST(root, 3);
+    root = insertBST(root, 1);
+    root = insertBST(root, 6);
+    root = insertBST(root, 10);
+    root = insertBST(root, 14);
+    root = insertBST(root, 4);
+    root = insertBST(root, 7);
+    root = insertBST(root, 13);
+
+    // Find the maximum element in the BST
+    int maximum = findMaximum(root);
+    std::cout << "The maximum element in the BST is: " << maximum << std::endl;
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Find the length of the diameter of the tree.
+
+ans 6 )
+
+#include <iostream>
+#include <algorithm>
+
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+int calculateHeight(Node* root, int& diameter) {
+    if (root == nullptr) {
+        return 0;
+    }
+
+    int leftHeight = calculateHeight(root->left, diameter);
+    int rightHeight = calculateHeight(root->right, diameter);
+
+    int currentDiameter = leftHeight + rightHeight;
+    diameter = std::max(diameter, currentDiameter);
+
+    return std::max(leftHeight, rightHeight) + 1;
+}
+
+int calculateDiameter(Node* root) {
+    if (root == nullptr) {
+        return 0;
+    }
+
+    int diameter = 0;
+    calculateHeight(root, diameter);
+
+    return diameter;
+}
+
+int main() {
+    // Create a sample tree
+    Node* root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+    root->right->left = new Node(6);
+    root->right->right = new Node(7);
+    root->right->right->left = new Node(8);
+
+    int treeDiameter = calculateDiameter(root);
+    std::cout << "The length of the diameter of the tree is: " << treeDiameter << std::endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Write a program to print the reverse zigzag of a BT.
+
+ans 7 )
+
+#include <iostream>
+#include <stack>
+
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+void reverseZigzagTraversal(Node* root) {
+    if (root == nullptr) {
+        return;
+    }
+
+    std::stack<Node*> currentLevel;
+    std::stack<Node*> nextLevel;
+    bool isReverse = false;
+    currentLevel.push(root);
+
+    while (!currentLevel.empty()) {
+        Node* currNode = currentLevel.top();
+        currentLevel.pop();
+
+        std::cout << currNode->data << " ";
+
+        if (isReverse) {
+            if (currNode->right) {
+                nextLevel.push(currNode->right);
+            }
+            if (currNode->left) {
+                nextLevel.push(currNode->left);
+            }
+        } else {
+            if (currNode->left) {
+                nextLevel.push(currNode->left);
+            }
+            if (currNode->right) {
+                nextLevel.push(currNode->right);
+            }
+        }
+
+        if (currentLevel.empty()) {
+            isReverse = !isReverse;
+            std::swap(currentLevel, nextLevel);
+        }
+    }
+}
+
+int main() {
+    // Create a sample Binary Tree
+    Node* root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+    root->right->left = new Node(6);
+    root->right->right = new Node(7);
+
+    std::cout << "Reverse Zigzag Traversal of the Binary Tree: ";
+    reverseZigzagTraversal(root);
+    std::cout << std::endl;
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Write a program to find the height of a tree.
+
+ans 8 )
+
+#include <iostream>
+#include <algorithm>
+
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+int calculateHeight(Node* root) {
+    if (root == nullptr) {
+        return 0;
+    }
+
+    int leftHeight = calculateHeight(root->left);
+    int rightHeight = calculateHeight(root->right);
+
+    return std::max(leftHeight, rightHeight) + 1;
+}
+
+int main() {
+    // Create a sample tree
+    Node* root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+    root->right->left = new Node(6);
+    root->right->right = new Node(7);
+    root->right->right->left = new Node(8);
+
+    int treeHeight = calculateHeight(root);
+    std::cout << "The height of the tree is: " << treeHeight << std::endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Write a program to print the Level order traversal of the Binary Tree in spiral form.
+
+ans 9 )
+
+#include <iostream>
+#include <queue>
+#include <stack>
+
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+void printSpiralLevelOrder(Node* root) {
+    if (root == nullptr) {
+        return;
+    }
+
+    std::queue<Node*> q;
+    std::stack<Node*> s;
+    int level = 1;
+
+    s.push(root);
+
+    while (!s.empty() || !q.empty()) {
+        if (level % 2 != 0) {
+            while (!s.empty()) {
+                Node* currNode = s.top();
+                s.pop();
+                std::cout << currNode->data << " ";
+
+                if (currNode->left) {
+                    q.push(currNode->left);
+                }
+                if (currNode->right) {
+                    q.push(currNode->right);
+                }
+            }
+        } else {
+            while (!q.empty()) {
+                Node* currNode = q.front();
+                q.pop();
+                std::cout << currNode->data << " ";
+
+                if (currNode->right) {
+                    s.push(currNode->right);
+                }
+                if (currNode->left) {
+                    s.push(currNode->left);
+                }
+            }
+        }
+
+        level++;
+    }
+}
+
+int main() {
+    // Create a sample Binary Tree
+    Node* root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    root->left->left = new Node(4);
+    root->left->right = new Node(5);
+    root->right->left = new Node(6);
+    root->right->right = new Node(7);
+
+    std::cout << "Level Order Traversal in Spiral Form: ";
+    printSpiralLevelOrder(root);
+    std::cout << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Write a program to find out the n-th node of inorder traversal.
+
+ans 10 )
+
+#include <iostream>
+
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+int count = 0;
+
+int findNthNode(Node* root, int n) {
+    if (root == nullptr) {
+        return -1;
+    }
+
+    // Traverse the left subtree
+    int result = findNthNode(root->left, n);
+    if (result != -1) {
+        return result;
+    }
+
+    count++;
+    if (count == n) {
+        return root->data;
+    }
+
+    // Traverse the right subtree
+    return findNthNode(root->right, n);
+}
+
+int main() {
+    // Create a sample Binary Tree
+    Node* root = new Node(4);
+    root->left = new Node(2);
+    root->right = new Node(6);
+    root->left->left = new Node(1);
+    root->left->right = new Node(3);
+    root->right->left = new Node(5);
+    root->right->right = new Node(7);
+
+    int n = 5;
+    int nthNode = findNthNode(root, n);
+
+    if (nthNode != -1) {
+        std::cout << "The " << n << "-th node of the inorder traversal is: " << nthNode << std::endl;
+    } else {
+        std::cout << "The tree does not have " << n << " nodes." << std::endl;
+    }
+
+    return 0;
+}

@@ -1,0 +1,731 @@
+Assignment-62
+Graph
+
+1. Breadth First Search or BFS for a Graph. Output Following is Breadth First Traversal (starting from vertex 2) 2 0 3 1
+
+ans 1)
+
+#include <iostream>
+#include <list>
+#include <queue>
+using namespace std;
+
+class Graph {
+    int numVertices;             // Number of vertices in the graph
+    list<int>* adjacencyList;    // Adjacency list to store the graph
+
+public:
+    Graph(int numVertices) {
+        this->numVertices = numVertices;
+        adjacencyList = new list<int>[numVertices];
+    }
+
+    // Function to add an edge to the graph
+    void addEdge(int src, int dest) {
+        adjacencyList[src].push_back(dest);
+    }
+
+    // Function to perform Breadth First Search
+    void BFS(int startVertex) {
+        // Create a boolean array to keep track of visited vertices
+        bool* visited = new bool[numVertices];
+        for (int i = 0; i < numVertices; i++) {
+            visited[i] = false;
+        }
+
+        // Create a queue for BFS
+        queue<int> queue;
+
+        // Mark the current vertex as visited and enqueue it
+        visited[startVertex] = true;
+        queue.push(startVertex);
+
+        while (!queue.empty()) {
+            // Dequeue a vertex from the queue and print it
+            int currentVertex = queue.front();
+            cout << currentVertex << " ";
+            queue.pop();
+
+            // Get all adjacent vertices of the dequeued vertex
+            // If an adjacent vertex has not been visited, mark it as visited and enqueue it
+            for (auto it = adjacencyList[currentVertex].begin(); it != adjacencyList[currentVertex].end(); ++it) {
+                if (!visited[*it]) {
+                    visited[*it] = true;
+                    queue.push(*it);
+                }
+            }
+        }
+
+        // Clean up the memory
+        delete[] visited;
+    }
+};
+
+int main() {
+    // Create a graph
+    Graph graph(4);
+
+    // Add edges
+    graph.addEdge(2, 0);
+    graph.addEdge(0, 2);
+    graph.addEdge(2, 3);
+    graph.addEdge(3, 2);
+    graph.addEdge(0, 3);
+    graph.addEdge(3, 0);
+    graph.addEdge(1, 3);
+    graph.addEdge(3, 1);
+
+    // Perform BFS starting from vertex 2
+    cout << "Following is Breadth First Traversal (starting from vertex 2): ";
+    graph.BFS(2);
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Given the adjacency list of a bidirectional graph. Your task is to copy/clone the adjacency list for each vertex and return a new list. Example 1: Input: Output:
+0->1 2
+1->4 0 3 2
+2->3 1 4
+3->4 1
+4->0
+
+ans 2 )
+
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+using namespace std;
+
+// Function to clone the adjacency list of a bidirectional graph
+unordered_map<int, vector<int>> cloneGraph(const unordered_map<int, vector<int>>& graph) {
+    unordered_map<int, vector<int>> clonedGraph;
+
+    // Iterate over each vertex in the original graph
+    for (const auto& entry : graph) {
+        int vertex = entry.first;
+        const vector<int>& adjacentVertices = entry.second;
+
+        // Create a new vector and copy the adjacent vertices
+        vector<int> clonedAdjacentVertices(adjacentVertices.begin(), adjacentVertices.end());
+
+        // Add the cloned vertex and its adjacent vertices to the cloned graph
+        clonedGraph[vertex] = clonedAdjacentVertices;
+    }
+
+    return clonedGraph;
+}
+
+int main() {
+    unordered_map<int, vector<int>> originalGraph;
+    originalGraph[0] = {1, 2};
+    originalGraph[1] = {4, 0, 3, 2};
+    originalGraph[2] = {3, 1, 4};
+    originalGraph[3] = {4, 1};
+    originalGraph[4] = {0};
+
+    unordered_map<int, vector<int>> clonedGraph = cloneGraph(originalGraph);
+
+    // Print the cloned graph
+    for (const auto& entry : clonedGraph) {
+        int vertex = entry.first;
+        const vector<int>& adjacentVertices = entry.second;
+
+        cout << vertex << "->";
+        for (int adjacentVertex : adjacentVertices) {
+            cout << adjacentVertex << " ";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Given a binary 2D matrix, find the number of islands. A group of connected 1s forms an island. For example, the below matrix contains 5 islands.
+
+Example: Input: mat[][] = {{1, 1, 0, 0, 0},
+{0, 1, 0, 0, 1},
+{1, 0, 0, 1, 1},
+{0, 0, 0, 0, 0},
+{1, 0, 1, 0, 0}}
+Output: 5
+
+ans 3 )
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// Recursive function to perform DFS on the matrix
+void DFS(vector<vector<int>>& matrix, int row, int col, int numRows, int numCols) {
+    // Base cases
+    if (row < 0 || row >= numRows || col < 0 || col >= numCols || matrix[row][col] != 1) {
+        return;
+    }
+
+    // Mark the current cell as visited
+    matrix[row][col] = -1;
+
+    // Recursively perform DFS on all 8 adjacent cells
+    DFS(matrix, row - 1, col - 1, numRows, numCols);
+    DFS(matrix, row - 1, col, numRows, numCols);
+    DFS(matrix, row - 1, col + 1, numRows, numCols);
+    DFS(matrix, row, col - 1, numRows, numCols);
+    DFS(matrix, row, col + 1, numRows, numCols);
+    DFS(matrix, row + 1, col - 1, numRows, numCols);
+    DFS(matrix, row + 1, col, numRows, numCols);
+    DFS(matrix, row + 1, col + 1, numRows, numCols);
+}
+
+// Function to find the number of islands in the matrix
+int findNumIslands(vector<vector<int>>& matrix) {
+    int numRows = matrix.size();
+    int numCols = matrix[0].size();
+    int numIslands = 0;
+
+    // Traverse the matrix
+    for (int i = 0; i < numRows; i++) {
+        for (int j = 0; j < numCols; j++) {
+            // If a cell is unvisited and contains a '1', perform DFS
+            if (matrix[i][j] == 1) {
+                DFS(matrix, i, j, numRows, numCols);
+                numIslands++;
+            }
+        }
+    }
+
+    return numIslands;
+}
+
+int main() {
+    vector<vector<int>> matrix = {
+        {1, 1, 0, 0, 0},
+        {0, 1, 0, 0, 1},
+        {1, 0, 0, 1, 1},
+        {0, 0, 0, 0, 0},
+        {1, 0, 1, 0, 0}
+    };
+
+    int numIslands = findNumIslands(matrix);
+    cout << "Number of islands: " << numIslands << endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Given an undirected graph, The task is to check if there is a cycle in the given graph.
+
+Example: Input: N = 4, E = 4
+Detect cycle in an undirected graph 1 Output: Yes
+Explanation: The diagram clearly shows a cycle 0 to 2 to 1 to 0 Input: N = 4, E = 3 , 0 1, 1 2, 2 3 Detect cycle in an undirected graph 2
+Output: No Explanation: There is no cycle in the given graph
+
+ans 4 )
+
+#include <iostream>
+#include <vector>
+#include <list>
+using namespace std;
+
+class Graph {
+    int numVertices;             // Number of vertices in the graph
+    list<int>* adjacencyList;    // Adjacency list to store the graph
+
+public:
+    Graph(int numVertices) {
+        this->numVertices = numVertices;
+        adjacencyList = new list<int>[numVertices];
+    }
+
+    // Function to add an edge to the graph
+    void addEdge(int src, int dest) {
+        adjacencyList[src].push_back(dest);
+        adjacencyList[dest].push_back(src);
+    }
+
+    // Helper function for cycle detection using DFS
+    bool isCyclicUtil(int vertex, bool visited[], int parent) {
+        visited[vertex] = true;
+
+        // Recur for all the adjacent vertices
+        for (auto it = adjacencyList[vertex].begin(); it != adjacencyList[vertex].end(); ++it) {
+            if (!visited[*it]) {
+                if (isCyclicUtil(*it, visited, vertex))
+                    return true;
+            }
+            else if (*it != parent)
+                return true;
+        }
+
+        return false;
+    }
+
+    // Function to check if there is a cycle in the graph
+    bool isCyclic() {
+        bool* visited = new bool[numVertices];
+        for (int i = 0; i < numVertices; i++) {
+            visited[i] = false;
+        }
+
+        // Call the helper function for each unvisited vertex
+        for (int i = 0; i < numVertices; i++) {
+            if (!visited[i] && isCyclicUtil(i, visited, -1))
+                return true;
+        }
+
+        return false;
+    }
+};
+
+int main() {
+    int numVertices = 4;
+    int numEdges = 4;
+
+    Graph graph(numVertices);
+
+    // Add edges to the graph
+    graph.addEdge(0, 1);
+    graph.addEdge(1, 2);
+    graph.addEdge(2, 3);
+    graph.addEdge(3, 0);
+
+    bool hasCycle = graph.isCyclic();
+
+    if (hasCycle)
+        cout << "Yes, there is a cycle in the graph" << endl;
+    else
+        cout << "No, there is no cycle in the graph" << endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Find whether it is possible to finish all tasks or not from given dependencies Examples:
+Input: 2, [[1, 0]] Output: true Explanation: There are a total of 2 tasks to pick. To pick task 1 you should have finished task 0. So it is possible. Input: 2, [[1, 0], [0, 1]] Output: false Explanation: There are a total of 2 tasks to pick. To pick task 1 you should have finished task 0, and to pick task 0 you should also have finished task 1. So it is impossible. Input: 3, [[1, 0], [2, 1], [3, 2]] Output: true
+
+Explanation: There are a total of 3 tasks to pick. To pick tasks 1 you should have finished task 0, and to pick task 2 you should have finished task 1 and to pick
+task 3 you should have finished task 2. So it is possible.
+
+ans 5 )
+
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+bool canFinish(int numTasks, vector<pair<int, int>>& prerequisites) {
+    vector<vector<int>> adjList(numTasks, vector<int>());
+    vector<int> inDegree(numTasks, 0);
+
+    // Build the adjacency list and compute the in-degrees
+    for (auto& prerequisite : prerequisites) {
+        int task = prerequisite.first;
+        int dependency = prerequisite.second;
+        adjList[dependency].push_back(task);
+        inDegree[task]++;
+    }
+
+    // Perform topological sorting using Kahn's algorithm
+    queue<int> q;
+    for (int i = 0; i < numTasks; i++) {
+        if (inDegree[i] == 0) {
+            q.push(i);
+        }
+    }
+
+    int numFinishedTasks = 0;
+    while (!q.empty()) {
+        int task = q.front();
+        q.pop();
+        numFinishedTasks++;
+
+        for (int dependentTask : adjList[task]) {
+            inDegree[dependentTask]--;
+            if (inDegree[dependentTask] == 0) {
+                q.push(dependentTask);
+            }
+        }
+    }
+
+    return numFinishedTasks == numTasks;
+}
+
+int main() {
+    int numTasks = 2;
+    vector<pair<int, int>> prerequisites = {{1, 0}};
+
+    bool possible = canFinish(numTasks, prerequisites);
+
+    if (possible)
+        cout << "It is possible to finish all tasks" << endl;
+    else
+        cout << "It is not possible to finish all tasks" << endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Find the ordering of tasks from given dependencies There are a total of n tasks you have to pick, labeled from 0 to n-1. Some tasks may have prerequisites tasks, for example to pick task 0 you have to first finish tasks 1, which is expressed as a pair: [0, 1] Given the total number of tasks and a list of prerequisite pairs, return the ordering of tasks you should pick to finish all tasks. There may be multiple correct orders, you just need to return one of them. If it is impossible to finish all tasks, return an empty array. Examples:
+Input: 2, [[1, 0]] Output: [0, 1]
+Explanation: There are a total of 2 tasks to pick. To pick task 1 you should have finished task 0. So the correct task order is [0, 1] .
+Input: 4, [[1, 0], [2, 0], [3, 1], [3, 2]] Output: [0, 1, 2, 3] or [0, 2, 1, 3]
+Explanation: There are a total of 4 tasks to pick. To pick task 3 you should have finished both tasks 1 and 2. Both tasks 1 and 2 should be pick after you finished
+task 0. So one correct task order is [0, 1, 2, 3]. Another correct ordering is [0, 2, 1, 3].
+
+ans 6 )
+
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+vector<int> findOrder(int numTasks, vector<pair<int, int>>& prerequisites) {
+    vector<vector<int>> adjList(numTasks, vector<int>());
+    vector<int> inDegree(numTasks, 0);
+
+    // Build the adjacency list and compute the in-degrees
+    for (auto& prerequisite : prerequisites) {
+        int task = prerequisite.first;
+        int dependency = prerequisite.second;
+        adjList[dependency].push_back(task);
+        inDegree[task]++;
+    }
+
+    // Perform topological sorting using Kahn's algorithm
+    queue<int> q;
+    for (int i = 0; i < numTasks; i++) {
+        if (inDegree[i] == 0) {
+            q.push(i);
+        }
+    }
+
+    vector<int> taskOrder;
+    while (!q.empty()) {
+        int task = q.front();
+        q.pop();
+        taskOrder.push_back(task);
+
+        for (int dependentTask : adjList[task]) {
+            inDegree[dependentTask]--;
+            if (inDegree[dependentTask] == 0) {
+                q.push(dependentTask);
+            }
+        }
+    }
+
+    if (taskOrder.size() != numTasks) {
+        // Not all tasks can be finished, return an empty array
+        return {};
+    }
+
+    return taskOrder;
+}
+
+int main() {
+    int numTasks = 4;
+    vector<pair<int, int>> prerequisites = {{1, 0}, {2, 0}, {3, 1}, {3, 2}};
+
+    vector<int> taskOrder = findOrder(numTasks, prerequisites);
+
+    if (taskOrder.empty()) {
+        cout << "It is not possible to finish all tasks" << endl;
+    } else {
+        cout << "Task order: ";
+        for (int task : taskOrder) {
+            cout << task << " ";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Given a snake and ladder board, find the minimum number of dice throws required to reach the destination or last cell from the source or 1st cell. Basically, the player has total
+control over the outcome of the dice throw and wants to find out the minimum number of throws required to reach the last cell. If the player reaches a cell which is the base of a ladder, the player has to climb up that ladder and if reaches a cell is the mouth of the snake, and has to go down to the tail of the snake without a dice throw.
+
+ans 7 )
+
+#include <iostream>
+#include <queue>
+#include <vector>
+using namespace std;
+
+int minimumDiceThrows(vector<int>& board) {
+    int N = board.size();
+
+    vector<bool> visited(N, false);
+    queue<pair<int, int>> q;  // Queue to store the cell and its corresponding dice throw count
+    q.push(make_pair(0, 0));  // Start from the first cell with dice throw count 0
+    visited[0] = true;
+
+    while (!q.empty()) {
+        pair<int, int> curr = q.front();
+        q.pop();
+
+        int cell = curr.first;
+        int diceThrows = curr.second;
+
+        if (cell == N - 1) {
+            // Reached the last cell, return the dice throw count
+            return diceThrows;
+        }
+
+        // Explore the next 6 possible cells from the current cell
+        for (int i = 1; i <= 6; i++) {
+            int nextCell = cell + i;
+
+            if (nextCell < N && !visited[nextCell]) {
+                visited[nextCell] = true;
+
+                if (board[nextCell] != -1) {
+                    // If the next cell has a snake or ladder, move to its corresponding cell without a dice throw
+                    q.push(make_pair(board[nextCell], diceThrows + 1));
+                } else {
+                    // Otherwise, move to the next cell with an increment in the dice throw count
+                    q.push(make_pair(nextCell, diceThrows + 1));
+                }
+            }
+        }
+    }
+
+    // If the last cell cannot be reached, return -1
+    return -1;
+}
+
+int main() {
+    int N = 30;  // Total number of cells in the board
+    vector<int> board(N, -1);  // Initialize the board with -1 indicating no snake or ladder
+
+    // Add snakes and ladders to the board
+    board[2] = 21;
+    board[4] = 7;
+    board[10] = 25;
+    board[19] = 28;
+    board[26] = 0;
+    board[20] = 8;
+    board[16] = 3;
+    board[18] = 6;
+
+    int minThrows = minimumDiceThrows(board);
+
+    if (minThrows == -1) {
+        cout << "It is not possible to reach the last cell." << endl;
+    } else {
+        cout << "Minimum number of dice throws required: " << minThrows << endl;
+    }
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Count the total number of ways or paths that exist between two vertices in a directed graph. These paths don’t contain a cycle, the simple enough reason is that a cycle contains an
+infinite number of paths and hence they create a problem. Input: Count paths between A and E Output: Total paths between A and E are 4 Explanation: The 4 paths between A and E are:
+A -> E
+A -> B -> E
+A -> C -> E
+A -> B -> D -> C -> E
+Input: Count paths between A and C Output: Total paths between A and C are 2
+Explanation: The 2 paths between A and C are:
+A -> C
+A -> B -> D -> C
+
+ans 8 )
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Graph {
+    int V;              // Number of vertices
+    vector<vector<int>> adjList;
+
+public:
+    Graph(int vertices) {
+        V = vertices;
+        adjList.resize(V);
+    }
+
+    // Function to add an edge between two vertices
+    void addEdge(int u, int v) {
+        adjList[u].push_back(v);
+    }
+
+    // Recursive function to perform DFS and count paths between source and destination
+    int countPathsUtil(int src, int dest, vector<bool>& visited) {
+        if (src == dest) {
+            // Reached the destination, increment the path count
+            return 1;
+        }
+
+        int count = 0;
+        visited[src] = true;
+
+        for (int neighbor : adjList[src]) {
+            if (!visited[neighbor]) {
+                count += countPathsUtil(neighbor, dest, visited);
+            }
+        }
+
+        visited[src] = false;  // Mark the current vertex as unvisited for other paths
+        return count;
+    }
+
+    // Function to count paths between source and destination vertices
+    int countPaths(int src, int dest) {
+        vector<bool> visited(V, false);  // Initialize all vertices as unvisited
+        return countPathsUtil(src, dest, visited);
+    }
+};
+
+int main() {
+    int V = 5;  // Number of vertices
+    Graph graph(V);
+
+    // Add edges between vertices
+    graph.addEdge(0, 4);
+    graph.addEdge(0, 1);
+    graph.addEdge(1, 4);
+    graph.addEdge(1, 3);
+    graph.addEdge(1, 2);
+    graph.addEdge(2, 3);
+
+    int src = 0;
+    int dest = 4;
+    int count = graph.countPaths(src, dest);
+
+    cout << "Total paths between " << char(src + 'A') << " and " << char(dest + 'A') << " are: " << count << endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Write a function to find a mother vertex in the graph. What is a Mother Vertex? A mother vertex in a graph G = (V, E) is a vertex v such that all other vertices in G can
+be reached by a path from v
+
+ans 9 )
+
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <algorithm>
+using namespace std;
+
+class Graph {
+    int V;              // Number of vertices
+    vector<vector<int>> adjList;
+
+public:
+    Graph(int vertices) {
+        V = vertices;
+        adjList.resize(V);
+    }
+
+    // Function to add an edge between two vertices
+    void addEdge(int u, int v) {
+        adjList[u].push_back(v);
+    }
+
+    // Recursive function to perform DFS traversal
+    void DFSUtil(int v, vector<bool>& visited) {
+        visited[v] = true;
+
+        for (int neighbor : adjList[v]) {
+            if (!visited[neighbor]) {
+                DFSUtil(neighbor, visited);
+            }
+        }
+    }
+
+    // Function to find a mother vertex in the graph
+    int findMotherVertex() {
+        vector<bool> visited(V, false);
+        int lastVisited = -1;
+
+        // Perform DFS traversal to find the last visited vertex
+        for (int v = 0; v < V; v++) {
+            if (!visited[v]) {
+                DFSUtil(v, visited);
+                lastVisited = v;
+            }
+        }
+
+        // Reset visited array and perform DFS from the last visited vertex
+        fill(visited.begin(), visited.end(), false);
+        DFSUtil(lastVisited, visited);
+
+        // Check if the last visited vertex is a mother vertex
+        for (int v = 0; v < V; v++) {
+            if (!visited[v]) {
+                return -1;  // No mother vertex found
+            }
+        }
+
+        return lastVisited;  // Return the last visited vertex as the mother vertex
+    }
+};
+
+int main() {
+    int V = 7;  // Number of vertices
+    Graph graph(V);
+
+    // Add edges between vertices
+    graph.addEdge(0, 1);
+    graph.addEdge(0, 2);
+    graph.addEdge(1, 3);
+    graph.addEdge(4, 1);
+    graph.addEdge(6, 4);
+    graph.addEdge(5, 6);
+    graph.addEdge(5, 2);
+    graph.addEdge(6, 0);
+
+    int motherVertex = graph.findMotherVertex();
+
+    if (motherVertex != -1) {
+        cout << "Mother vertex found: " << motherVertex << endl;
+    } else {
+        cout << "No mother vertex found" << endl;
+    }
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Given n and k, construct a palindrome of size n using a binary number of size k repeating itself to wrap into the palindrome. The palindrome must always begin with 1 and
+contains maximum number of zeros. Examples :
+Input : n = 5, k = 3
+Output : 11011
+Explanation : the 3 sized substring is 110 combined twice and trimming the extra 0 in the end to give 11011.
+
+ans 10 )
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+string constructPalindrome(int n, int k) {
+    string binary = to_string(k);
+    string palindrome = "1" + binary.substr(0, k - 1);
+
+    while (palindrome.length() < n) {
+        palindrome += binary;
+    }
+
+    if (palindrome.length() > n) {
+        palindrome = palindrome.substr(0, n);
+    }
+
+    return palindrome;
+}
+
+int main() {
+    int n = 5;  // Size of the palindrome
+    int k = 3;  // Size of the binary number
+
+    string palindrome = constructPalindrome(n, k);
+
+    cout << "Palindrome: " << palindrome << endl;
+
+    return 0;
+}

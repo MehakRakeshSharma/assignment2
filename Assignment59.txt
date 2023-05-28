@@ -1,0 +1,1102 @@
+Assignment-59 : A Job Ready Bootcamp in C++, DSA and IOT
+
+Queue
+1. Create a Queue using Array or Dynamic Array.
+
+ans 1 )
+
+#include <iostream>
+
+class Queue {
+private:
+    int* arr;  // Dynamic array to store queue elements
+    int front;  // Index of the front element
+    int rear;  // Index of the rear element
+    int capacity;  // Maximum capacity of the queue
+    int size;  // Current size of the queue
+
+public:
+    Queue(int maxCapacity) {
+        capacity = maxCapacity;
+        arr = new int[capacity];
+        front = 0;
+        rear = -1;
+        size = 0;
+    }
+
+    ~Queue() {
+        delete[] arr;
+    }
+
+    bool isEmpty() {
+        return size == 0;
+    }
+
+    bool isFull() {
+        return size == capacity;
+    }
+
+    void enqueue(int data) {
+        if (isFull()) {
+            std::cout << "Queue is full. Cannot enqueue." << std::endl;
+            return;
+        }
+
+        rear = (rear + 1) % capacity;  // Circularly increment rear index
+        arr[rear] = data;  // Add element at the rear
+        size++;
+        std::cout << "Enqueued: " << data << std::endl;
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            std::cout << "Queue is empty. Cannot dequeue." << std::endl;
+            return;
+        }
+
+        int dequeuedData = arr[front];  // Get the front element
+        front = (front + 1) % capacity;  // Circularly increment front index
+        size--;
+        std::cout << "Dequeued: " << dequeuedData << std::endl;
+    }
+
+    void displayQueue() {
+        if (isEmpty()) {
+            std::cout << "Queue is empty." << std::endl;
+            return;
+        }
+
+        std::cout << "Queue: ";
+        int count = 0;
+        int index = front;
+
+        while (count < size) {
+            std::cout << arr[index] << " ";
+            index = (index + 1) % capacity;  // Circularly move to the next index
+            count++;
+        }
+
+        std::cout << std::endl;
+    }
+};
+
+int main() {
+    Queue queue(5);
+
+    queue.enqueue(1);
+    queue.enqueue(2);
+    queue.enqueue(3);
+    queue.enqueue(4);
+    queue.enqueue(5);
+    queue.enqueue(6);  // Trying to enqueue when the queue is full
+
+    queue.displayQueue();
+
+    queue.dequeue();
+    queue.dequeue();
+    queue.dequeue();
+
+    queue.displayQueue();
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Create a Queue using a linked list.
+
+ans 2 )
+
+#include <iostream>
+
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+class Queue {
+private:
+    Node* front;  // Pointer to the front of the queue
+    Node* rear;  // Pointer to the rear of the queue
+
+public:
+    Queue() {
+        front = nullptr;
+        rear = nullptr;
+    }
+
+    ~Queue() {
+        // Free memory by deleting all nodes
+        while (!isEmpty()) {
+            dequeue();
+        }
+    }
+
+    bool isEmpty() {
+        return front == nullptr;
+    }
+
+    void enqueue(int data) {
+        Node* newNode = new Node(data);
+
+        if (isEmpty()) {
+            front = newNode;
+            rear = newNode;
+        } else {
+            rear->next = newNode;
+            rear = newNode;
+        }
+
+        std::cout << "Enqueued: " << data << std::endl;
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            std::cout << "Queue is empty. Cannot dequeue." << std::endl;
+            return;
+        }
+
+        Node* dequeuedNode = front;
+        int dequeuedData = dequeuedNode->data;
+        front = front->next;
+
+        if (front == nullptr) {
+            rear = nullptr;
+        }
+
+        delete dequeuedNode;
+        std::cout << "Dequeued: " << dequeuedData << std::endl;
+    }
+
+    void displayQueue() {
+        if (isEmpty()) {
+            std::cout << "Queue is empty." << std::endl;
+            return;
+        }
+
+        std::cout << "Queue: ";
+        Node* current = front;
+
+        while (current != nullptr) {
+            std::cout << current->data << " ";
+            current = current->next;
+        }
+
+        std::cout << std::endl;
+    }
+};
+
+int main() {
+    Queue queue;
+
+    queue.enqueue(1);
+    queue.enqueue(2);
+    queue.enqueue(3);
+    queue.displayQueue();
+
+    queue.dequeue();
+    queue.displayQueue();
+
+    queue.enqueue(4);
+    queue.enqueue(5);
+    queue.displayQueue();
+
+    queue.dequeue();
+    queue.dequeue();
+    queue.dequeue();
+    queue.displayQueue();
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Efficiently implement k Queues in a single array.
+
+ans 3 )
+
+#include <iostream>
+#include <vector>
+
+class KQueues {
+private:
+    int* arr;               // Array to store elements
+    int* front;             // Array to store the front index of each queue
+    int* rear;              // Array to store the rear index of each queue
+    int* next;              // Array to store the next available index
+    int free;               // Index of the first free slot in the array
+    int k;                  // Number of queues
+    int n;                  // Total size of the array
+
+public:
+    KQueues(int numQueues, int arraySize) {
+        k = numQueues;
+        n = arraySize;
+
+        arr = new int[n];
+        front = new int[k];
+        rear = new int[k];
+        next = new int[n];
+
+        // Initialize front and rear indices for each queue
+        for (int i = 0; i < k; i++) {
+            front[i] = -1;
+            rear[i] = -1;
+        }
+
+        // Initialize next indices to link all slots in the array
+        for (int i = 0; i < n - 1; i++) {
+            next[i] = i + 1;
+        }
+        next[n - 1] = -1;  // Last slot points to -1, indicating no next slot available
+
+        free = 0;  // Start with the first slot as the free slot
+    }
+
+    ~KQueues() {
+        delete[] arr;
+        delete[] front;
+        delete[] rear;
+        delete[] next;
+    }
+
+    bool isFull(int queueNumber) {
+        return free == -1;  // No free slots available in the array
+    }
+
+    bool isEmpty(int queueNumber) {
+        return front[queueNumber] == -1;
+    }
+
+    void enqueue(int data, int queueNumber) {
+        if (isFull(queueNumber)) {
+            std::cout << "Queue " << queueNumber << " is full. Cannot enqueue." << std::endl;
+            return;
+        }
+
+        int insertIndex = free;  // Index to insert the new element
+        free = next[insertIndex];  // Update free slot index
+
+        // If the queue is empty, update both front and rear indices
+        if (isEmpty(queueNumber)) {
+            front[queueNumber] = insertIndex;
+            rear[queueNumber] = insertIndex;
+        } else {
+            next[rear[queueNumber]] = insertIndex;  // Link the previous rear to the new rear
+            rear[queueNumber] = insertIndex;         // Update the rear index
+        }
+
+        arr[insertIndex] = data;  // Insert the element into the array
+        next[insertIndex] = -1;   // Set the next index of the inserted element to -1
+
+        std::cout << "Enqueued " << data << " to Queue " << queueNumber << std::endl;
+    }
+
+    void dequeue(int queueNumber) {
+        if (isEmpty(queueNumber)) {
+            std::cout << "Queue " << queueNumber << " is empty. Cannot dequeue." << std::endl;
+            return;
+        }
+
+        int removeIndex = front[queueNumber];  // Index of the element to remove
+
+        // Update the front index to the next element in the queue
+        front[queueNumber] = next[removeIndex];
+
+        // If the queue becomes empty after dequeue, update the rear index as well
+        if (front[queueNumber] == -1) {
+            rear[queueNumber] = -1;
+        }
+
+        // Make the removed slot as the new free slot
+        next[removeIndex] = free;
+        free = removeIndex;
+
+        std::cout << "Dequeued " << arr[removeIndex] << " from Queue " << queueNumber << std::endl;
+    }
+
+    void displayQueue(int queueNumber) {
+        if (isEmpty(queueNumber)) {
+            std::cout << "Queue " << queueNumber << " is empty." << std::endl;
+            return;
+        }
+
+        std::cout << "Queue " << queueNumber << ": ";
+
+        int current = front[queueNumber];
+        while (current != -1) {
+            std::cout << arr[current] << " ";
+            current = next[current];
+        }
+
+        std::cout << std::endl;
+    }
+};
+
+int main() {
+    int numQueues = 3;
+    int arraySize = 10;
+    KQueues kQueues(numQueues, arraySize);
+
+    kQueues.enqueue(1, 0);
+    kQueues.enqueue(2, 0);
+    kQueues.enqueue(3, 1);
+    kQueues.enqueue(4, 1);
+    kQueues.enqueue(5, 2);
+
+    kQueues.displayQueue(0);
+    kQueues.displayQueue(1);
+    kQueues.displayQueue(2);
+
+    kQueues.dequeue(0);
+    kQueues.dequeue(1);
+
+    kQueues.displayQueue(0);
+    kQueues.displayQueue(1);
+    kQueues.displayQueue(2);
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Implement Priority Queue using Linked Lists.
+
+ans 4 )
+
+#include <iostream>
+
+class Node {
+public:
+    int data;
+    int priority;
+    Node* next;
+
+    Node(int value, int p) {
+        data = value;
+        priority = p;
+        next = nullptr;
+    }
+};
+
+class PriorityQueue {
+private:
+    Node* front;
+
+public:
+    PriorityQueue() {
+        front = nullptr;
+    }
+
+    ~PriorityQueue() {
+        // Free memory by deleting all nodes
+        while (front != nullptr) {
+            Node* current = front;
+            front = front->next;
+            delete current;
+        }
+    }
+
+    bool isEmpty() {
+        return front == nullptr;
+    }
+
+    void enqueue(int data, int priority) {
+        Node* newNode = new Node(data, priority);
+
+        // If the queue is empty or the new node has higher priority than the front node,
+        // insert the new node at the front.
+        if (isEmpty() || priority < front->priority) {
+            newNode->next = front;
+            front = newNode;
+        } else {
+            Node* current = front;
+
+            // Find the appropriate position to insert the new node based on priority
+            while (current->next != nullptr && current->next->priority <= priority) {
+                current = current->next;
+            }
+
+            newNode->next = current->next;
+            current->next = newNode;
+        }
+
+        std::cout << "Enqueued " << data << " with priority " << priority << std::endl;
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            std::cout << "Priority Queue is empty. Cannot dequeue." << std::endl;
+            return;
+        }
+
+        Node* dequeuedNode = front;
+        int dequeuedData = dequeuedNode->data;
+        front = front->next;
+
+        delete dequeuedNode;
+        std::cout << "Dequeued " << dequeuedData << std::endl;
+    }
+
+    void displayQueue() {
+        if (isEmpty()) {
+            std::cout << "Priority Queue is empty." << std::endl;
+            return;
+        }
+
+        std::cout << "Priority Queue: ";
+        Node* current = front;
+
+        while (current != nullptr) {
+            std::cout << current->data << "(" << current->priority << ") ";
+            current = current->next;
+        }
+
+        std::cout << std::endl;
+    }
+};
+
+int main() {
+    PriorityQueue queue;
+
+    queue.enqueue(10, 3);
+    queue.enqueue(20, 2);
+    queue.enqueue(30, 1);
+    queue.enqueue(40, 4);
+
+    queue.displayQueue();
+
+    queue.dequeue();
+    queue.dequeue();
+
+    queue.displayQueue();
+
+    queue.enqueue(50, 1);
+    queue.enqueue(60, 3);
+
+    queue.displayQueue();
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Given Nodes with their priority, implement a priority queue using a doubly linked list.
+
+ans 5 )
+
+#include <iostream>
+
+class Node {
+public:
+    int data;
+    int priority;
+    Node* prev;
+    Node* next;
+
+    Node(int value, int p) {
+        data = value;
+        priority = p;
+        prev = nullptr;
+        next = nullptr;
+    }
+};
+
+class PriorityQueue {
+private:
+    Node* front;
+    Node* rear;
+
+public:
+    PriorityQueue() {
+        front = nullptr;
+        rear = nullptr;
+    }
+
+    ~PriorityQueue() {
+        // Free memory by deleting all nodes
+        while (front != nullptr) {
+            Node* current = front;
+            front = front->next;
+            delete current;
+        }
+    }
+
+    bool isEmpty() {
+        return front == nullptr;
+    }
+
+    void enqueue(int data, int priority) {
+        Node* newNode = new Node(data, priority);
+
+        // If the queue is empty, insert the new node as the front and rear
+        if (isEmpty()) {
+            front = newNode;
+            rear = newNode;
+        } else {
+            Node* current = front;
+
+            // Find the appropriate position to insert the new node based on priority
+            while (current != nullptr && current->priority <= priority) {
+                current = current->next;
+            }
+
+            // Update the links of the new node and its adjacent nodes
+            if (current == nullptr) {
+                // Insert at the end of the queue
+                newNode->prev = rear;
+                rear->next = newNode;
+                rear = newNode;
+            } else if (current == front) {
+                // Insert at the front of the queue
+                newNode->next = front;
+                front->prev = newNode;
+                front = newNode;
+            } else {
+                // Insert in the middle of the queue
+                newNode->prev = current->prev;
+                newNode->next = current;
+                current->prev->next = newNode;
+                current->prev = newNode;
+            }
+        }
+
+        std::cout << "Enqueued " << data << " with priority " << priority << std::endl;
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            std::cout << "Priority Queue is empty. Cannot dequeue." << std::endl;
+            return;
+        }
+
+        Node* dequeuedNode = front;
+        int dequeuedData = dequeuedNode->data;
+
+        if (front == rear) {
+            // If there is only one node in the queue
+            front = nullptr;
+            rear = nullptr;
+        } else {
+            front = front->next;
+            front->prev = nullptr;
+        }
+
+        delete dequeuedNode;
+        std::cout << "Dequeued " << dequeuedData << std::endl;
+    }
+
+    void displayQueue() {
+        if (isEmpty()) {
+            std::cout << "Priority Queue is empty." << std::endl;
+            return;
+        }
+
+        std::cout << "Priority Queue: ";
+        Node* current = front;
+
+        while (current != nullptr) {
+            std::cout << current->data << "(" << current->priority << ") ";
+            current = current->next;
+        }
+
+        std::cout << std::endl;
+    }
+};
+
+int main() {
+    PriorityQueue queue;
+
+    queue.enqueue(10, 3);
+    queue.enqueue(20, 2);
+    queue.enqueue(30, 1);
+    queue.enqueue(40, 4);
+
+    queue.displayQueue();
+
+    queue.dequeue();
+    queue.dequeue();
+
+    queue.displayQueue();
+
+    queue.enqueue(50, 1);
+    queue.enqueue(60, 3);
+
+    queue.displayQueue();
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Implementation of Deque using doubly linked list (7,8,9 You can also use STL for this problems )
+
+ans 6 )
+
+#include <iostream>
+
+class Node {
+public:
+    int data;
+    Node* prev;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        prev = nullptr;
+        next = nullptr;
+    }
+};
+
+class Deque {
+private:
+    Node* front;
+    Node* rear;
+
+public:
+    Deque() {
+        front = nullptr;
+        rear = nullptr;
+    }
+
+    ~Deque() {
+        // Free memory by deleting all nodes
+        while (front != nullptr) {
+            Node* current = front;
+            front = front->next;
+            delete current;
+        }
+    }
+
+    bool isEmpty() {
+        return front == nullptr;
+    }
+
+    void pushFront(int data) {
+        Node* newNode = new Node(data);
+
+        if (isEmpty()) {
+            front = newNode;
+            rear = newNode;
+        } else {
+            newNode->next = front;
+            front->prev = newNode;
+            front = newNode;
+        }
+
+        std::cout << "Pushed " << data << " to the front of the Deque." << std::endl;
+    }
+
+    void pushRear(int data) {
+        Node* newNode = new Node(data);
+
+        if (isEmpty()) {
+            front = newNode;
+            rear = newNode;
+        } else {
+            newNode->prev = rear;
+            rear->next = newNode;
+            rear = newNode;
+        }
+
+        std::cout << "Pushed " << data << " to the rear of the Deque." << std::endl;
+    }
+
+    void popFront() {
+        if (isEmpty()) {
+            std::cout << "Deque is empty. Cannot perform popFront." << std::endl;
+            return;
+        }
+
+        Node* poppedNode = front;
+        int poppedData = poppedNode->data;
+
+        if (front == rear) {
+            front = nullptr;
+            rear = nullptr;
+        } else {
+            front = front->next;
+            front->prev = nullptr;
+        }
+
+        delete poppedNode;
+        std::cout << "Popped " << poppedData << " from the front of the Deque." << std::endl;
+    }
+
+    void popRear() {
+        if (isEmpty()) {
+            std::cout << "Deque is empty. Cannot perform popRear." << std::endl;
+            return;
+        }
+
+        Node* poppedNode = rear;
+        int poppedData = poppedNode->data;
+
+        if (front == rear) {
+            front = nullptr;
+            rear = nullptr;
+        } else {
+            rear = rear->prev;
+            rear->next = nullptr;
+        }
+
+        delete poppedNode;
+        std::cout << "Popped " << poppedData << " from the rear of the Deque." << std::endl;
+    }
+
+    void displayDeque() {
+        if (isEmpty()) {
+            std::cout << "Deque is empty." << std::endl;
+            return;
+        }
+
+        std::cout << "Deque: ";
+        Node* current = front;
+
+        while (current != nullptr) {
+            std::cout << current->data << " ";
+            current = current->next;
+        }
+
+        std::cout << std::endl;
+    }
+};
+
+int main() {
+    Deque deque;
+
+    deque.pushFront(10);
+    deque.pushFront(20);
+    deque.pushRear(30);
+    deque.pushRear(40);
+
+    deque.displayDeque();
+
+    deque.popFront();
+    deque.popRear();
+
+    deque.displayDeque();
+
+    deque.pushFront(50);
+    deque.pushRear(60);
+
+    deque.displayDeque();
+
+    return 0
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Give an algorithm for reversing a queue Q. Only the following standard operations are  allowed on queue.
+a. enqueue(x): Add an item x to the rear of the queue.
+b. dequeue(): Remove an item from the front of the queue.
+c. empty(): Checks if a queue is empty or not.
+
+ans 7 )
+
+#include <iostream>
+#include <queue>
+#include <stack>
+
+void reverseQueue(std::queue<int>& q) {
+    std::stack<int> s;
+
+    // Dequeue all elements from the queue and push them onto the stack
+    while (!q.empty()) {
+        int front = q.front();
+        q.pop();
+        s.push(front);
+    }
+
+    // Pop each element from the stack and enqueue it back into the queue
+    while (!s.empty()) {
+        int top = s.top();
+        s.pop();
+        q.push(top);
+    }
+}
+
+int main() {
+    std::queue<int> q;
+
+    q.push(10);
+    q.push(20);
+    q.push(30);
+    q.push(40);
+
+    std::cout << "Original Queue: ";
+    while (!q.empty()) {
+        std::cout << q.front() << " ";
+        q.pop();
+    }
+    std::cout << std::endl;
+
+    q.push(10);
+    q.push(20);
+    q.push(30);
+    q.push(40);
+
+    reverseQueue(q);
+
+    std::cout << "Reversed Queue: ";
+    while (!q.empty()) {
+        std::cout << q.front() << " ";
+        q.pop();
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Given an integer k and a queue of integers, The task is to reverse the order of thefirst k elements of the queue, leaving the other elements in the same relative order.
+Only following standard operations are allowed on queue.
+a. enqueue(x) : Add an item x to rear of queue
+b. dequeue() : Remove an item from front of queue
+c. size() : Returns the number of elements in the queue.
+d. front() : Finds front item.
+
+ans 8 )
+
+#include <iostream>
+#include <queue>
+#include <stack>
+
+void reverseFirstKElements(std::queue<int>& q, int k) {
+    if (k <= 0 || k > q.size()) {
+        std::cout << "Invalid value of k." << std::endl;
+        return;
+    }
+
+    std::stack<int> s;
+
+    // Dequeue the first k elements from the queue and push them onto the stack
+    for (int i = 0; i < k; i++) {
+        int front = q.front();
+        q.pop();
+        s.push(front);
+    }
+
+    // Pop each element from the stack and enqueue it back into the queue
+    while (!s.empty()) {
+        int top = s.top();
+        s.pop();
+        q.push(top);
+    }
+
+    // Enqueue the remaining elements from the original queue back into the queue
+    for (int i = 0; i < q.size() - k; i++) {
+        int front = q.front();
+        q.pop();
+        q.push(front);
+    }
+}
+
+int main() {
+    std::queue<int> q;
+
+    q.push(10);
+    q.push(20);
+    q.push(30);
+    q.push(40);
+    q.push(50);
+    q.push(60);
+
+    int k = 4;
+
+    std::cout << "Original Queue: ";
+    while (!q.empty()) {
+        std::cout << q.front() << " ";
+        q.pop();
+    }
+    std::cout << std::endl;
+
+    q.push(10);
+    q.push(20);
+    q.push(30);
+    q.push(40);
+    q.push(50);
+    q.push(60);
+
+    reverseFirstKElements(q, k);
+
+    std::cout << "Queue after reversing first " << k << " elements: ";
+    while (!q.empty()) {
+        std::cout << q.front() << " ";
+        q.pop();
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Given a queue with random elements, we need to sort it. We are not allowed to useextra space. The operations allowed on queue are :
+a. enqueue(x) : Add an item x to rear of queue
+b. dequeue() : Remove an item from front of queue
+c. isEmpty() : check if a queue is empty.
+
+ans 9) 
+
+#include <iostream>
+#include <queue>
+
+void sortQueue(std::queue<int>& q) {
+    int n = q.size();
+
+    for (int i = 0; i < n; i++) {
+        int minIndex = i;
+        int minValue = q.front();
+
+        // Find the minimum element in the remaining unsorted part of the queue
+        for (int j = i + 1; j < n; j++) {
+            int current = q.front();
+            q.pop();
+
+            if (current < minValue) {
+                minValue = current;
+                minIndex = j;
+            }
+
+            q.push(current);
+        }
+
+        // Dequeue elements and enqueue them back into the queue, except for the minimum element
+        for (int j = 0; j < n; j++) {
+            int current = q.front();
+            q.pop();
+
+            if (j != minIndex) {
+                q.push(current);
+            }
+        }
+
+        // Enqueue the minimum element to the rear of the queue
+        q.push(minValue);
+    }
+}
+
+int main() {
+    std::queue<int> q;
+
+    q.push(5);
+    q.push(2);
+    q.push(9);
+    q.push(1);
+    q.push(7);
+
+    std::cout << "Original Queue: ";
+    while (!q.empty()) {
+        std::cout << q.front() << " ";
+        q.pop();
+    }
+    std::cout << std::endl;
+
+    q.push(5);
+    q.push(2);
+    q.push(9);
+    q.push(1);
+    q.push(7);
+
+    sortQueue(q);
+
+    std::cout << "Sorted Queue: ";
+    while (!q.empty()) {
+        std::cout << q.front() << " ";
+        q.pop();
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. There are given N ropes of different lengths, we need to connect these ropes into
+one rope. The cost to connect two ropes is equal to the sum of their lengths. The task
+is to connect the ropes with minimum cost. Given N size array arr[] contains the
+lengths of the ropes.
+Example 1:
+Input:
+n = 4
+arr[] = {4, 3, 2, 6}
+Output:
+29
+Explanation:
+We can connect the ropes in following ways.
+1) First connect ropes of lengths 2 and 3. Which makes the array {4, 5, 6}.
+Cost of
+this operation 2+3 = 5.
+2) Now connect ropes of lengths 4 and 5. Which makes the array {9, 6}. Cost
+of
+this operation 4+5 = 9.
+
+3) Finally connect the two ropes and all ropes have connected. Cost of this
+operation 9+6 =15
+Total cost for connecting all ropes is 5 + 9 + 15 = 29. This is the optimized
+cost for connecting ropes. Other ways of connecting ropes would always have
+same or more cost. For example, if we connect 4 and 6 first (we get three
+rope of 3, 2 and 10), then connect 10 and 3 (we get two rope of 13 and 2).
+Finally we connect 13 and 2. Total cost in this way is 10 + 13 + 15 = 38.
+Example 2:
+Input:
+n = 5
+arr[] = {4, 2, 7, 6, 9}
+Output:
+62
+Explanation:
+First, connect ropes 4 and 2, which makes the array {6,7,6,9}. Cost of this
+operation 4+2 = 6. Next, add ropes 6 and 6, which results in {12,7,9}. Cost of
+this operation 6+6 = 12. Then, add 7 and 9, which makes the array {12,16}.
+Cost of this operation 7+9 = 16. And finally, add these two which gives {28}.
+Hence, the total cost is 6 + 12 + 16 +
+28 = 62.
+
+ans 10 )
+
+
+#include <iostream>
+#include <queue>
+#include <vector>
+
+long long connectRopes(std::vector<int>& ropes) {
+    std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;
+
+    // Insert all the ropes into the min heap
+    for (int rope : ropes) {
+        minHeap.push(rope);
+    }
+
+    long long totalCost = 0;
+
+    // Repeat until there is only one rope left in the heap
+    while (minHeap.size() > 1) {
+        // Extract the two smallest ropes
+        int rope1 = minHeap.top();
+        minHeap.pop();
+        int rope2 = minHeap.top();
+        minHeap.pop();
+
+        // Calculate the cost of connecting the two ropes
+        long long cost = rope1 + rope2;
+
+        // Add the cost to the total cost
+        totalCost += cost;
+
+        // Combine the two ropes into one by summing their lengths
+        int combinedRope = rope1 + rope2;
+
+        // Insert the combined rope back into the min heap
+        minHeap.push(combinedRope);
+    }
+
+    return totalCost;
+}
+
+int main() {
+    std::vector<int> ropes1 = {4, 3, 2, 6};
+    std::cout << "Minimum cost to connect ropes: " << connectRopes(ropes1) << std::endl;
+
+    std::vector<int> ropes2 = {4, 2, 7, 6, 9};
+    std::cout << "Minimum cost to connect ropes: " << connectRopes(ropes2) << std::endl;
+
+    return 0;
+}

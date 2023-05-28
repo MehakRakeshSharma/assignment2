@@ -1,0 +1,809 @@
+Assignment-58 : A Job Ready Bootcamp in C++, DSA and IOT
+
+DSA Circular linked list
+
+1. Given a circular doubly linked list and a position n. The task is to delete the node at the given position n from the beginning. Initial circular doubly linked list.
+
+ans 1 ) 
+
+#include <iostream>
+
+class Node {
+public:
+    int data;
+    Node* prev;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        prev = nullptr;
+        next = nullptr;
+    }
+};
+
+class CircularDoublyLinkedList {
+private:
+    Node* head;
+
+public:
+    CircularDoublyLinkedList() {
+        head = nullptr;
+    }
+
+    void deleteNodeAtPosition(int n) {
+        if (head == nullptr) {  // Check if list is empty
+            return;
+        }
+
+        Node* current = head;
+        int count = 1;
+
+        while (count < n && current->next != head) {
+            current = current->next;
+            count++;
+        }
+
+        if (current->next == head) {  // Check if the node to be deleted is the last node
+            head = nullptr;
+            delete current;
+            return;
+        }
+
+        Node* prevNode = current->prev;
+        Node* nextNode = current->next;
+
+        if (current == head) {  // Check if the node to be deleted is the first node
+            head = nextNode;
+        }
+
+        prevNode->next = nextNode;
+        nextNode->prev = prevNode;
+
+        delete current;
+    }
+};
+
+int main() {
+    CircularDoublyLinkedList myList;
+
+    // Add nodes to the list
+    myList.head = new Node(1);
+    Node* second = new Node(2);
+    Node* third = new Node(3);
+
+    myList.head->next = second;
+    myList.head->prev = third;
+    second->prev = myList.head;
+    second->next = third;
+    third->prev = second;
+    third->next = myList.head;
+
+    int positionToDelete = 2;
+    myList.deleteNodeAtPosition(positionToDelete);
+
+    // Print the updated list
+    Node* current = myList.head;
+    do {
+        std::cout << current->data << " ";
+        current = current->next;
+    } while (current != myList.head);
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Given a sorted circular doubly linked list of distinct nodes(no two nodes have the same data) and a value x. Count triplets in the list that sum up to a given value x.
+
+ans 2 )
+
+#include <iostream>
+
+class Node {
+public:
+    int data;
+    Node* prev;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        prev = nullptr;
+        next = nullptr;
+    }
+};
+
+class CircularDoublyLinkedList {
+private:
+    Node* head;
+
+public:
+    CircularDoublyLinkedList() {
+        head = nullptr;
+    }
+
+    void insert(int value) {
+        Node* newNode = new Node(value);
+
+        if (head == nullptr) {
+            head = newNode;
+            head->next = head;
+            head->prev = head;
+        } else {
+            Node* last = head->prev;
+
+            newNode->next = head;
+            newNode->prev = last;
+            last->next = newNode;
+            head->prev = newNode;
+        }
+    }
+
+    int countTriplets(int x) {
+        if (head == nullptr || head->next == head || head->next->next == head) {
+            return 0;  // Less than 3 nodes in the list
+        }
+
+        int count = 0;
+        Node* current = head;
+
+        do {
+            Node* left = current->prev;
+            Node* right = current->next;
+
+            while (left != right && left != current && right != current) {
+                int tripletSum = current->data + left->data + right->data;
+
+                if (tripletSum == x) {
+                    count++;
+                    left = left->next;
+                    right = right->prev;
+                } else if (tripletSum < x) {
+                    left = left->next;
+                } else {
+                    right = right->prev;
+                }
+            }
+
+            current = current->next;
+        } while (current != head);
+
+        return count;
+    }
+};
+
+int main() {
+    CircularDoublyLinkedList myList;
+
+    // Insert elements into the list
+    myList.insert(1);
+    myList.insert(2);
+    myList.insert(3);
+    myList.insert(4);
+    myList.insert(5);
+
+    int targetSum = 8;
+    int tripletCount = myList.countTriplets(targetSum);
+
+    std::cout << "Number of triplets with sum " << targetSum << ": " << tripletCount << std::endl;
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Given a doubly singly linked list, find if the linked list is circular or not.
+
+ans 3 )
+
+public:
+    int data;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+bool isCircular(Node* head) {
+    if (head == nullptr) {
+        return false;  // Empty list is not circular
+    }
+
+    Node* current = head->next;
+
+    while (current != nullptr && current != head) {
+        current = current->next;
+    }
+
+    return (current == head);
+}
+
+int main() {
+    // Create a circular singly linked list
+    Node* head = new Node(1);
+    Node* second = new Node(2);
+    Node* third = new Node(3);
+    Node* fourth = new Node(4);
+
+    head->next = second;
+    second->next = third;
+    third->next = fourth;
+    fourth->next = head;  // Pointing back to the head
+
+    bool isListCircular = isCircular(head);
+
+    if (isListCircular) {
+        std::cout << "The linked list is circular." << std::endl;
+    } else {
+        std::cout << "The linked list is not circular." << std::endl;
+    }
+
+    return 0;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Given a circular linked list, count the number of nodes in it.
+
+ans 4 )
+
+#include <iostream>
+
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+int countNodesInCircularList(Node* head) {
+    if (head == nullptr) {
+        return 0;  // Empty list has 0 nodes
+    }
+
+    int count = 0;
+    Node* current = head;
+
+    do {
+        count++;
+        current = current->next;
+    } while (current != head);
+
+    return count;
+}
+
+int main() {
+    // Create a circular linked list
+    Node* head = new Node(1);
+    Node* second = new Node(2);
+    Node* third = new Node(3);
+    Node* fourth = new Node(4);
+
+    head->next = second;
+    second->next = third;
+    third->next = fourth;
+    fourth->next = head;  // Pointing back to the head
+
+    int nodeCount = countNodesInCircularList(head);
+
+    std::cout << "Number of nodes in the circular linked list: " << nodeCount << std::endl;
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Given a doubly linked list, we have to convert it into a circular linked list. Time Complexity: O(n), As we need to move through the whole list to get hold of the last node. Auxiliary Space: O(1), As constant extra space is used.
+
+ans 5 )
+
+#include <iostream>
+
+class Node {
+public:
+    int data;
+    Node* prev;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        prev = nullptr;
+        next = nullptr;
+    }
+};
+
+Node* convertToCircular(Node* head) {
+    if (head == nullptr) {
+        return nullptr;  // Empty list
+    }
+
+    Node* current = head;
+
+    while (current->next != nullptr) {
+        current = current->next;
+    }
+
+    current->next = head;
+    head->prev = current;
+
+    return head;
+}
+
+int main() {
+    // Create a doubly linked list
+    Node* head = new Node(1);
+    Node* second = new Node(2);
+    Node* third = new Node(3);
+    Node* fourth = new Node(4);
+
+    head->next = second;
+    second->prev = head;
+    second->next = third;
+    third->prev = second;
+    third->next = fourth;
+    fourth->prev = third;
+
+    // Convert the doubly linked list to a circular linked list
+    Node* circularHead = convertToCircular(head);
+
+    // Print the circular linked list
+    Node* current = circularHead;
+
+    do {
+        std::cout << current->data << " ";
+        current = current->next;
+    } while (current != circularHead);
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Given two circular linked lists L1 and L2, the task is to find if the two circular linked lists are identical or not.
+
+ans 6 )
+
+#include <iostream>
+
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+bool areCircularListsIdentical(Node* head1, Node* head2) {
+    if (head1 == nullptr && head2 == nullptr) {
+        return true;  // Both lists are empty
+    }
+
+    if (head1 == nullptr || head2 == nullptr) {
+        return false;  // One list is empty and the other is not
+    }
+
+    Node* current1 = head1;
+    Node* current2 = head2;
+
+    do {
+        if (current1->data != current2->data) {
+            return false;  // Data mismatch, lists are not identical
+        }
+
+        current1 = current1->next;
+        current2 = current2->next;
+    } while (current1 != head1 && current2 != head2);
+
+    return (current1 == head1 && current2 == head2);  // Check if both lists are completely traversed
+}
+
+int main() {
+    // Create the first circular linked list
+    Node* head1 = new Node(1);
+    Node* second1 = new Node(2);
+    Node* third1 = new Node(3);
+
+    head1->next = second1;
+    second1->next = third1;
+    third1->next = head1;  // Pointing back to the head
+
+    // Create the second circular linked list
+    Node* head2 = new Node(1);
+    Node* second2 = new Node(2);
+    Node* third2 = new Node(3);
+
+    head2->next = second2;
+    second2->next = third2;
+    third2->next = head2;  // Pointing back to the head
+
+    bool identicalLists = areCircularListsIdentical(head1, head2);
+
+    if (identicalLists) {
+        std::cout << "The circular linked lists are identical." << std::endl;
+    } else {
+        std::cout << "The circular linked lists are not identical." << std::endl;
+    }
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Given a circular singly linked list containing N nodes, the task is to delete all the odd nodes from the list.
+
+ans 7 )
+
+#include <iostream>
+
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        next = nullptr;
+    }
+};
+
+Node* deleteOddNodes(Node* head) {
+    if (head == nullptr) {
+        return nullptr;  // Empty list
+    }
+
+    Node* current = head;
+    Node* previous = nullptr;
+
+    do {
+        if (current->data % 2 != 0) {
+            // Odd node, delete it
+            if (current == head) {
+                head = head->next;  // Update head if the first node is odd
+            }
+
+            if (previous != nullptr) {
+                previous->next = current->next;  // Skip the odd node
+            }
+
+            Node* toDelete = current;
+            current = current->next;
+
+            delete toDelete;
+        } else {
+            // Even node, continue traversal
+            previous = current;
+            current = current->next;
+        }
+    } while (current != head);
+
+    return head;
+}
+
+void printCircularList(Node* head) {
+    if (head == nullptr) {
+        return;  // Empty list
+    }
+
+    Node* current = head;
+
+    do {
+        std::cout << current->data << " ";
+        current = current->next;
+    } while (current != head);
+
+    std::cout << std::endl;
+}
+
+int main() {
+    // Create a circular linked list
+    Node* head = new Node(1);
+    Node* second = new Node(2);
+    Node* third = new Node(3);
+    Node* fourth = new Node(4);
+    Node* fifth = new Node(5);
+
+    head->next = second;
+    second->next = third;
+    third->next = fourth;
+    fourth->next = fifth;
+    fifth->next = head;  // Pointing back to the head
+
+    std::cout << "Original circular linked list: ";
+    printCircularList(head);
+
+    // Delete odd nodes from the circular linked list
+    Node* modifiedHead = deleteOddNodes(head);
+
+    std::cout << "Modified circular linked list: ";
+    printCircularList(modifiedHead);
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Given a circular doubly-linked list, find the largest node in the doubly linked list.
+
+ans 8 )
+
+#include <iostream>
+
+class Node {
+public:
+    int data;
+    Node* prev;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        prev = nullptr;
+        next = nullptr;
+    }
+};
+
+int findLargestNode(Node* head) {
+    if (head == nullptr) {
+        return -1;  // Empty list, no largest node
+    }
+
+    Node* current = head;
+    int maxValue = head->data;
+
+    do {
+        if (current->data > maxValue) {
+            maxValue = current->data;
+        }
+
+        current = current->next;
+    } while (current != head);
+
+    return maxValue;
+}
+
+int main() {
+    // Create a circular doubly-linked list
+    Node* head = new Node(1);
+    Node* second = new Node(3);
+    Node* third = new Node(5);
+    Node* fourth = new Node(2);
+    Node* fifth = new Node(4);
+
+    head->next = second;
+    second->prev = head;
+    second->next = third;
+    third->prev = second;
+    third->next = fourth;
+    fourth->prev = third;
+    fourth->next = fifth;
+    fifth->prev = fourth;
+    fifth->next = head;  // Pointing back to the head
+
+    int largestNode = findLargestNode(head);
+
+    if (largestNode != -1) {
+        std::cout << "The largest node in the circular doubly-linked list is: " << largestNode << std::endl;
+    } else {
+        std::cout << "The circular doubly-linked list is empty." << std::endl;
+    }
+
+    return 0;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Given a circular doubly linked list containing n nodes. The problem is to reverse every group of k nodes in the list.
+
+ans 9 )
+
+#include <iostream>
+
+class Node {
+public:
+    int data;
+    Node* prev;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        prev = nullptr;
+        next = nullptr;
+    }
+};
+
+Node* reverseKNodes(Node* head, int k) {
+    if (head == nullptr || k <= 1) {
+        return head;  // No reversal needed
+    }
+
+    Node* current = head;
+    Node* prevGroupTail = nullptr;
+
+    int count = 0;
+
+    do {
+        Node* groupHead = current;
+        Node* groupTail = nullptr;
+
+        int groupCount = 0;
+
+        while (current != nullptr && groupCount < k) {
+            Node* nextNode = current->next;
+            current->next = current->prev;
+            current->prev = nextNode;
+
+            groupTail = current;
+            current = nextNode;
+
+            groupCount++;
+            count++;
+        }
+
+        if (groupCount == k) {
+            // Reverse the group of k nodes
+            if (prevGroupTail != nullptr) {
+                prevGroupTail->next = groupTail;
+                groupTail->prev = prevGroupTail;
+            } else {
+                head = groupTail;
+            }
+
+            groupHead->next = current;
+            if (current != nullptr) {
+                current->prev = groupHead;
+            }
+
+            prevGroupTail = groupHead;
+        } else {
+            // Not enough nodes for a complete group
+            // Reverse the partially reversed group back to original order
+            while (groupTail != groupHead) {
+                Node* nextNode = groupTail->next;
+                groupTail->next = groupTail->prev;
+                groupTail->prev = nextNode;
+                groupTail = nextNode;
+            }
+        }
+    } while (count < k && current != head);
+
+    return head;
+}
+
+void printCircularList(Node* head) {
+    if (head == nullptr) {
+        return;  // Empty list
+    }
+
+    Node* current = head;
+
+    do {
+        std::cout << current->data << " ";
+        current = current->next;
+    } while (current != head);
+
+    std::cout << std::endl;
+}
+
+int main() {
+    // Create a circular doubly linked list
+    Node* head = new Node(1);
+    Node* second = new Node(2);
+    Node* third = new Node(3);
+    Node* fourth = new Node(4);
+    Node* fifth = new Node(5);
+    Node* sixth = new Node(6);
+
+    head->next = second;
+    second->prev = head;
+    second->next = third;
+    third->prev = second;
+    third->next = fourth;
+    fourth->prev = third;
+    fourth->next = fifth;
+    fifth->prev = fourth;
+    fifth->next = sixth;
+    sixth->prev = fifth;
+    sixth->next = head;  // Pointing back to the head
+
+    std::cout << "Original circular doubly linked list: ";
+    printCircularList(head);
+
+    int k = 3;  // Group size for reversal
+
+    Node* modifiedHead = reverseKNodes(head, k);
+
+    std::cout << "Modified circular doubly linked list after reversing groups of " << k << " nodes: ";
+    printCircularList(modifiedHead);
+
+    return 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Write a program to reverse the given circular Doubly Linked List.
+
+ans 10 )
+
+
+
+#include <iostream>
+
+class Node {
+public:
+    int data;
+    Node* prev;
+    Node* next;
+
+    Node(int value) {
+        data = value;
+        prev = nullptr;
+        next = nullptr;
+    }
+};
+
+Node* reverseCircularDoublyLinkedList(Node* head) {
+    if (head == nullptr || head->next == head) {
+        return head;  // Empty list or single node, no reversal needed
+    }
+
+    Node* current = head;
+    Node* nextNode = nullptr;
+    Node* prev = nullptr;
+
+    do {
+        nextNode = current->next;
+        current->next = prev;
+        current->prev = nextNode;
+        prev = current;
+        current = nextNode;
+    } while (current != head);
+
+    head->next = prev;
+    prev->prev = head;
+    head = prev;
+
+    return head;
+}
+
+void printCircularList(Node* head) {
+    if (head == nullptr) {
+        return;  // Empty list
+    }
+
+    Node* current = head;
+
+    do {
+        std::cout << current->data << " ";
+        current = current->next;
+    } while (current != head);
+
+    std::cout << std::endl;
+}
+
+int main() {
+    // Create a circular doubly linked list
+    Node* head = new Node(1);
+    Node* second = new Node(2);
+    Node* third = new Node(3);
+    Node* fourth = new Node(4);
+    Node* fifth = new Node(5);
+
+    head->next = second;
+    second->prev = head;
+    second->next = third;
+    third->prev = second;
+    third->next = fourth;
+    fourth->prev = third;
+    fourth->next = fifth;
+    fifth->prev = fourth;
+    fifth->next = head;  // Pointing back to the head
+
+    std::cout << "Original circular doubly linked list: ";
+    printCircularList(head);
+
+    Node* reversedHead = reverseCircularDoublyLinkedList(head);
+
+    std::cout << "Reversed circular doubly linked list: ";
+    printCircularList(reversedHead);
+
+    return 0;
+}
+

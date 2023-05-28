@@ -1,0 +1,1123 @@
+Assignment - 61
+
+AVL Tree, M-Way Tree, B-Tree and B+ Tree
+
+1. Print sorted Elements in a given AVL tree.
+
+ans 1 )
+
+class AVLNode:
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+        self.height = 1
+
+def insert(root, data):
+    if not root:
+        return AVLNode(data)
+    elif data < root.data:
+        root.left = insert(root.left, data)
+    else:
+        root.right = insert(root.right, data)
+        
+    root.height = 1 + max(get_height(root.left), get_height(root.right))
+    balance = get_balance(root)
+    
+    if balance > 1 and data < root.left.data:
+        return rotate_right(root)
+    if balance < -1 and data > root.right.data:
+        return rotate_left(root)
+    if balance > 1 and data > root.left.data:
+        root.left = rotate_left(root.left)
+        return rotate_right(root)
+    if balance < -1 and data < root.right.data:
+        root.right = rotate_right(root.right)
+        return rotate_left(root)
+        
+    return root
+
+def get_height(node):
+    if not node:
+        return 0
+    return node.height
+
+def get_balance(node):
+    if not node:
+        return 0
+    return get_height(node.left) - get_height(node.right)
+
+def rotate_left(z):
+    y = z.right
+    T2 = y.left
+    
+    y.left = z
+    z.right = T2
+    
+    z.height = 1 + max(get_height(z.left), get_height(z.right))
+    y.height = 1 + max(get_height(y.left), get_height(y.right))
+    
+    return y
+
+def rotate_right(z):
+    y = z.left
+    T3 = y.right
+    
+    y.right = z
+    z.left = T3
+    
+    z.height = 1 + max(get_height(z.left), get_height(z.right))
+    y.height = 1 + max(get_height(y.left), get_height(y.right))
+    
+    return y
+
+def print_sorted_elements(root):
+    if root:
+        print_sorted_elements(root.left)
+        print(root.data)
+        print_sorted_elements(root.right)
+
+# Example usage:
+root = None
+elements = [5, 10, 15, 20, 25, 30]
+
+for element in elements:
+    root = insert(root, element)
+
+print("Sorted elements:")
+print_sorted_elements(root)
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+2. Write a program to check whether a given binary tree is balanced or not.
+
+ans 2 )
+
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+def is_balanced(root):
+    if root is None:
+        return True
+
+    left_height = get_height(root.left)
+    right_height = get_height(root.right)
+
+    if abs(left_height - right_height) > 1:
+        return False
+
+    return is_balanced(root.left) and is_balanced(root.right)
+
+def get_height(node):
+    if node is None:
+        return 0
+
+    left_height = get_height(node.left)
+    right_height = get_height(node.right)
+
+    return max(left_height, right_height) + 1
+
+# Example usage:
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)
+root.right.left = TreeNode(6)
+root.right.right = TreeNode(7)
+
+if is_balanced(root):
+    print("The binary tree is balanced.")
+else:
+    print("The binary tree is not balanced.")
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+3. Create an AVL Tree for the input 10,20,15,87,35,40,68,90.
+
+
+ans 3 )
+
+class AVLNode:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+        self.height = 1
+
+def insert(root, key):
+    if not root:
+        return AVLNode(key)
+    elif key < root.key:
+        root.left = insert(root.left, key)
+    else:
+        root.right = insert(root.right, key)
+        
+    root.height = 1 + max(get_height(root.left), get_height(root.right))
+    balance = get_balance(root)
+    
+    if balance > 1 and key < root.left.key:
+        return rotate_right(root)
+    if balance < -1 and key > root.right.key:
+        return rotate_left(root)
+    if balance > 1 and key > root.left.key:
+        root.left = rotate_left(root.left)
+        return rotate_right(root)
+    if balance < -1 and key < root.right.key:
+        root.right = rotate_right(root.right)
+        return rotate_left(root)
+        
+    return root
+
+def get_height(node):
+    if not node:
+        return 0
+    return node.height
+
+def get_balance(node):
+    if not node:
+        return 0
+    return get_height(node.left) - get_height(node.right)
+
+def rotate_left(z):
+    y = z.right
+    T2 = y.left
+    
+    y.left = z
+    z.right = T2
+    
+    z.height = 1 + max(get_height(z.left), get_height(z.right))
+    y.height = 1 + max(get_height(y.left), get_height(y.right))
+    
+    return y
+
+def rotate_right(z):
+    y = z.left
+    T3 = y.right
+    
+    y.right = z
+    z.left = T3
+    
+    z.height = 1 + max(get_height(z.left), get_height(z.right))
+    y.height = 1 + max(get_height(y.left), get_height(y.right))
+    
+    return y
+
+def pre_order_traversal(root):
+    if root:
+        print(root.key, end=" ")
+        pre_order_traversal(root.left)
+        pre_order_traversal(root.right)
+
+# Create an AVL tree
+root = None
+elements = [10, 20, 15, 87, 35, 40, 68, 90]
+
+for element in elements:
+    root = insert(root, element)
+
+# Print the pre-order traversal of the AVL tree
+print("Pre-order traversal of AVL tree:")
+pre_order_traversal(root)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+4. Write the structure of 2-Way Tree of Order 5.
+
+ans 4 )
+
+A 2-Way Tree of Order 5, also known as a B-tree, is a balanced search tree data structure that can have at most 5 children per node. It satisfies the following properties:
+
+Every node has at most 4 keys (values).
+Every node (except the root) has at least 2 keys (values).
+All leaves appear at the same level.
+Each internal node with k keys has k + 1 children.
+The structure of a 2-Way Tree of Order 5 can be represented as follows:
+
+        [Key1] [Key2] [Key3] [Key4]
+         /  |  \   |   /  |  \   \
+   Child1 Child2 Child3 Child4 Child5
+In this structure, each node can have up to 4 keys (Key1, Key2, Key3, Key4) and up to 5 children (Child1, Child2, Child3, Child4, Child5). The keys are stored in non-decreasing order within each node.
+
+The child pointers indicate the links to the child nodes. For example, Child1 is the leftmost child of the first key (Key1), and Child5 is the rightmost child of the last key (Key4).
+
+This structure allows efficient searching, insertion, and deletion operations while maintaining a balanced tree, ensuring that the height of the tree remains relatively small.
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+5. Write the structure of B-Tree of order 4.
+
+ans 5 )
+
+A B-Tree of order 4 is a balanced search tree data structure that can have at most 4 children per node. It satisfies the following properties:
+
+Every node has at most 3 keys (values).
+Every node (except the root) has at least 2 keys (values).
+All leaves appear at the same level.
+Each internal node with k keys has k + 1 children.
+The structure of a B-Tree of order 4 can be represented as follows:
+
+         [Key1] [Key2] [Key3]
+          /   |   \
+Child1 Child2 Child3 Child4
+In this structure, each node can have up to 3 keys (Key1, Key2, Key3) and up to 4 children (Child1, Child2, Child3, Child4). The keys are stored in non-decreasing order within each node.
+
+The child pointers indicate the links to the child nodes. For example, Child1 is the leftmost child of the first key (Key1), and Child4 is the rightmost child of the last key (Key3).
+
+This structure allows efficient searching, insertion, and deletion operations while maintaining a balanced tree, ensuring that the height of the tree remains relatively small.
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+6. Write the structure of B+ Tree of Order 5.
+
+
+ans 6 )
+
+A B+ tree of order 5 is a balanced tree data structure that is commonly used in database systems for indexing. It has the following properties:
+
+Every node has at most 4 keys (values).
+Every internal node (except the root) has at least 2 keys (values).
+All leaves appear at the same level.
+Each internal node with k keys has k + 1 children.
+All keys are stored in the leaf nodes, and the internal nodes contain duplicate copies of the keys for efficient searching.
+The structure of a B+ tree of order 5 can be represented as follows:
+
+              [Key1]   [Key2]   [Key3]   [Key4]
+            /   |   \  /   |   \  /   |   \
+        Child1 Child2 Child3 Child4 Child5 Child6
+In this structure, each internal node can have up to 4 keys (Key1, Key2, Key3, Key4) and up to 5 children (Child1, Child2, Child3, Child4, Child5). The keys are stored in non-decreasing order within each internal node.
+
+The child pointers of the internal nodes indicate the links to the child nodes, which can be either internal nodes or leaf nodes. The leaf nodes contain the actual data values and also have a link to the next leaf node for efficient range queries.
+
+The B+ tree structure allows efficient searching, insertion, and deletion operations. It provides good performance for database indexing due to its balanced nature, ability to handle large datasets, and optimized disk access patterns.
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+7. Create a B - Tree for the input 10,20,15,87,35,40,68,90
+
+ans 7 )
+
+#include <iostream>
+#include <vector>
+
+const int t = 2;
+
+class BTreeNode {
+public:
+    std::vector<int> keys;
+    std::vector<BTreeNode*> child;
+    bool leaf;
+
+    BTreeNode(bool leaf = false) {
+        this->leaf = leaf;
+    }
+};
+
+class BTree {
+public:
+    BTreeNode* root;
+
+    BTree() {
+        root = nullptr;
+    }
+
+    void insert(int k) {
+        if (root == nullptr) {
+            root = new BTreeNode(true);
+            root->keys.push_back(k);
+        } else {
+            if (root->keys.size() == (2 * t) - 1) {
+                BTreeNode* temp = new BTreeNode();
+                temp->child.push_back(root);
+                split_child(temp, 0);
+                root = temp;
+            }
+            insert_non_full(root, k);
+        }
+    }
+
+    void insert_non_full(BTreeNode* node, int k) {
+        int i = node->keys.size() - 1;
+        if (node->leaf) {
+            node->keys.push_back(0);
+            while (i >= 0 && k < node->keys[i]) {
+                node->keys[i + 1] = node->keys[i];
+                i--;
+            }
+            node->keys[i + 1] = k;
+        } else {
+            while (i >= 0 && k < node->keys[i]) {
+                i--;
+            }
+            i++;
+            if (node->child[i]->keys.size() == (2 * t) - 1) {
+                split_child(node, i);
+                if (k > node->keys[i]) {
+                    i++;
+                }
+            }
+            insert_non_full(node->child[i], k);
+        }
+    }
+
+    void split_child(BTreeNode* node, int i) {
+        BTreeNode* child = node->child[i];
+        BTreeNode* new_node = new BTreeNode(child->leaf);
+
+        node->keys.insert(node->keys.begin() + i, child->keys[t - 1]);
+
+        for (int j = 0; j < t - 1; j++) {
+            new_node->keys.push_back(child->keys[j + t]);
+        }
+
+        if (!child->leaf) {
+            for (int j = 0; j < t; j++) {
+                new_node->child.push_back(child->child[j + t]);
+            }
+        }
+
+        child->keys.resize(t - 1);
+        child->child.resize(t);
+
+        node->child.insert(node->child.begin() + i + 1, new_node);
+    }
+};
+
+int main() {
+    BTree tree;
+    std::vector<int> elements = { 10, 20, 15, 87, 35, 40, 68, 90 };
+
+    for (int element : elements) {
+        tree.insert(element);
+    }
+
+    // Print the B-tree nodes
+    std::cout << "B-tree nodes:" << std::endl;
+    std::cout << "---------------" << std::endl;
+
+    std::cout << "Root: ";
+    for (int key : tree.root->keys) {
+        std::cout << key << " ";
+    }
+    std::cout << std::endl;
+
+    for (BTreeNode* child : tree.root->child) {
+        std::cout << "Child: ";
+        for (int key : child->keys) {
+            std::cout << key << " ";
+        }
+       
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+8. Create a B+ Tree for the input 10,20,15,87,35,40,68,90
+
+ans 8 )
+
+#include <iostream>
+#include <vector>
+
+const int t = 3;
+
+class BPlusTreeNode {
+public:
+    std::vector<int> keys;
+    std::vector<BPlusTreeNode*> children;
+    bool isLeaf;
+
+    BPlusTreeNode(bool isLeaf = false) {
+        this->isLeaf = isLeaf;
+    }
+};
+
+class BPlusTree {
+public:
+    BPlusTreeNode* root;
+
+    BPlusTree() {
+        root = nullptr;
+    }
+
+    void insert(int key) {
+        if (root == nullptr) {
+            root = new BPlusTreeNode(true);
+            root->keys.push_back(key);
+        } else {
+            if (root->keys.size() == (2 * t) - 1) {
+                BPlusTreeNode* temp = new BPlusTreeNode();
+                temp->children.push_back(root);
+                splitChild(temp, 0);
+                root = temp;
+            }
+            insertNonFull(root, key);
+        }
+    }
+
+    void insertNonFull(BPlusTreeNode* node, int key) {
+        int i = node->keys.size() - 1;
+
+        if (node->isLeaf) {
+            node->keys.push_back(0);
+            while (i >= 0 && key < node->keys[i]) {
+                node->keys[i + 1] = node->keys[i];
+                i--;
+            }
+            node->keys[i + 1] = key;
+        } else {
+            while (i >= 0 && key < node->keys[i]) {
+                i--;
+            }
+            i++;
+            if (node->children[i]->keys.size() == (2 * t) - 1) {
+                splitChild(node, i);
+                if (key > node->keys[i]) {
+                    i++;
+                }
+            }
+            insertNonFull(node->children[i], key);
+        }
+    }
+
+    void splitChild(BPlusTreeNode* node, int childIndex) {
+        BPlusTreeNode* child = node->children[childIndex];
+        BPlusTreeNode* newChild = new BPlusTreeNode(child->isLeaf);
+
+        node->keys.insert(node->keys.begin() + childIndex, child->keys[t - 1]);
+
+        for (int j = 0; j < t - 1; j++) {
+            newChild->keys.push_back(child->keys[j + t]);
+        }
+
+        if (!child->isLeaf) {
+            for (int j = 0; j < t; j++) {
+                newChild->children.push_back(child->children[j + t]);
+            }
+        }
+
+        child->keys.resize(t - 1);
+        child->children.resize(t);
+
+        node->children.insert(node->children.begin() + childIndex + 1, newChild);
+    }
+};
+
+int main() {
+    BPlusTree bPlusTree;
+    std::vector<int> elements = { 10, 20, 15, 87, 35, 40, 68, 90 };
+
+    for (int element : elements) {
+        bPlusTree.insert(element);
+    }
+
+    // Print the B+ tree nodes
+    std::cout << "B+ tree nodes:" << std::endl;
+    std::cout << "---------------" << std::endl;
+
+    std::cout << "Root: ";
+    for (int key : bPlusTree.root->keys) {
+        std::cout << key << " ";
+    }
+    std::cout << std::endl;
+
+    for (BPlusTreeNode* child : bPlusTree.root->children) {
+        std::cout << "Child: ";
+        for (int key : child->keys) {
+            std::cout << key << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+9. Delete 15,35,40,68 from above created B- Tree.
+
+
+ans 9 )
+
+#include <iostream>
+#include <vector>
+
+const int t = 2;
+
+class BTreeNode {
+public:
+    std::vector<int> keys;
+    std::vector<BTreeNode*> child;
+    bool leaf;
+
+    BTreeNode(bool leaf = false) {
+        this->leaf = leaf;
+    }
+};
+
+class BTree {
+public:
+    BTreeNode* root;
+
+    BTree() {
+        root = nullptr;
+    }
+
+    void insert(int k) {
+        if (root == nullptr) {
+            root = new BTreeNode(true);
+            root->keys.push_back(k);
+        } else {
+            if (root->keys.size() == (2 * t) - 1) {
+                BTreeNode* temp = new BTreeNode();
+                temp->child.push_back(root);
+                split_child(temp, 0);
+                root = temp;
+            }
+            insert_non_full(root, k);
+        }
+    }
+
+    void insert_non_full(BTreeNode* node, int k) {
+        int i = node->keys.size() - 1;
+        if (node->leaf) {
+            node->keys.push_back(0);
+            while (i >= 0 && k < node->keys[i]) {
+                node->keys[i + 1] = node->keys[i];
+                i--;
+            }
+            node->keys[i + 1] = k;
+        } else {
+            while (i >= 0 && k < node->keys[i]) {
+                i--;
+            }
+            i++;
+            if (node->child[i]->keys.size() == (2 * t) - 1) {
+                split_child(node, i);
+                if (k > node->keys[i]) {
+                    i++;
+                }
+            }
+            insert_non_full(node->child[i], k);
+        }
+    }
+
+    void split_child(BTreeNode* node, int i) {
+        BTreeNode* child = node->child[i];
+        BTreeNode* new_node = new BTreeNode(child->leaf);
+
+        node->keys.insert(node->keys.begin() + i, child->keys[t - 1]);
+
+        for (int j = 0; j < t - 1; j++) {
+            new_node->keys.push_back(child->keys[j + t]);
+        }
+
+        if (!child->leaf) {
+            for (int j = 0; j < t; j++) {
+                new_node->child.push_back(child->child[j + t]);
+            }
+        }
+
+        child->keys.resize(t - 1);
+        child->child.resize(t);
+
+        node->child.insert(node->child.begin() + i + 1, new_node);
+    }
+
+    void remove(int k) {
+        if (!root) {
+            std::cout << "The tree is empty." << std::endl;
+            return;
+        }
+
+        root = remove_from_node(root, k);
+
+        if (root->keys.empty() && !root->leaf) {
+            BTreeNode* temp = root;
+            root = root->child[0];
+            delete temp;
+        }
+    }
+
+    BTreeNode* remove_from_node(BTreeNode* node, int k) {
+        int idx = find_key_index(node, k);
+
+        if (idx < node->keys.size() && node->keys[idx] == k) {
+            if (node->leaf) {
+                node->keys.erase(node->keys.begin() + idx);
+            } else {
+                node = remove_from_internal_node(node, idx);
+            }
+        } else {
+            if (node->leaf) {
+                std::cout << "Key " << k << " not found in the tree." << std::endl;
+                return node;
+            }
+
+            bool isLastChild = (idx == node->keys.size());
+
+            if (node->child[idx]->keys.size() < t) {
+                fill_child(node, idx);
+            }
+
+            if (isLastChild && idx > node->keys.size()) {
+                node = remove_from_node(node->child[idx - 1], k);
+            } else {
+                node = remove_from_node(node->child[idx], k);
+            }
+        }
+
+        return node;
+    }
+
+    int find_key_index(BTreeNode* node, int k) {
+        int idx = 0;
+        while (idx < node->keys.size() && node->keys[idx] < k) {
+            idx++;
+        }
+        return idx;
+    }
+
+    BTreeNode* remove_from_internal_node(BTreeNode* node, int idx) {
+        int k = node->keys[idx];
+
+        if (node->child[idx]->keys.size() >= t) {
+            int predecessor = get_predecessor(node, idx);
+            node->keys[idx] = predecessor;
+            node = remove_from_node(node->child[idx], predecessor);
+        } else if (node->child[idx + 1]->keys.size() >= t) {
+            int successor = get_successor(node, idx);
+            node->keys[idx] = successor;
+            node = remove_from_node(node->child[idx + 1], successor);
+        } else {
+            merge_siblings(node, idx);
+            node = remove_from_node(node->child[idx], k);
+        }
+
+        return node;
+    }
+
+    int get_predecessor(BTreeNode* node, int idx) {
+        BTreeNode* curr = node->child[idx];
+        while (!curr->leaf) {
+            curr = curr->child[curr->child.size() - 1];
+        }
+        return curr->keys[curr->keys.size() - 1];
+    }
+
+    int get_successor(BTreeNode* node, int idx) {
+        BTreeNode* curr = node->child[idx + 1];
+        while (!curr->leaf) {
+            curr = curr->child[0];
+        }
+        return curr->keys[0];
+    }
+
+    void fill_child(BTreeNode* node, int idx) {
+        if (idx != 0 && node->child[idx - 1]->keys.size() >= t) {
+            borrow_from_prev(node, idx);
+        } else if (idx != node->keys.size() && node->child[idx + 1]->keys.size() >= t) {
+            borrow_from_next(node, idx);
+        } else {
+            if (idx != node->keys.size()) {
+                merge_siblings(node, idx);
+            } else {
+                merge_siblings(node, idx - 1);
+            }
+        }
+    }
+
+    void borrow_from_prev(BTreeNode* node, int idx) {
+        BTreeNode* child = node->child[idx];
+        BTreeNode* sibling = node->child[idx - 1];
+
+        child->keys.insert(child->keys.begin(), node->keys[idx - 1]);
+
+        if (!child->leaf) {
+            child->child.insert(child->child.begin(), sibling->child[sibling->child.size() - 1]);
+            sibling->child.pop_back();
+        }
+
+        node->keys[idx - 1] = sibling->keys[sibling->keys.size() - 1];
+
+        child->keys.erase(child->keys.begin() + t - 1);
+        sibling->keys.pop_back();
+    }
+
+    void borrow_from_next(BTreeNode* node, int idx) {
+        BTreeNode* child = node->child[idx];
+        BTreeNode* sibling = node->child[idx + 1];
+
+        child->keys.push_back(node->keys[idx]);
+
+        if (!child->leaf) {
+            child->child.push_back(sibling->child[0]);
+            sibling->child.erase(sibling->child.begin());
+        }
+
+        node->keys[idx] = sibling->keys[0];
+
+        child->keys.erase(child->keys.begin() + t - 1);
+        sibling->keys.erase(sibling->keys.begin());
+    }
+
+    void merge_siblings(BTreeNode* node, int idx) {
+        BTreeNode* child = node->child[idx];
+        BTreeNode* sibling = node->child[idx + 1];
+
+        child->keys.push_back(node->keys[idx]);
+
+        for (int i = 0; i < sibling->keys.size(); i++) {
+            child->keys.push_back(sibling->keys[i]);
+        }
+
+        if (!child->leaf) {
+            for (int i = 0; i < sibling->child.size(); i++) {
+                child->child.push_back(sibling->child[i]);
+            }
+        }
+
+        node->keys.erase(node->keys.begin() + idx);
+        node->child.erase(node->child.begin() + idx + 1);
+
+        delete sibling;
+    }
+
+    void print_tree() {
+        if (root != nullptr) {
+            print_node(root);
+        }
+    }
+
+    void print_node(BTreeNode* node) {
+        for (int i = 0; i < node->keys.size(); i++) {
+            std::cout << node->keys[i] << " ";
+        }
+        std::cout << std::endl;
+
+        if (!node->leaf) {
+            for (int i = 0; i < node->child.size(); i++) {
+                print_node(node->child[i]);
+            }
+        }
+    }
+};
+
+int main() {
+    BTree btree;
+    std::vector<int> values = { 10, 20, 15, 87, 35, 40, 68, 90 };
+
+    for (int value : values) {
+        btree.insert(value);
+    }
+
+    std::cout << "B-tree before deletion:" << std::endl;
+    btree.print_tree();
+    std::cout << std::endl;
+
+    std::vector<int> valuesToDelete = { 15, 35, 40, 68 };
+    for (int value : valuesToDelete) {
+        btree.remove(value);
+        std::cout << "Deleting " << value << " from the B-tree..." << std::endl;
+        std::cout << "B-tree after deletion:" << std::endl;
+        btree.print_tree();
+        std::cout << std::endl;
+    }
+
+    return 0;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+10. Delete 15,35,40,68 from above created B+ Tree.
+
+
+ans 10 )
+
+#include <iostream>
+#include <vector>
+
+const int t = 3;
+
+class BPlusTreeNode {
+public:
+    std::vector<int> keys;
+    std::vector<BPlusTreeNode*> children;
+    bool isLeaf;
+
+    BPlusTreeNode(bool isLeaf = false) {
+        this->isLeaf = isLeaf;
+    }
+};
+
+class BPlusTree {
+public:
+    BPlusTreeNode* root;
+
+    BPlusTree() {
+        root = nullptr;
+    }
+
+    void insert(int key) {
+        if (root == nullptr) {
+            root = new BPlusTreeNode(true);
+            root->keys.push_back(key);
+        } else {
+            if (root->keys.size() == (2 * t) - 1) {
+                BPlusTreeNode* temp = new BPlusTreeNode();
+                temp->children.push_back(root);
+                splitChild(temp, 0);
+                root = temp;
+            }
+            insertNonFull(root, key);
+        }
+    }
+
+    void insertNonFull(BPlusTreeNode* node, int key) {
+        int i = node->keys.size() - 1;
+
+        if (node->isLeaf) {
+            node->keys.push_back(0);
+            while (i >= 0 && key < node->keys[i]) {
+                node->keys[i + 1] = node->keys[i];
+                i--;
+            }
+            node->keys[i + 1] = key;
+        } else {
+            while (i >= 0 && key < node->keys[i]) {
+                i--;
+            }
+            i++;
+            if (node->children[i]->keys.size() == (2 * t) - 1) {
+                splitChild(node, i);
+                if (key > node->keys[i]) {
+                    i++;
+                }
+            }
+            insertNonFull(node->children[i], key);
+        }
+    }
+
+    void splitChild(BPlusTreeNode* node, int childIndex) {
+        BPlusTreeNode* child = node->children[childIndex];
+        BPlusTreeNode* newChild = new BPlusTreeNode(child->isLeaf);
+
+        node->keys.insert(node->keys.begin() + childIndex, child->keys[t - 1]);
+
+        for (int j = 0; j < t - 1; j++) {
+            newChild->keys.push_back(child->keys[j + t]);
+        }
+
+        if (!child->isLeaf) {
+            for (int j = 0; j < t; j++) {
+                newChild->children.push_back(child->children[j + t]);
+            }
+        }
+
+        child->keys.resize(t - 1);
+        child->children.resize(t);
+
+        node->children.insert(node->children.begin() + childIndex + 1, newChild);
+    }
+
+    void remove(int key) {
+        if (!root) {
+            std::cout << "The tree is empty." << std::endl;
+            return;
+        }
+
+        removeKey(root, key);
+
+        if (root->keys.empty()) {
+            BPlusTreeNode* temp = root;
+            if (root->isLeaf)
+                root = nullptr;
+            else
+                root = root->children[0];
+            delete temp;
+        }
+    }
+
+    void removeKey(BPlusTreeNode* node, int key) {
+        int index = findKeyIndex(node, key);
+        if (index < node->keys.size() && node->keys[index] == key) {
+            if (node->isLeaf) {
+                node->keys.erase(node->keys.begin() + index);
+            } else {
+                removeFromInternalNode(node, index);
+            }
+        } else {
+            if (node->isLeaf) {
+                std::cout << "Key " << key << " not found in the tree." << std::endl;
+                return;
+            }
+            bool isLastChild = (index == node->keys.size());
+            if (node->children[index]->keys.size() < t) {
+                borrowFromAdjacentChild(node, index);
+            }
+            if (isLastChild && index > node->keys.size()) {
+                removeKey(node->children[index - 1], key);
+            } else {
+                removeKey(node->children[index], key);
+            }
+        }
+    }
+
+    int findKeyIndex(BPlusTreeNode* node, int key) {
+        int index = 0;
+        while (index < node->keys.size() && key > node->keys[index]) {
+            index++;
+        }
+        return index;
+    }
+
+    void removeFromInternalNode(BPlusTreeNode* node, int index) {
+        int key = node->keys[index];
+        BPlusTreeNode* child = node->children[index];
+        if (child->keys.size() >= t) {
+            int predecessor = getPredecessor(child, index);
+            node->keys[index] = predecessor;
+            removeKey(child, predecessor);
+        } else if (node->children[index + 1]->keys.size() >= t) {
+            int successor = getSuccessor(child, index);
+            node->keys[index] = successor;
+            removeKey(node->children[index + 1], successor);
+        } else {
+            mergeNodes(child, node->children[index + 1], index);
+            removeKey(child, key);
+        }
+    }
+
+    int getPredecessor(BPlusTreeNode* node, int index) {
+        BPlusTreeNode* current = node->children[index];
+        while (!current->isLeaf) {
+            current = current->children[current->children.size() - 1];
+        }
+        return current->keys[current->keys.size() - 1];
+    }
+
+    int getSuccessor(BPlusTreeNode* node, int index) {
+        BPlusTreeNode* current = node->children[index + 1];
+        while (!current->isLeaf) {
+            current = current->children[0];
+        }
+        return current->keys[0];
+    }
+
+    void mergeNodes(BPlusTreeNode* leftChild, BPlusTreeNode* rightChild, int parentIndex) {
+        leftChild->keys.push_back(root->keys[parentIndex]);
+        for (int i = 0; i < rightChild->keys.size(); i++) {
+            leftChild->keys.push_back(rightChild->keys[i]);
+        }
+        if (!leftChild->isLeaf) {
+            for (int i = 0; i < rightChild->children.size(); i++) {
+                leftChild->children.push_back(rightChild->children[i]);
+            }
+        }
+        root->keys.erase(root->keys.begin() + parentIndex);
+        root->children.erase(root->children.begin() + parentIndex + 1);
+        delete rightChild;
+    }
+
+    void borrowFromAdjacentChild(BPlusTreeNode* node, int index) {
+        if (index != 0 && node->children[index - 1]->keys.size() >= t) {
+            borrowFromPreviousChild(node, index);
+        } else if (index != node->keys.size() && node->children[index + 1]->keys.size() >= t) {
+            borrowFromNextChild(node, index);
+        } else {
+            if (index != node->keys.size()) {
+                mergeChildren(node, index);
+            } else {
+                mergeChildren(node, index - 1);
+            }
+        }
+    }
+
+    void borrowFromPreviousChild(BPlusTreeNode* node, int index) {
+        BPlusTreeNode* child = node->children[index];
+        BPlusTreeNode* sibling = node->children[index - 1];
+
+        child->keys.insert(child->keys.begin(), root->keys[index - 1]);
+        root->keys[index - 1] = sibling->keys[sibling->keys.size() - 1];
+        sibling->keys.pop_back();
+
+        if (!child->isLeaf) {
+            child->children.insert(child->children.begin(), sibling->children[sibling->children.size() - 1]);
+            sibling->children.pop_back();
+        }
+    }
+
+    void borrowFromNextChild(BPlusTreeNode* node, int index) {
+        BPlusTreeNode* child = node->children[index];
+        BPlusTreeNode* sibling = node->children[index + 1];
+
+        child->keys.push_back(root->keys[index]);
+        root->keys[index] = sibling->keys[0];
+        sibling->keys.erase(sibling->keys.begin());
+
+        if (!child->isLeaf) {
+            child->children.push_back(sibling->children[0]);
+            sibling->children.erase(sibling->children.begin());
+        }
+    }
+
+    void mergeChildren(BPlusTreeNode* node, int index) {
+        BPlusTreeNode* child = node->children[index];
+        BPlusTreeNode* sibling = node->children[index + 1];
+
+        child->keys.push_back(root->keys[index]);
+
+        for (int i = 0; i < sibling->keys.size(); i++) {
+            child->keys.push_back(sibling->keys[i]);
+        }
+
+        if (!child->isLeaf) {
+            for (int i = 0; i < sibling->children.size(); i++) {
+                child->children.push_back(sibling->children[i]);
+            }
+        }
+
+        root->keys.erase(root->keys.begin() + index);
+        root->children.erase(root->children.begin() + index + 1);
+
+        delete sibling;
+    }
+
+    void printTree() {
+        if (root != nullptr) {
+            printNode(root);
+        }
+    }
+
+    void printNode(BPlusTreeNode* node) {
+        for (int i = 0; i < node->keys.size(); i++) {
+            std::cout << node->keys[i] << " ";
+        }
+        std::cout << std::endl;
+
+        if (!node->isLeaf) {
+            for (int i = 0; i < node->children.size(); i++) {
+                printNode(node->children[i]);
+            }
+        }
+    }
+};
+
+int main() {
+    BPlusTree bptree;
+    std::vector<int> values = { 10, 20, 15, 87, 35, 40, 68, 90 };
+
+    for (int value : values) {
+        bptree.insert(value);
+    }
+
+    std::cout << "B+ tree before deletion:" << std::endl;
+    bptree.printTree();
+    std::cout << std::endl;
+
+    std::vector<int> valuesToDelete = { 15, 35, 40, 68 };
+    for (int value : valuesToDelete) {
+        bptree.remove(value);
+        std::cout << "Deleting " << value << " from the B+ tree..." << std::endl;
+        std::cout << "B+ tree after deletion:" << std::endl;
+        bptree.printTree();
+        std::cout << std::endl;
+    }
+
+    return 0;
+}
+

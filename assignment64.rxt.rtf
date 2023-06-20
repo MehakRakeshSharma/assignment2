@@ -1,0 +1,609 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww28300\viewh17700\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Assignment-64\
+Sorting Algorithms\
+\
+1. Write a C++ Program to sort a linked list 0s, 1s or 2s.\
+\
+Ans 1 )\
+\
+#include <iostream>\
+using namespace std;\
+\
+// Definition for a singly-linked list node\
+struct ListNode \{\
+    int val;\
+    ListNode* next;\
+    ListNode(int x) : val(x), next(nullptr) \{\}\
+\};\
+\
+// Function to print the linked list\
+void printList(ListNode* head) \{\
+    while (head != nullptr) \{\
+        cout << head->val << " ";\
+        head = head->next;\
+    \}\
+    cout << endl;\
+\}\
+\
+// Function to sort the linked list\
+ListNode* sortList(ListNode* head) \{\
+    if (head == nullptr || head->next == nullptr)\
+        return head;\
+\
+    ListNode* zeroHead = new ListNode(0); // Head of the list containing nodes with value 0\
+    ListNode* oneHead = new ListNode(0); // Head of the list containing nodes with value 1\
+    ListNode* twoHead = new ListNode(0); // Head of the list containing nodes with value 2\
+    ListNode* zero = zeroHead; // Pointer for the current node with value 0\
+    ListNode* one = oneHead; // Pointer for the current node with value 1\
+    ListNode* two = twoHead; // Pointer for the current node with value 2\
+\
+    // Traverse the original list\
+    while (head != nullptr) \{\
+        if (head->val == 0) \{\
+            zero->next = head;\
+            zero = zero->next;\
+        \} else if (head->val == 1) \{\
+            one->next = head;\
+            one = one->next;\
+        \} else \{\
+            two->next = head;\
+            two = two->next;\
+        \}\
+        head = head->next;\
+    \}\
+\
+    // Connect the lists\
+    zero->next = oneHead->next;\
+    one->next = twoHead->next;\
+    two->next = nullptr;\
+\
+    // Return the sorted list\
+    return zeroHead->next;\
+\}\
+\
+int main() \{\
+    // Create a sample linked list\
+    ListNode* head = new ListNode(1);\
+    head->next = new ListNode(2);\
+    head->next->next = new ListNode(0);\
+    head->next->next->next = new ListNode(1);\
+    head->next->next->next->next = new ListNode(2);\
+\
+    cout << "Original List: ";\
+    printList(head);\
+\
+    // Sort the linked list\
+    head = sortList(head);\
+\
+    cout << "Sorted List: ";\
+    printList(head);\
+\
+    return 0;\
+\}\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+2. Given an integer array and a positive integer k, count all distinct pairs with differences\
+equal to k.\
+Example 1:\
+Input: arr[] = \{1, 5, 3, 4, 2\}, k = 3\
+Output: 2\
+There are 2 pairs with difference 3, the pairs are \{1, 4\} and \{5, 2\}\
+Input: arr[] = \{8, 12, 16, 4, 0, 20\}, k = 4\
+Output: 5\
+There are 5 pairs with difference 4, the pairs are \{0, 4\}, \{4, 8\}, \{8, 12\}, \{12, 16\}\
+and \{16, 20\}\
+\
+\
+Ans 2 )\
+\
+#include <iostream>\
+#include <unordered_set>\
+using namespace std;\
+\
+int countDistinctPairs(int arr[], int n, int k) \{\
+    unordered_set<int> nums;\
+    int count = 0;\
+\
+    for (int i = 0; i < n; i++) \{\
+        // Check if (arr[i] - k) or (arr[i] + k) is present in the set\
+        if (nums.count(arr[i] - k) > 0 || nums.count(arr[i] + k) > 0) \{\
+            count++;\
+        \}\
+\
+        // Insert the current element into the set\
+        nums.insert(arr[i]);\
+    \}\
+\
+    return count;\
+\}\
+\
+int main() \{\
+    int arr1[] = \{1, 5, 3, 4, 2\};\
+    int k1 = 3;\
+    int n1 = sizeof(arr1) / sizeof(arr1[0]);\
+    cout << "Distinct pairs with difference " << k1 << ": " << countDistinctPairs(arr1, n1, k1) << endl;\
+\
+    int arr2[] = \{8, 12, 16, 4, 0, 20\};\
+    int k2 = 4;\
+    int n2 = sizeof(arr2) / sizeof(arr2[0]);\
+    cout << "Distinct pairs with difference " << k2 << ": " << countDistinctPairs(arr2, n2, k2) << endl;\
+\
+    return 0;\
+\}\
+\
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+3. Given a sorted array and a number x, find a pair in an array whose sum is closest to x.\
+Example 1:\
+Input: arr[] = \{10, 22, 28, 29, 30, 40\}, x = 54\
+Output: 22 and 30\
+Input: arr[] = \{1, 3, 4, 7, 10\}, x = 15\
+Output: 4 and 10\
+\
+Ans 3 )\
+\
+#include <iostream>\
+#include <climits>\
+using namespace std;\
+\
+void findClosestPair(int arr[], int n, int x) \{\
+    int left = 0; // Pointer for the leftmost element\
+    int right = n - 1; // Pointer for the rightmost element\
+    int closestSum = INT_MAX; // Variable to store the closest sum\
+    int resLeft, resRight; // Variables to store the pair with the closest sum\
+\
+    while (left < right) \{\
+        int sum = arr[left] + arr[right];\
+\
+        // Update the closest sum and pair if the current sum is closer to x\
+        if (abs(sum - x) < abs(closestSum - x)) \{\
+            closestSum = sum;\
+            resLeft = left;\
+            resRight = right;\
+        \}\
+\
+        // Move the pointers based on the current sum\
+        if (sum < x)\
+            left++;\
+        else\
+            right--;\
+    \}\
+\
+    cout << "Closest pair: " << arr[resLeft] << " and " << arr[resRight] << endl;\
+\}\
+\
+int main() \{\
+    int arr1[] = \{10, 22, 28, 29, 30, 40\};\
+    int x1 = 54;\
+    int n1 = sizeof(arr1) / sizeof(arr1[0]);\
+    findClosestPair(arr1, n1, x1);\
+\
+    int arr2[] = \{1, 3, 4, 7, 10\};\
+    int x2 = 15;\
+    int n2 = sizeof(arr2) / sizeof(arr2[0]);\
+    findClosestPair(arr2, n2, x2);\
+\
+    return 0;\
+\}\
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+4. Given an unsorted array of integers, sort the array into a wave array. An array arr[0..n-1]\
+is sorted in wave form if:\
+arr[0] >= arr[1] <= arr[2] >= arr[3] <= arr[4] >= .....\
+Example :\
+Input: arr[] = \{10, 5, 6, 3, 2, 20, 100, 80\}\
+Output: arr[] = \{10, 5, 6, 2, 20, 3, 100, 80\}\
+Explanation:\
+Here you can see \{10, 5, 6, 2, 20, 3, 100, 80\} the first element is larger than the second\
+and the same thing is repeated again and again. large element \'96 small element-large\
+element -small element and so on .it can be small element-larger element \'96 small\
+element-large element -small element too. all you need to maintain is the up-down\
+fashion which represents a wave. there can be multiple answers.\
+\
+Ans 4 )\
+\
+#include <iostream>\
+#include <algorithm>\
+using namespace std;\
+\
+void sortInWave(int arr[], int n) \{\
+    // Sort the array in ascending order\
+    sort(arr, arr + n);\
+\
+    // Swap adjacent elements to create a wave-like pattern\
+    for (int i = 0; i < n - 1; i += 2) \{\
+        swap(arr[i], arr[i + 1]);\
+    \}\
+\}\
+\
+int main() \{\
+    int arr[] = \{10, 5, 6, 3, 2, 20, 100, 80\};\
+    int n = sizeof(arr) / sizeof(arr[0]);\
+\
+    cout << "Original array: ";\
+    for (int i = 0; i < n; i++) \{\
+        cout << arr[i] << " ";\
+    \}\
+\
+    sortInWave(arr, n);\
+\
+    cout << "\\nWave array: ";\
+    for (int i = 0; i < n; i++) \{\
+        cout << arr[i] << " ";\
+    \}\
+\
+    return 0;\
+\}\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+5. An interval is represented as a combination of start time and end time. Given a set of\
+intervals, check if any two intervals intersect.\
+Examples :\
+Input: arr[] = \{\{1, 3\}, \{5, 7\}, \{2, 4\}, \{6, 8\}\}\
+Output: true\
+The intervals \{1, 3\} and \{2, 4\} overlap\
+\
+Input: arr[] = \{\{1, 3\}, \{7, 9\}, \{4, 6\}, \{10, 13\}\}\
+Output: false\
+No pair of intervals overlap.\
+\
+Ans 5 )\
+\
+#include <iostream>\
+#include <vector>\
+#include <algorithm>\
+using namespace std;\
+\
+bool isOverlap(pair<int, int> interval1, pair<int, int> interval2) \{\
+    // Check if the intervals overlap\
+    if (interval1.first <= interval2.second && interval2.first <= interval1.second) \{\
+        return true;\
+    \}\
+    return false;\
+\}\
+\
+bool checkIntervalOverlap(vector<pair<int, int>>& intervals) \{\
+    int n = intervals.size();\
+\
+    // Sort the intervals based on the start time\
+    sort(intervals.begin(), intervals.end());\
+\
+    // Check for overlap between adjacent intervals\
+    for (int i = 0; i < n - 1; i++) \{\
+        if (isOverlap(intervals[i], intervals[i + 1])) \{\
+            return true;\
+        \}\
+    \}\
+\
+    return false;\
+\}\
+\
+int main() \{\
+    vector<pair<int, int>> intervals1 = \{\{1, 3\}, \{5, 7\}, \{2, 4\}, \{6, 8\}\};\
+    bool overlap1 = checkIntervalOverlap(intervals1);\
+    cout << "Intervals overlap: " << (overlap1 ? "true" : "false") << endl;\
+\
+    vector<pair<int, int>> intervals2 = \{\{1, 3\}, \{7, 9\}, \{4, 6\}, \{10, 13\}\};\
+    bool overlap2 = checkIntervalOverlap(intervals2);\
+    cout << "Intervals overlap: " << (overlap2 ? "true" : "false") << endl;\
+\
+    return 0;\
+\}\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+6. Given an almost sorted array where only two elements are swapped, how to sort the\
+array efficiently?\
+Examples :\
+Input: arr[] = \{10, 20, 60, 40, 50, 30\}\
+// 30 and 60 are swapped\
+Output: arr[] = \{10, 20, 30, 40, 50, 60\}\
+Input: arr[] = \{10, 20, 40, 30, 50, 60\}\
+// 30 and 40 are swapped\
+Output: arr[] = \{10, 20, 30, 40, 50, 60\}\
+\
+Ans 6 )\
+\
+#include <iostream>\
+using namespace std;\
+\
+void swapElements(int& a, int& b) \{\
+    int temp = a;\
+    a = b;\
+    b = temp;\
+\}\
+\
+void sortAlmostSortedArray(int arr[], int n) \{\
+    int x = -1, y = -1;\
+\
+    // Find the first element that is greater than its next element\
+    for (int i = 0; i < n - 1; i++) \{\
+        if (arr[i] > arr[i + 1]) \{\
+            x = i;\
+            break;\
+        \}\
+    \}\
+\
+    // Find the first element that is smaller than its previous element\
+    for (int i = n - 1; i > 0; i--) \{\
+        if (arr[i] < arr[i - 1]) \{\
+            y = i;\
+            break;\
+        \}\
+    \}\
+\
+    // Swap the positions of x and y\
+    swapElements(arr[x], arr[y]);\
+\
+    // Sort the remaining portion of the array\
+    // using insertion sort or any other sorting algorithm\
+    // In this example, insertion sort is used\
+    for (int i = x + 1; i < n; i++) \{\
+        int key = arr[i];\
+        int j = i - 1;\
+        while (j >= 0 && arr[j] > key) \{\
+            arr[j + 1] = arr[j];\
+            j--;\
+        \}\
+        arr[j + 1] = key;\
+    \}\
+\}\
+\
+int main() \{\
+    int arr[] = \{10, 20, 60, 40, 50, 30\};\
+    int n = sizeof(arr) / sizeof(arr[0]);\
+\
+    cout << "Original array: ";\
+    for (int i = 0; i < n; i++) \{\
+        cout << arr[i] << " ";\
+    \}\
+\
+    sortAlmostSortedArray(arr, n);\
+\
+    cout << "\\nSorted array: ";\
+    for (int i = 0; i < n; i++) \{\
+        cout << arr[i] << " ";\
+    \}\
+\
+    return 0;\
+\}\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+7. Given an array of dates, how to sort them.\
+Examples :\
+Input:\
+Date arr[] = \{\{20, 1, 2014\},\
+\{25, 3, 2010\},\
+\{ 3, 12, 1676\},\
+\{18, 11, 1982\},\
+\{19, 4, 2015\},\
+\{ 9, 7, 2015\}\}\
+Output:\
+Date arr[] = \{\{ 3, 12, 1676\},\
+\{18, 11, 1982\},\
+\{25, 3, 2010\},\
+\{20, 1, 2014\},\
+\{19, 4, 2015\},\
+\
+\{ 9, 7, 2015\}\}\
+\
+\
+Ans 7 )\
+\
+#include <iostream>\
+using namespace std;\
+\
+struct Date \{\
+    int day;\
+    int month;\
+    int year;\
+\};\
+\
+void printDates(Date arr[], int n) \{\
+    for (int i = 0; i < n; i++) \{\
+        cout << arr[i].day << "/" << arr[i].month << "/" << arr[i].year << endl;\
+    \}\
+\}\
+\
+void insertionSortDates(Date arr[], int n) \{\
+    for (int i = 1; i < n; i++) \{\
+        Date key = arr[i];\
+        int j = i - 1;\
+        \
+        while (j >= 0 && (arr[j].year > key.year ||\
+                          (arr[j].year == key.year && arr[j].month > key.month) ||\
+                          (arr[j].year == key.year && arr[j].month == key.month && arr[j].day > key.day))) \{\
+            arr[j + 1] = arr[j];\
+            j--;\
+        \}\
+        \
+        arr[j + 1] = key;\
+    \}\
+\}\
+\
+int main() \{\
+    Date arr[] = \{\
+        \{20, 1, 2014\},\
+        \{25, 3, 2010\},\
+        \{3, 12, 1676\},\
+        \{18, 11, 1982\},\
+        \{19, 4, 2015\},\
+        \{9, 7, 2015\}\
+    \};\
+    int n = sizeof(arr) / sizeof(arr[0]);\
+\
+    cout << "Original array:" << endl;\
+    printDates(arr, n);\
+\
+    insertionSortDates(arr, n);\
+\
+    cout << "Sorted array:" << endl;\
+    printDates(arr, n);\
+\
+    return 0;\
+\}\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+8. Given an array of strings arr[]. Sort given strings using Bubble Sort and display the sorted array.\
+\
+Ans 8 )\
+\
+#include <iostream>\
+#include <string>\
+using namespace std;\
+\
+void bubbleSort(string arr[], int n) \{\
+    for (int i = 0; i < n - 1; i++) \{\
+        for (int j = 0; j < n - i - 1; j++) \{\
+            // Compare adjacent strings and swap if necessary\
+            if (arr[j] > arr[j + 1]) \{\
+                swap(arr[j], arr[j + 1]);\
+            \}\
+        \}\
+    \}\
+\}\
+\
+void printArray(string arr[], int n) \{\
+    for (int i = 0; i < n; i++) \{\
+        cout << arr[i] << " ";\
+    \}\
+    cout << endl;\
+\}\
+\
+int main() \{\
+    string arr[] = \{"banana", "apple", "orange", "grape", "kiwi"\};\
+    int n = sizeof(arr) / sizeof(arr[0]);\
+\
+    cout << "Original array:" << endl;\
+    printArray(arr, n);\
+\
+    bubbleSort(arr, n);\
+\
+    cout << "Sorted array:" << endl;\
+    printArray(arr, n);\
+\
+    return 0;\
+\}\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+9. Given an array, arr[0..n-1] of distinct elements and a range [low, high], find all numbers\
+that are in a range, but not the array. The missing elements should be printed in sorted order.\
+Examples :\
+Input: arr[] = \{10, 12, 11, 15\},\
+low = 10, high = 15\
+Output: 13, 14\
+Input: arr[] = \{1, 14, 11, 51, 15\},\
+low = 50, high = 55\
+Output: 50, 52, 53, 54 55\
+\
+Ans 9 )\
+\
+#include <iostream>\
+#include <vector>\
+#include <algorithm>\
+using namespace std;\
+\
+void findMissingElements(int arr[], int n, int low, int high) \{\
+    vector<int> missingElements;\
+\
+    // Sort the array\
+    sort(arr, arr + n);\
+\
+    int curr = low;\
+    int i = 0;\
+\
+    while (curr <= high) \{\
+        if (i < n && arr[i] == curr) \{\
+            // Skip if current element is found in the array\
+            i++;\
+        \} else \{\
+            // Add missing element to the vector\
+            missingElements.push_back(curr);\
+        \}\
+\
+        curr++;\
+    \}\
+\
+    // Print the missing elements\
+    for (int element : missingElements) \{\
+        cout << element << " ";\
+    \}\
+    cout << endl;\
+\}\
+\
+int main() \{\
+    int arr[] = \{10, 12, 11, 15\};\
+    int n = sizeof(arr) / sizeof(arr[0]);\
+    int low = 10, high = 15;\
+\
+    cout << "Missing elements: ";\
+    findMissingElements(arr, n, low, high);\
+\
+    return 0;\
+\}\
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+10. Given an array with N distinct elements, convert the given array to a form where all\
+elements are in the range from 0 to N-1. The order of elements is the same, i.e., 0 is placed in\
+the place of the smallest element, 1 is placed for the second smallest element, ... N-1 is placed\
+for the largest element.\
+\
+Examples :\
+Input: arr[] = \{10, 40, 20\}\
+Output: arr[] = \{0, 2, 1\}\
+Input: arr[] = \{5, 10, 40, 30, 20\}\
+Output: arr[] = \{0, 1, 4, 3, 2\}\
+\
+Ans 10 )\
+\
+\
+#include <iostream>\
+#include <vector>\
+#include <algorithm>\
+using namespace std;\
+\
+void convertToRange(int arr[], int n) \{\
+    // Create a copy of the original array\
+    vector<int> temp(arr, arr + n);\
+\
+    // Sort the copy array\
+    sort(temp.begin(), temp.end());\
+\
+    // Create a mapping from original elements to their corresponding positions\
+    vector<int> mapping(n);\
+    for (int i = 0; i < n; i++) \{\
+        mapping[temp[i]] = i;\
+    \}\
+\
+    // Update the original array with the mapped positions\
+    for (int i = 0; i < n; i++) \{\
+        arr[i] = mapping[arr[i]];\
+    \}\
+\}\
+\
+int main() \{\
+    int arr[] = \{10, 40, 20\};\
+    int n = sizeof(arr) / sizeof(arr[0]);\
+\
+    cout << "Original array: ";\
+    for (int i = 0; i < n; i++) \{\
+        cout << arr[i] << " ";\
+    \}\
+    cout << endl;\
+\
+    convertToRange(arr, n);\
+\
+    cout << "Converted array: ";\
+    for (int i = 0; i < n; i++) \{\
+        cout << arr[i] << " ";\
+    \}\
+    cout << endl;\
+\
+    return 0;\
+\}\
+}

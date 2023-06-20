@@ -1,0 +1,776 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww28300\viewh17700\viewkind0
+\pard\tx0\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8540\tx8640\tx8739\tx8950\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0   \
+\
+  Assignment-63\
+More on Graph\
+\
+1. Given a square chessboard of N x N size, the position of the Knight and the position of a target are given. We need to find out the minimum steps a Knight will take to reach the target position.\
+\
+Ans 1 )\
+\
+#include <iostream>\
+#include <queue>\
+using namespace std;\
+\
+struct Cell \{\
+    int x, y;\
+    int dist;\
+\};\
+\
+bool isInside(int x, int y, int N) \{\
+    return (x >= 0 && x < N && y >= 0 && y < N);\
+\}\
+\
+int minStepsToReachTarget(int knightPos[], int targetPos[], int N) \{\
+    int dx[] = \{-2, -1, 1, 2, -2, -1, 1, 2\};\
+    int dy[] = \{-1, -2, -2, -1, 1, 2, 2, 1\};\
+\
+    queue<Cell> q;\
+\
+    q.push(\{knightPos[0], knightPos[1], 0\});\
+\
+    bool visited[N][N];\
+    memset(visited, false, sizeof(visited));\
+\
+    visited[knightPos[0]][knightPos[1]] = true;\
+\
+    while (!q.empty()) \{\
+        Cell curr = q.front();\
+        q.pop();\
+\
+        if (curr.x == targetPos[0] && curr.y == targetPos[1])\
+            return curr.dist;\
+\
+        for (int i = 0; i < 8; i++) \{\
+            int x = curr.x + dx[i];\
+            int y = curr.y + dy[i];\
+\
+            if (isInside(x, y, N) && !visited[x][y]) \{\
+                visited[x][y] = true;\
+                q.push(\{x, y, curr.dist + 1\});\
+            \}\
+        \}\
+    \}\
+\
+    return -1; // Target position cannot be reached\
+\}\
+\
+int main() \{\
+    int N = 8; // Size of the chessboard\
+    int knightPos[] = \{0, 0\}; // Initial position of the knight\
+    int targetPos[] = \{7, 7\}; // Target position\
+\
+    int minSteps = minStepsToReachTarget(knightPos, targetPos, N);\
+\
+    cout << "Minimum steps required: " << minSteps << endl;\
+\
+    return 0;\
+\}\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+2. Consider a matrix, where each cell contains either a \'910\'92 or a \'911\'92, and any cell containing 1 is called a filled cell. Two cells are said to be connected if they are adjacent to each other horizontally, vertically, or diagonally. If one or more filled cells are also connected, they form a region. find the size of the largest region.\
+\
+Examples:\
+Input: M[][5] = \{ \{0, 0, 1, 1, 0\}, \{1, 0, 1, 1, 0\}, \{0, 1, 0, 0, 0\}, \{0, 0, 0, 0, 1\}\}\
+Output: 6\
+Explanation: In the following example, there are 2 regions.\
+One with size 1 and the other as 6. So largest region: 6\
+Input: M[][5] = \{ \{0, 0, 1, 1, 0\}, \{0, 0, 1, 1, 0\}, \{0, 0, 0, 0, 0\}, \{0, 0, 0, 0 1\} \}\
+Output: 4\
+Explanation: In the following example, there are 2 regions.\
+One with size 1 and the other as 4. So largest region: 4\
+\
+Ans 2 )\
+\
+#include <iostream>\
+#include <vector>\
+using namespace std;\
+\
+int getSizeOfRegion(vector<vector<int>>& matrix, int row, int col, int numRows, int numCols) \{\
+    if (row < 0 || row >= numRows || col < 0 || col >= numCols || matrix[row][col] == 0)\
+        return 0;\
+\
+    // Mark the current cell as visited\
+    matrix[row][col] = 0;\
+\
+    // Calculate the size of the region by recursively checking its neighboring cells\
+    int size = 1;\
+    for (int i = row - 1; i <= row + 1; i++) \{\
+        for (int j = col - 1; j <= col + 1; j++) \{\
+            size += getSizeOfRegion(matrix, i, j, numRows, numCols);\
+        \}\
+    \}\
+\
+    return size;\
+\}\
+\
+int getLargestRegion(vector<vector<int>>& matrix) \{\
+    int numRows = matrix.size();\
+    if (numRows == 0)\
+        return 0;\
+    \
+    int numCols = matrix[0].size();\
+    int largestRegion = 0;\
+\
+    for (int i = 0; i < numRows; i++) \{\
+        for (int j = 0; j < numCols; j++) \{\
+            if (matrix[i][j] == 1) \{\
+                int size = getSizeOfRegion(matrix, i, j, numRows, numCols);\
+                largestRegion = max(largestRegion, size);\
+            \}\
+        \}\
+    \}\
+\
+    return largestRegion;\
+\}\
+\
+int main() \{\
+    vector<vector<int>> matrix = \{\
+        \{0, 0, 1, 1, 0\},\
+        \{1, 0, 1, 1, 0\},\
+        \{0, 1, 0, 0, 0\},\
+        \{0, 0, 0, 0, 1\}\
+    \};\
+\
+    int largestRegion = getLargestRegion(matrix);\
+\
+    cout << "Size of the largest region: " << largestRegion << endl;\
+\
+    return 0;\
+\}\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+3. Given an array of N distinct elements, find the minimum number of swaps required to sort the array.\
+\
+Examples:\
+Input: \{4, 3, 2, 1\}\
+Output: 2\
+Explanation: Swap index 0 with 3 and 1 with 2 to form the sorted array \{1, 2, 3, 4\}\
+Input: \{1, 5, 4, 3, 2\}\
+Output: 2\
+\
+\
+Ans 3 )\
+\
+#include <iostream>\
+#include <vector>\
+using namespace std;\
+\
+int minSwapsToSort(vector<int>& arr) \{\
+    int n = arr.size();\
+    vector<pair<int, int>> arrPos(n);\
+\
+    for (int i = 0; i < n; i++) \{\
+        arrPos[i].first = arr[i];\
+        arrPos[i].second = i;\
+    \}\
+\
+    // Sort the array positions based on the elements\
+    sort(arrPos.begin(), arrPos.end());\
+\
+    vector<bool> visited(n, false);\
+    int minSwaps = 0;\
+\
+    for (int i = 0; i < n; i++) \{\
+        // Skip already visited elements or elements in their correct position\
+        if (visited[i] || arrPos[i].second == i)\
+            continue;\
+\
+        int cycleSize = 0;\
+        int j = i;\
+\
+        while (!visited[j]) \{\
+            visited[j] = true;\
+            j = arrPos[j].second;\
+            cycleSize++;\
+        \}\
+\
+        if (cycleSize > 0)\
+            minSwaps += (cycleSize - 1);\
+    \}\
+\
+    return minSwaps;\
+\}\
+\
+int main() \{\
+    vector<int> arr1 = \{4, 3, 2, 1\};\
+    int minSwaps1 = minSwapsToSort(arr1);\
+    cout << "Minimum number of swaps: " << minSwaps1 << endl;\
+\
+    vector<int> arr2 = \{1, 5, 4, 3, 2\};\
+    int minSwaps2 = minSwapsToSort(arr2);\
+    cout << "Minimum number of swaps: " << minSwaps2 << endl;\
+\
+    return 0;\
+\}\
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+\
+4. In MS-Paint, when we take the brush to a pixel and click, the color of the region of that pixel is replaced with a new selected color. Following is the problem statement to do this task. given a 2D screen, location of a pixel in the screen and a color, replace color of the\
+given pixel and all adjacent same colored pixels with the given color. Example:\
+Input:\
+screen[M][N] = \{\{1, 1, 1, 1, 1, 1, 1, 1\},\
+\{1, 1, 1, 1, 1, 1, 0, 0\},\
+\{1, 0, 0, 1, 1, 0, 1, 1\},\
+\{1, 2, 2, 2, 2, 0, 1, 0\},\
+\{1, 1, 1, 2, 2, 0, 1, 0\},\
+\{1, 1, 1, 2, 2, 2, 2, 0\},\
+\{1, 1, 1, 1, 1, 2, 1, 1\},\
+\{1, 1, 1, 1, 1, 2, 2, 1\},\
+\};\
+x = 4, y = 4, newColor = 3\
+The values in the given 2D screen indicate colors of the pixels. x and y are coordinates of the brush, newColor is the color that should replace the previous color on screen[x][y] and all surrounding pixels with same color.\
+Output:\
+Screen should be changed to following.\
+screen[M][N] = \{\{1, 1, 1, 1, 1, 1, 1, 1\},\
+\{1, 1, 1, 1, 1, 1, 0, 0\},\
+\{1, 0, 0, 1, 1, 0, 1, 1\},\
+\{1, 3, 3, 3, 3, 0, 1, 0\},\
+\{1, 1, 1, 3, 3, 0, 1, 0\},\
+\{1, 1, 1, 3, 3, 3, 3, 0\},\
+\{1, 1, 1, 1, 1, 3, 1, 1\},\
+\{1, 1, 1, 1, 1, 3, 3, 1\},\
+\};\
+\
+Ans 4 )\
+\
+#include <iostream>\
+#include <vector>\
+using namespace std;\
+\
+void floodFill(vector<vector<int>>& screen, int x, int y, int newColor, int oldColor) \{\
+    int numRows = screen.size();\
+    int numCols = screen[0].size();\
+\
+    if (x < 0 || x >= numRows || y < 0 || y >= numCols || screen[x][y] != oldColor)\
+        return;\
+\
+    screen[x][y] = newColor;\
+\
+    // Recursively fill the adjacent pixels\
+    floodFill(screen, x - 1, y, newColor, oldColor); // Up\
+    floodFill(screen, x + 1, y, newColor, oldColor); // Down\
+    floodFill(screen, x, y - 1, newColor, oldColor); // Left\
+    floodFill(screen, x, y + 1, newColor, oldColor); // Right\
+\}\
+\
+void replaceColor(vector<vector<int>>& screen, int x, int y, int newColor) \{\
+    int oldColor = screen[x][y];\
+    if (oldColor == newColor)\
+        return;\
+\
+    floodFill(screen, x, y, newColor, oldColor);\
+\}\
+\
+void printScreen(const vector<vector<int>>& screen) \{\
+    int numRows = screen.size();\
+    int numCols = screen[0].size();\
+\
+    for (int i = 0; i < numRows; i++) \{\
+        for (int j = 0; j < numCols; j++) \{\
+            cout << screen[i][j] << " ";\
+        \}\
+        cout << endl;\
+    \}\
+\}\
+\
+int main() \{\
+    vector<vector<int>> screen = \{\
+        \{1, 1, 1, 1, 1, 1, 1, 1\},\
+        \{1, 1, 1, 1, 1, 1, 0, 0\},\
+        \{1, 0, 0, 1, 1, 0, 1, 1\},\
+        \{1, 2, 2, 2, 2, 0, 1, 0\},\
+        \{1, 1, 1, 2, 2, 0, 1, 0\},\
+        \{1, 1, 1, 2, 2, 2, 2, 0\},\
+        \{1, 1, 1, 1, 1, 2, 1, 1\},\
+        \{1, 1, 1, 1, 1, 2, 2, 1\}\
+    \};\
+\
+    int x = 4;\
+    int y = 4;\
+    int newColor = 3;\
+\
+    replaceColor(screen, x, y, newColor);\
+    printScreen(screen);\
+\
+    return 0;\
+\}\
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+5. Given an undirected Graph, The task is to find the Bridges in this Graph.\
+\
+Ans 5 )\
+\
+#include <iostream>\
+#include <vector>\
+using namespace std;\
+\
+class Graph \{\
+    int V; // Number of vertices\
+    int id; // Variable to assign unique id to each vertex\
+    vector<int> *adj; // Pointer to an array containing adjacency lists\
+    vector<int> ids; // Stores id of each vertex\
+    vector<int> low; // Stores the low-link value of each vertex\
+    vector<bool> visited; // Keeps track of visited vertices\
+    vector<pair<int, int>> bridges; // Stores the bridges in the graph\
+\
+    void dfs(int v, int parent) \{\
+        visited[v] = true;\
+        ids[v] = low[v] = id++;\
+\
+        for (int u : adj[v]) \{\
+            if (u == parent)\
+                continue;\
+\
+            if (!visited[u]) \{\
+                dfs(u, v);\
+                low[v] = min(low[v], low[u]);\
+\
+                if (ids[v] < low[u])\
+                    bridges.push_back(make_pair(v, u));\
+            \} else \{\
+                low[v] = min(low[v], ids[u]);\
+            \}\
+        \}\
+    \}\
+\
+public:\
+    Graph(int V) \{\
+        this->V = V;\
+        id = 0;\
+        adj = new vector<int>[V];\
+        ids.resize(V);\
+        low.resize(V);\
+        visited.resize(V, false);\
+    \}\
+\
+    void addEdge(int u, int v) \{\
+        adj[u].push_back(v);\
+        adj[v].push_back(u);\
+    \}\
+\
+    void findBridges() \{\
+        for (int i = 0; i < V; i++) \{\
+            if (!visited[i])\
+                dfs(i, -1);\
+        \}\
+\
+        cout << "Bridges in the graph:" << endl;\
+        for (auto bridge : bridges) \{\
+            cout << bridge.first << " - " << bridge.second << endl;\
+        \}\
+    \}\
+\};\
+\
+int main() \{\
+    int V = 7; // Number of vertices\
+    Graph g(V);\
+\
+    // Add edges to the graph\
+    g.addEdge(0, 1);\
+    g.addEdge(1, 2);\
+    g.addEdge(2, 0);\
+    g.addEdge(1, 3);\
+    g.addEdge(3, 4);\
+    g.addEdge(4, 5);\
+    g.addEdge(5, 3);\
+    g.addEdge(5, 6);\
+\
+    // Find and print the bridges in the graph\
+    g.findBridges();\
+\
+    return 0;\
+\}\
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+6. Given a two-dimensional grid, each cell of which contains an integer cost which represents a cost to traverse through that cell, we need to find a path from the top left cell to the bottom right cell by which the total cost incurred is minimum.\
+\
+Ans 6 )\
+\
+#include <iostream>\
+#include <vector>\
+#include <queue>\
+using namespace std;\
+\
+const int INF = 1e9; // Infinity value\
+\
+// Structure to represent a cell in the grid\
+struct Cell \{\
+    int row;\
+    int col;\
+    int cost;\
+    Cell(int r, int c, int cst) : row(r), col(c), cost(cst) \{\}\
+\};\
+\
+// Custom comparator for cells in priority queue\
+struct CellComparator \{\
+    bool operator()(const Cell& a, const Cell& b) \{\
+        return a.cost > b.cost; // Sort in ascending order of cost\
+    \}\
+\};\
+\
+int findMinCostPath(vector<vector<int>>& grid) \{\
+    int numRows = grid.size();\
+    int numCols = grid[0].size();\
+\
+    vector<vector<int>> minCost(numRows, vector<int>(numCols, INF));\
+    vector<vector<bool>> visited(numRows, vector<bool>(numCols, false));\
+\
+    // Priority queue to store cells with the lowest cost\
+    priority_queue<Cell, vector<Cell>, CellComparator> pq;\
+\
+    // Start at the top-left cell with cost 0\
+    pq.push(Cell(0, 0, 0));\
+    minCost[0][0] = grid[0][0];\
+\
+    while (!pq.empty()) \{\
+        Cell currCell = pq.top();\
+        pq.pop();\
+\
+        int row = currCell.row;\
+        int col = currCell.col;\
+\
+        // Skip if the cell has already been visited\
+        if (visited[row][col])\
+            continue;\
+\
+        // Mark the cell as visited\
+        visited[row][col] = true;\
+\
+        // Explore the neighbors: right and down\
+        int dr[] = \{0, 1\};\
+        int dc[] = \{1, 0\};\
+\
+        for (int i = 0; i < 2; i++) \{\
+            int newRow = row + dr[i];\
+            int newCol = col + dc[i];\
+\
+            // Check if the new cell is within the grid boundaries\
+            if (newRow >= 0 && newRow < numRows && newCol >= 0 && newCol < numCols) \{\
+                // Calculate the cost to reach the new cell\
+                int newCost = minCost[row][col] + grid[newRow][newCol];\
+\
+                // If the new cost is lower than the previously calculated cost, update it\
+                if (newCost < minCost[newRow][newCol]) \{\
+                    minCost[newRow][newCol] = newCost;\
+                    pq.push(Cell(newRow, newCol, newCost));\
+                \}\
+            \}\
+        \}\
+    \}\
+\
+    // Return the minimum cost to reach the bottom-right cell\
+    return minCost[numRows - 1][numCols - 1];\
+\}\
+\
+int main() \{\
+    vector<vector<int>> grid = \{\
+        \{1, 3, 1\},\
+        \{1, 5, 1\},\
+        \{4, 2, 1\}\
+    \};\
+\
+    int minCost = findMinCostPath(grid);\
+    cout << "Minimum cost to reach the bottom-right cell: " << minCost << endl;\
+\
+    return 0;\
+\}\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+7. Depth First Search or DFS for a Graph.\
+\
+And 7)\
+\
+#include <iostream>\
+#include <list>\
+using namespace std;\
+\
+class Graph \{\
+    int V;              // Number of vertices\
+\
+    // Pointer to an array containing adjacency lists\
+    list<int>* adj;\
+\
+    // Recursive function that performs DFS traversal\
+    void DFSUtil(int v, bool visited[]) \{\
+        // Mark the current node as visited and print it\
+        visited[v] = true;\
+        cout << v << " ";\
+\
+        // Recur for all the vertices adjacent to this vertex\
+        for (auto it = adj[v].begin(); it != adj[v].end(); ++it) \{\
+            if (!visited[*it])\
+                DFSUtil(*it, visited);\
+        \}\
+    \}\
+\
+public:\
+    // Constructor\
+    Graph(int V) \{\
+        this->V = V;\
+        adj = new list<int>[V];\
+    \}\
+\
+    // Function to add an edge to the graph\
+    void addEdge(int v, int w) \{\
+        adj[v].push_back(w); // Add w to v's list\
+    \}\
+\
+    // DFS traversal of the vertices reachable from a given starting vertex\
+    void DFS(int v) \{\
+        // Mark all the vertices as not visited\
+        bool* visited = new bool[V];\
+        for (int i = 0; i < V; i++)\
+            visited[i] = false;\
+\
+        // Call the recursive helper function to print DFS traversal\
+        DFSUtil(v, visited);\
+    \}\
+\};\
+\
+int main() \{\
+    // Create a graph\
+    Graph g(5);\
+    g.addEdge(0, 1);\
+    g.addEdge(0, 2);\
+    g.addEdge(1, 3);\
+    g.addEdge(2, 4);\
+\
+    cout << "DFS traversal starting from vertex 0: ";\
+    g.DFS(0);\
+\
+    return 0;\
+\}\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+8. Given a directed graph, find out if a vertex j is reachable from another vertex i for all vertex pairs (i, j) in the given graph. Here reachable mean that there is a path from vertex i to j. The reach-ability matrix is called the transitive closure of a graph.\
+\
+For example, consider below graph\
+\
+Transitive closure of above graphs is\
+1 1 1 1\
+1 1 1 1\
+1 1 1 1\
+0 0 0 1\
+\
+Ans 8 )\
+\
+#include <iostream>\
+#include <vector>\
+using namespace std;\
+\
+// Function to compute the transitive closure of a graph\
+void transitiveClosure(vector<vector<int>>& graph, vector<vector<int>>& reach) \{\
+    int V = graph.size();\
+\
+    // Initialize the reach matrix with the graph\
+    reach = graph;\
+\
+    // Perform the Floyd-Warshall algorithm\
+    for (int k = 0; k < V; k++) \{\
+        for (int i = 0; i < V; i++) \{\
+            for (int j = 0; j < V; j++) \{\
+                reach[i][j] = reach[i][j] || (reach[i][k] && reach[k][j]);\
+            \}\
+        \}\
+    \}\
+\}\
+\
+// Function to print the reachability matrix\
+void printMatrix(vector<vector<int>>& matrix) \{\
+    for (auto& row : matrix) \{\
+        for (int val : row) \{\
+            cout << val << " ";\
+        \}\
+        cout << endl;\
+    \}\
+\}\
+\
+int main() \{\
+    vector<vector<int>> graph = \{\
+        \{1, 1, 0, 1\},\
+        \{0, 1, 1, 0\},\
+        \{0, 0, 1, 1\},\
+        \{0, 0, 0, 1\}\
+    \};\
+\
+    int V = graph.size();\
+\
+    vector<vector<int>> reach(V, vector<int>(V, 0));\
+\
+    transitiveClosure(graph, reach);\
+\
+    cout << "Transitive Closure:\\n";\
+    printMatrix(reach);\
+\
+    return 0;\
+\}\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+\
+9. Given an undirected graph, the task is to check if the graph contains a cycle or not.\
+\
+\
+Ans 9 )\
+\
+#include <iostream>\
+#include <vector>\
+using namespace std;\
+\
+class Graph \{\
+    int V; // Number of vertices\
+    vector<vector<int>> adj; // Adjacency list\
+\
+    // Recursive function to check for cycles in the DFS traversal\
+    bool isCyclicUtil(int v, vector<bool>& visited, int parent) \{\
+        visited[v] = true;\
+\
+        // Traverse all adjacent vertices\
+        for (int i : adj[v]) \{\
+            // If the adjacent vertex is not visited, recursively check for cycles\
+            if (!visited[i]) \{\
+                if (isCyclicUtil(i, visited, v))\
+                    return true;\
+            \}\
+            // If the adjacent vertex is visited and not the parent of the current vertex, a cycle exists\
+            else if (i != parent)\
+                return true;\
+        \}\
+\
+        return false;\
+    \}\
+\
+public:\
+    // Constructor\
+    Graph(int V) \{\
+        this->V = V;\
+        adj.resize(V);\
+    \}\
+\
+    // Function to add an edge to the graph\
+    void addEdge(int v, int w) \{\
+        adj[v].push_back(w);\
+        adj[w].push_back(v);\
+    \}\
+\
+    // Function to check if the graph contains a cycle\
+    bool isCyclic() \{\
+        vector<bool> visited(V, false);\
+\
+        // Perform DFS traversal for each unvisited vertex\
+        for (int v = 0; v < V; v++) \{\
+            if (!visited[v]) \{\
+                if (isCyclicUtil(v, visited, -1))\
+                    return true;\
+            \}\
+        \}\
+\
+        return false;\
+    \}\
+\};\
+\
+int main() \{\
+    // Create a graph\
+    Graph g(5);\
+    g.addEdge(0, 1);\
+    g.addEdge(1, 2);\
+    g.addEdge(2, 3);\
+    g.addEdge(3, 4);\
+    g.addEdge(4, 0);\
+\
+    if (g.isCyclic())\
+        cout << "The graph contains a cycle.\\n";\
+    else\
+        cout << "The graph does not contain a cycle.\\n";\
+\
+    return 0;\
+\}\
+/////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+10. Check whether a given graph is Bipartite or not.\
+\
+\
+Ans 10 )\
+\
+#include <iostream>\
+#include <queue>\
+#include <vector>\
+using namespace std;\
+\
+class Graph \{\
+    int V; // Number of vertices\
+    vector<vector<int>> adj; // Adjacency list\
+\
+public:\
+    // Constructor\
+    Graph(int V) \{\
+        this->V = V;\
+        adj.resize(V);\
+    \}\
+\
+    // Function to add an edge to the graph\
+    void addEdge(int v, int w) \{\
+        adj[v].push_back(w);\
+        adj[w].push_back(v);\
+    \}\
+\
+    // Function to check if the graph is bipartite\
+    bool isBipartite() \{\
+        vector<int> color(V, -1); // Colors of vertices\
+        vector<bool> visited(V, false); // Visited array\
+\
+        // Assign the first vertex a color\
+        color[0] = 0;\
+\
+        // Create a queue for BFS traversal\
+        queue<int> q;\
+        q.push(0);\
+        visited[0] = true;\
+\
+        while (!q.empty()) \{\
+            int u = q.front();\
+            q.pop();\
+\
+            // Traverse all adjacent vertices\
+            for (int v : adj[u]) \{\
+                // If the adjacent vertex is not visited\
+                if (!visited[v]) \{\
+                    visited[v] = true;\
+                    q.push(v);\
+\
+                    // Assign a color opposite to the color of the current vertex\
+                    color[v] = 1 - color[u];\
+                \}\
+                // If the adjacent vertex has the same color as the current vertex, the graph is not bipartite\
+                else if (color[u] == color[v])\
+                    return false;\
+            \}\
+        \}\
+\
+        return true;\
+    \}\
+\};\
+\
+int main() \{\
+    // Create a graph\
+    Graph g(4);\
+    g.addEdge(0, 1);\
+    g.addEdge(1, 2);\
+    g.addEdge(2, 3);\
+    g.addEdge(3, 0);\
+\
+    if (g.isBipartite())\
+        cout << "The graph is bipartite.\\n";\
+    else\
+        cout << "The graph is not bipartite.\\n";\
+\
+    return 0;\
+\}\
+\
+}

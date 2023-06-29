@@ -1,0 +1,664 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww28300\viewh17700\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Assignment-67\
+Greedy Algorithm\
+\
+1. Write a Program of Efficient Huffman Coding for Sorted Input.\
+\
+Ans 1 )\
+\
+#include <iostream>\
+#include <queue>\
+#include <vector>\
+\
+// Node structure for Huffman tree\
+struct Node \{\
+    char data;\
+    int frequency;\
+    Node* left;\
+    Node* right;\
+\
+    Node(char data, int frequency) \{\
+        this->data = data;\
+        this->frequency = frequency;\
+        this->left = nullptr;\
+        this->right = nullptr;\
+    \}\
+\};\
+\
+// Custom comparator for priority queue\
+struct NodeComparator \{\
+    bool operator()(Node* node1, Node* node2) \{\
+        return node1->frequency > node2->frequency;\
+    \}\
+\};\
+\
+// Build Huffman tree from sorted input characters and frequencies\
+Node* buildHuffmanTree(std::vector<char>& input, std::vector<int>& frequency) \{\
+    // Create a priority queue (min heap) of nodes\
+    std::priority_queue<Node*, std::vector<Node*>, NodeComparator> pq;\
+\
+    // Create nodes for each character with their frequencies\
+    for (int i = 0; i < input.size(); i++) \{\
+        Node* node = new Node(input[i], frequency[i]);\
+        pq.push(node);\
+    \}\
+\
+    // Build the Huffman tree by merging nodes\
+    while (pq.size() > 1) \{\
+        // Extract the two nodes with minimum frequency\
+        Node* left = pq.top();\
+        pq.pop();\
+        Node* right = pq.top();\
+        pq.pop();\
+\
+        // Create a new node with the combined frequency\
+        Node* merged = new Node('\\0', left->frequency + right->frequency);\
+        merged->left = left;\
+        merged->right = right;\
+\
+        // Add the merged node back to the priority queue\
+        pq.push(merged);\
+    \}\
+\
+    // Return the root of the Huffman tree\
+    return pq.top();\
+\}\
+\
+// Print Huffman codes for each character in the tree\
+void printHuffmanCodes(Node* root, std::string code = "") \{\
+    if (root == nullptr) \{\
+        return;\
+    \}\
+\
+    if (root->data != '\\0') \{\
+        std::cout << root->data << ": " << code << std::endl;\
+    \}\
+\
+    printHuffmanCodes(root->left, code + "0");\
+    printHuffmanCodes(root->right, code + "1");\
+\}\
+\
+int main() \{\
+    // Sorted input characters and their frequencies\
+    std::vector<char> input = \{'a', 'b', 'c', 'd', 'e'\};\
+    std::vector<int> frequency = \{5, 9, 12, 13, 16\};\
+\
+    // Build Huffman tree\
+    Node* root = buildHuffmanTree(input, frequency);\
+\
+    // Print Huffman codes\
+    printHuffmanCodes(root);\
+\
+    return 0;\
+\}\
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+2. Write a Program for Activity Selection Problem\
+\
+Ans  2 )\
+\
+#include <iostream>\
+#include <vector>\
+#include <algorithm>\
+\
+// Structure to represent an activity\
+struct Activity \{\
+    int start;\
+    int finish;\
+\
+    Activity(int start, int finish) \{\
+        this->start = start;\
+        this->finish = finish;\
+    \}\
+\};\
+\
+// Function to perform activity selection\
+std::vector<Activity> activitySelection(std::vector<Activity>& activities) \{\
+    std::vector<Activity> selectedActivities;\
+\
+    // Sort activities based on their finish time\
+    std::sort(activities.begin(), activities.end(), [](const Activity& a, const Activity& b) \{\
+        return a.finish < b.finish;\
+    \});\
+\
+    // Select the first activity\
+    selectedActivities.push_back(activities[0]);\
+    int lastFinishTime = activities[0].finish;\
+\
+    // Select activities that don't overlap with the previously selected activity\
+    for (int i = 1; i < activities.size(); i++) \{\
+        if (activities[i].start >= lastFinishTime) \{\
+            selectedActivities.push_back(activities[i]);\
+            lastFinishTime = activities[i].finish;\
+        \}\
+    \}\
+\
+    return selectedActivities;\
+\}\
+\
+// Function to print the selected activities\
+void printActivities(const std::vector<Activity>& activities) \{\
+    std::cout << "Selected Activities:" << std::endl;\
+    for (const Activity& activity : activities) \{\
+        std::cout << "Start: " << activity.start << ", Finish: " << activity.finish << std::endl;\
+    \}\
+\}\
+\
+int main() \{\
+    // Input activities (start time, finish time)\
+    std::vector<Activity> activities = \{\
+        \{1, 4\},\
+        \{3, 5\},\
+        \{0, 6\},\
+        \{5, 7\},\
+        \{3, 9\},\
+        \{5, 9\},\
+        \{6, 10\},\
+        \{8, 11\},\
+        \{8, 12\},\
+        \{2, 14\},\
+        \{12, 16\}\
+    \};\
+\
+    // Perform activity selection\
+    std::vector<Activity> selectedActivities = activitySelection(activities);\
+\
+    // Print the selected activities\
+    printActivities(selectedActivities);\
+\
+    return 0;\
+\}\
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+3. You are given an array A ,of n elements.You have to remove exactly n/2 elements from\
+an array and add it to another array B (initially empty).Find the maximum and minimum\
+values of difference between these two arrays.The difference between those two arrays\
+is sum(abs(A[i]-B[i]).\
+\
+Ans 3 )\
+\
+#include <iostream>\
+#include <algorithm>\
+#include <vector>\
+\
+int main() \{\
+    int n;\
+    std::cout << "Enter the number of elements in the array: ";\
+    std::cin >> n;\
+\
+    std::vector<int> A(n);\
+    std::cout << "Enter the elements of the array: ";\
+    for (int i = 0; i < n; i++) \{\
+        std::cin >> A[i];\
+    \}\
+\
+    // Sort the array A in non-decreasing order\
+    std::sort(A.begin(), A.end());\
+\
+    std::vector<int> B, C;  // Arrays B and C for moving elements\
+    int sum = 0;  // Sum of absolute differences\
+    int maxDiff = 0, minDiff = 0;\
+\
+    // Move n/2 elements from array A to B\
+    for (int i = 0; i < n / 2; i++) \{\
+        B.push_back(A[i]);\
+        sum += A[i];\
+    \}\
+\
+    // Move remaining n/2 elements from array A to C\
+    for (int i = n / 2; i < n; i++) \{\
+        C.push_back(A[i]);\
+        sum -= A[i];\
+    \}\
+\
+    // Calculate the maximum and minimum difference values\
+    maxDiff = sum;\
+    minDiff = -sum;\
+\
+    std::cout << "Maximum Difference: " << maxDiff << std::endl;\
+    std::cout << "Minimum Difference: " << minDiff << std::endl;\
+\
+    return 0;\
+\}\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+4. Given the arrival and departure times of all trains that reach a railway station, the task is\
+to find the minimum number of platforms required for the railway station so that no train\
+waits. We are given two arrays that represent the arrival and departure times of trains\
+that stop.\
+\
+Ans 4 )\
+\
+#include <iostream>\
+#include <algorithm>\
+#include <vector>\
+\
+int findMinPlatforms(std::vector<int>& arrival, std::vector<int>& departure) \{\
+    std::sort(arrival.begin(), arrival.end());\
+    std::sort(departure.begin(), departure.end());\
+\
+    int platforms = 1;\
+    int maxPlatforms = 1;\
+\
+    int arrIndex = 1;\
+    int depIndex = 0;\
+\
+    int n = arrival.size();\
+\
+    while (arrIndex < n && depIndex < n) \{\
+        if (arrival[arrIndex] <= departure[depIndex]) \{\
+            platforms++;\
+            arrIndex++;\
+        \} else \{\
+            platforms--;\
+            depIndex++;\
+        \}\
+        maxPlatforms = std::max(maxPlatforms, platforms);\
+    \}\
+\
+    return maxPlatforms;\
+\}\
+\
+int main() \{\
+    int n;\
+    std::cout << "Enter the number of trains: ";\
+    std::cin >> n;\
+\
+    std::vector<int> arrival(n);\
+    std::vector<int> departure(n);\
+\
+    std::cout << "Enter the arrival times of trains: ";\
+    for (int i = 0; i < n; i++) \{\
+        std::cin >> arrival[i];\
+    \}\
+\
+    std::cout << "Enter the departure times of trains: ";\
+    for (int i = 0; i < n; i++) \{\
+        std::cin >> departure[i];\
+    \}\
+\
+    int minPlatforms = findMinPlatforms(arrival, departure);\
+\
+    std::cout << "Minimum number of platforms required: " << minPlatforms << std::endl;\
+\
+    return 0;\
+\}\
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+5. Given are N ropes of different lengths, the task is to connect these ropes into one rope\
+with minimum cost, such that the cost to connect two ropes is equal to the sum of their\
+lengths.\
+\
+Ans 5 )\
+\
+#include <iostream>\
+#include <queue>\
+#include <vector>\
+\
+long long connectRopes(std::vector<int>& ropes) \{\
+    std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;\
+\
+    // Insert all rope lengths into the min-heap\
+    for (int rope : ropes) \{\
+        minHeap.push(rope);\
+    \}\
+\
+    long long totalCost = 0;\
+\
+    // Connect the ropes until only one rope is left\
+    while (minHeap.size() > 1) \{\
+        int first = minHeap.top();\
+        minHeap.pop();\
+        int second = minHeap.top();\
+        minHeap.pop();\
+\
+        int combinedLength = first + second;\
+        totalCost += combinedLength;\
+\
+        minHeap.push(combinedLength);\
+    \}\
+\
+    return totalCost;\
+\}\
+\
+int main() \{\
+    int n;\
+    std::cout << "Enter the number of ropes: ";\
+    std::cin >> n;\
+\
+    std::vector<int> ropes(n);\
+    std::cout << "Enter the lengths of the ropes: ";\
+    for (int i = 0; i < n; i++) \{\
+        std::cin >> ropes[i];\
+    \}\
+\
+    long long minCost = connectRopes(ropes);\
+\
+    std::cout << "Minimum cost to connect all ropes: " << minCost << std::endl;\
+\
+    return 0;\
+\}\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+6. Given the weights and values of N items, in the form of \{value, weight\} put these items in\
+a knapsack of capacity W to get the maximum total value in the knapsack. In Fractional\
+Knapsack, we can break items for maximizing the total value of the knapsack\
+\
+Ans 6 )\
+\
+#include <iostream>\
+#include <vector>\
+#include <algorithm>\
+\
+struct Item \{\
+    int value;\
+    int weight;\
+\};\
+\
+bool compare(Item a, Item b) \{\
+    double ratioA = (double)a.value / a.weight;\
+    double ratioB = (double)b.value / b.weight;\
+    return ratioA > ratioB;\
+\}\
+\
+double fractionalKnapsack(int W, std::vector<Item>& items) \{\
+    std::sort(items.begin(), items.end(), compare);\
+\
+    double totalValue = 0.0;\
+    int currentWeight = 0;\
+\
+    for (const Item& item : items) \{\
+        if (currentWeight + item.weight <= W) \{\
+            totalValue += item.value;\
+            currentWeight += item.weight;\
+        \} else \{\
+            int remainingWeight = W - currentWeight;\
+            double fraction = (double)remainingWeight / item.weight;\
+            totalValue += fraction * item.value;\
+            break;\
+        \}\
+    \}\
+\
+    return totalValue;\
+\}\
+\
+int main() \{\
+    int N;\
+    std::cout << "Enter the number of items: ";\
+    std::cin >> N;\
+\
+    std::vector<Item> items(N);\
+    std::cout << "Enter the values and weights of the items:\\n";\
+    for (int i = 0; i < N; i++) \{\
+        std::cin >> items[i].value >> items[i].weight;\
+    \}\
+\
+    int W;\
+    std::cout << "Enter the capacity of the knapsack: ";\
+    std::cin >> W;\
+\
+    double maxTotalValue = fractionalKnapsack(W, items);\
+\
+    std::cout << "Maximum total value in the knapsack: " << maxTotalValue << std::endl;\
+\
+    return 0;\
+\}\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+7. Given a number of friends who have to give or take some amount of money from one\
+another. Design an algorithm by which the total cash flow among all the friends is\
+minimized.\
+\
+Ans 7 )\
+\
+#include <iostream>\
+#include <algorithm>\
+#include <vector>\
+\
+struct Friend \{\
+    std::string name;\
+    int owedAmount;\
+\};\
+\
+void minimizeCashFlow(std::vector<Friend>& friends) \{\
+    int n = friends.size();\
+    std::sort(friends.begin(), friends.end(), [](const Friend& a, const Friend& b) \{\
+        return a.owedAmount < b.owedAmount;\
+    \});\
+\
+    int i = 0, j = n - 1;\
+\
+    while (i < j) \{\
+        int minAmount = std::min(-friends[i].owedAmount, friends[j].owedAmount);\
+        friends[i].owedAmount += minAmount;\
+        friends[j].owedAmount -= minAmount;\
+\
+        std::cout << friends[i].name << " gives " << minAmount << " to " << friends[j].name << std::endl;\
+\
+        if (friends[i].owedAmount == 0)\
+            i++;\
+\
+        if (friends[j].owedAmount == 0)\
+            j--;\
+    \}\
+\}\
+\
+int main() \{\
+    int n;\
+    std::cout << "Enter the number of friends: ";\
+    std::cin >> n;\
+\
+    std::vector<Friend> friends(n);\
+\
+    for (int i = 0; i < n; i++) \{\
+        std::cout << "Enter the name of friend " << (i + 1) << ": ";\
+        std::cin >> friends[i].name;\
+        std::cout << "Enter the owed amount for friend " << (i + 1) << ": ";\
+        std::cin >> friends[i].owedAmount;\
+    \}\
+\
+    minimizeCashFlow(friends);\
+\
+    return 0;\
+\}\
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+8. In a candy store, there are N different types of candies available and the prices of all the\
+N different types of candies are provided. There is also an attractive offer by the candy\
+store. We can buy a single candy from the store and get at most K other candies (all are\
+different types) for free.\
+\'95 Find the minimum amount of money we have to spend to buy all the N different\
+candies.\
+\'95 Find the maximum amount of money we have to spend to buy all the N different\
+candies.\
+Input :\
+price[] = \{3, 2, 1, 4\}\
+k = 2\
+Output :\
+Min = 3, Max = 7\
+\
+Ans 8 )\
+\
+#include <iostream>\
+#include <vector>\
+#include <algorithm>\
+\
+int findMinAndMaxCost(std::vector<int>& prices, int k, int& minCost, int& maxCost) \{\
+    int n = prices.size();\
+    minCost = 0;\
+    maxCost = 0;\
+\
+    // Sort the prices in ascending order\
+    std::sort(prices.begin(), prices.end());\
+\
+    int i = 0;\
+    while (i < n) \{\
+        minCost += prices[i];\
+        i++;\
+\
+        if (k > 0) \{\
+            k--;\
+            continue;\
+        \}\
+\
+        maxCost += prices[i];\
+        i++;\
+    \}\
+\
+    return minCost;\
+\}\
+\
+int main() \{\
+    std::vector<int> prices = \{3, 2, 1, 4\};\
+    int k = 2;\
+    int minCost, maxCost;\
+\
+    findMinAndMaxCost(prices, k, minCost, maxCost);\
+\
+    std::cout << "Min Cost: " << minCost << std::endl;\
+    std::cout << "Max Cost: " << maxCost << std::endl;\
+\
+    return 0;\
+\}\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+9. Given three stacks of the positive numbers, the task is to find the possible equal\
+maximum sum of the stacks with the removal of top elements allowed. Stacks are represented\
+as an array, and the first index of the array represents the top element of the stack.\
+\
+Ans 9 )\
+\
+#include <iostream>\
+#include <vector>\
+\
+int findEqualMaximumSum(std::vector<int>& stack1, std::vector<int>& stack2, std::vector<int>& stack3) \{\
+    int sum1 = 0, sum2 = 0, sum3 = 0;\
+    int top1 = 0, top2 = 0, top3 = 0;\
+\
+    // Calculate the initial sums of the stacks\
+    for (int i = 0; i < stack1.size(); i++)\
+        sum1 += stack1[i];\
+    for (int i = 0; i < stack2.size(); i++)\
+        sum2 += stack2[i];\
+    for (int i = 0; i < stack3.size(); i++)\
+        sum3 += stack3[i];\
+\
+    while (true) \{\
+        // If any stack is empty, return 0 as the common sum does not exist\
+        if (top1 >= stack1.size() || top2 >= stack2.size() || top3 >= stack3.size())\
+            return 0;\
+\
+        // Find the stack with the maximum sum\
+        int maxSum = std::max(sum1, std::max(sum2, sum3));\
+\
+        // If the sums of the three stacks are equal, return the common sum\
+        if (sum1 == sum2 && sum2 == sum3)\
+            return sum1;\
+\
+        // Remove the top element from the stack with the maximum sum\
+        if (maxSum == sum1) \{\
+            sum1 -= stack1[top1];\
+            top1++;\
+        \} else if (maxSum == sum2) \{\
+            sum2 -= stack2[top2];\
+            top2++;\
+        \} else if (maxSum == sum3) \{\
+            sum3 -= stack3[top3];\
+            top3++;\
+        \}\
+    \}\
+\}\
+\
+int main() \{\
+    std::vector<int> stack1 = \{1, 1, 1, 2\};\
+    std::vector<int> stack2 = \{3, 7\};\
+    std::vector<int> stack3 = \{1, 2, 2\};\
+\
+    int equalMaxSum = findEqualMaximumSum(stack1, stack2, stack3);\
+\
+    std::cout << "Equal Maximum Sum: " << equalMaxSum << std::endl;\
+\
+    return 0;\
+\}\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+10. Given a graph and a source vertex in the graph, find the shortest paths from the source\
+to all vertices in the given graph.\
+\
+Ans 10 )\
+\
+\
+#include <iostream>\
+#include <vector>\
+#include <limits>\
+\
+const int INF = std::numeric_limits<int>::max();\
+\
+void dijkstra(std::vector<std::vector<int>>& graph, int source) \{\
+    int V = graph.size();\
+\
+    std::vector<int> dist(V, INF);\
+    std::vector<bool> visited(V, false);\
+\
+    dist[source] = 0;\
+\
+    for (int count = 0; count < V - 1; count++) \{\
+        int u = -1;\
+        for (int v = 0; v < V; v++) \{\
+            if (!visited[v] && (u == -1 || dist[v] < dist[u]))\
+                u = v;\
+        \}\
+\
+        visited[u] = true;\
+\
+        for (int v = 0; v < V; v++) \{\
+            if (!visited[v] && graph[u][v] != 0 && dist[u] != INF && dist[u] + graph[u][v] < dist[v])\
+                dist[v] = dist[u] + graph[u][v];\
+        \}\
+    \}\
+\
+    // Print the shortest distances from the source vertex to all other vertices\
+    std::cout << "Shortest distances from source vertex " << source << ":\\n";\
+    for (int v = 0; v < V; v++) \{\
+        std::cout << "Vertex " << v << ": ";\
+        if (dist[v] == INF)\
+            std::cout << "INF";\
+        else\
+            std::cout << dist[v];\
+        std::cout << std::endl;\
+    \}\
+\}\
+\
+int main() \{\
+    int V, E;\
+    std::cout << "Enter the number of vertices: ";\
+    std::cin >> V;\
+    std::cout << "Enter the number of edges: ";\
+    std::cin >> E;\
+\
+    // Initialize the adjacency matrix\
+    std::vector<std::vector<int>> graph(V, std::vector<int>(V, 0));\
+\
+    std::cout << "Enter the edges and their weights:\\n";\
+    for (int i = 0; i < E; i++) \{\
+        int u, v, weight;\
+        std::cin >> u >> v >> weight;\
+        graph[u][v] = weight;\
+        graph[v][u] = weight;\
+    \}\
+\
+    int source;\
+    std::cout << "Enter the source vertex: ";\
+    std::cin >> source;\
+\
+    dijkstra(graph, source);\
+\
+    return 0;\
+\}\
+}

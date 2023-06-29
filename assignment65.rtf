@@ -1,0 +1,530 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww28300\viewh17700\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Assignment-65\
+String Algorithm\
+\
+1. Given a list of words followed by two words, the task is to find the minimum distance\
+between the given two words in the list of words.\
+Exemple :\
+Input: S = \{ \'93the\'94, \'93quick\'94, \'93brown\'94, \'93fox\'94, \'93quick\'94\}, word1 = \'93the\'94, word2 = \'93fox\'94\
+Output: 3\
+Explanation: Minimum distance between the words \'93the\'94 and \'93fox\'94 is 3\
+\
+Ans 1 )\
+\
+#include <iostream>\
+#include <vector>\
+#include <climits>\
+#include <algorithm>\
+\
+int minimumDistance(const std::vector<std::string>& words, const std::string& word1, const std::string& word2) \{\
+    int minDist = INT_MAX;\
+    int idx1 = -1;\
+    int idx2 = -1;\
+\
+    for (int i = 0; i < words.size(); i++) \{\
+        if (words[i] == word1) \{\
+            idx1 = i;\
+            if (idx2 != -1)\
+                minDist = std::min(minDist, idx1 - idx2);\
+        \} else if (words[i] == word2) \{\
+            idx2 = i;\
+            if (idx1 != -1)\
+                minDist = std::min(minDist, idx2 - idx1);\
+        \}\
+    \}\
+\
+    return minDist;\
+\}\
+\
+int main() \{\
+    std::vector<std::string> words = \{ "the", "quick", "brown", "fox", "quick" \};\
+    std::string word1 = "the";\
+    std::string word2 = "fox";\
+\
+    int minDistance = minimumDistance(words, word1, word2);\
+    std::cout << "Minimum distance between \\"" << word1 << "\\" and \\"" << word2 << "\\" is " << minDistance << std::endl;\
+\
+    return 0;\
+\}\
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+2. Given a string Str. The task is to check if it is Pangram or not.\
+A pangram is a sentence containing every letter in the English Alphabet.\
+Examples:\
+Input: \'93The quick brown fox jumps over the lazy dog\'94\
+Output: is a Pangram\
+Explanation: Contains all the characters from \'91a\'92 to \'91z\'92]\
+Input: \'93The quick brown fox jumps over the dog\'94\
+Output: is not a Pangram\
+Explanation: Doesn\'92t contain all the characters from \'91a\'92 to \'91z\'92, as \'91l\'92, \'91z\'92, \'91y\'92 are missing\
+\
+Ans 2 )\
+\
+#include <iostream>\
+#include <unordered_set>\
+#include <cctype>\
+\
+bool isPangram(const std::string& str) \{\
+    std::unordered_set<char> letters;\
+\
+    // Convert the string to lowercase for case-insensitive comparison\
+    std::string lowercaseStr;\
+    for (char c : str) \{\
+        lowercaseStr += std::tolower(c);\
+    \}\
+\
+    // Check each character in the string\
+    for (char c : lowercaseStr) \{\
+        if (std::isalpha(c)) \{\
+            letters.insert(c);\
+        \}\
+    \}\
+\
+    // Check if all letters from 'a' to 'z' are present\
+    return letters.size() == 26;\
+\}\
+\
+int main() \{\
+    std::string str1 = "The quick brown fox jumps over the lazy dog";\
+    std::cout << "\\"" << str1 << "\\" " << (isPangram(str1) ? "is" : "is not") << " a Pangram" << std::endl;\
+\
+    std::string str2 = "The quick brown fox jumps over the dog";\
+    std::cout << "\\"" << str2 << "\\" " << (isPangram(str2) ? "is" : "is not") << " a Pangram" << std::endl;\
+\
+    return 0;\
+\}\
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+3. Given two strings, the task is to find if a string can be obtained by rotating another string\
+two places.\
+Example :\
+Input: string1 = \'93amazon\'94, string2 = \'93azonam\'94\
+Output: Yes\
+Explanation: Rotating string1 by 2 places in anti-clockwise gives the string2.\
+\
+Ans 3 )\
+\
+#include <iostream>\
+#include <string>\
+\
+bool isRotatedString(const std::string& string1, const std::string& string2) \{\
+    if (string1.length() != string2.length()) \{\
+        return false;\
+    \}\
+\
+    int length = string1.length();\
+\
+    // Check if string2 can be obtained by rotating string1 two places in anti-clockwise direction\
+    std::string anticlockwiseRotation = string1.substr(2) + string1.substr(0, 2);\
+    if (anticlockwiseRotation == string2) \{\
+        return true;\
+    \}\
+\
+    // Check if string2 can be obtained by rotating string1 two places in clockwise direction\
+    std::string clockwiseRotation = string1.substr(length - 2) + string1.substr(0, length - 2);\
+    if (clockwiseRotation == string2) \{\
+        return true;\
+    \}\
+\
+    return false;\
+\}\
+\
+int main() \{\
+    std::string string1 = "amazon";\
+    std::string string2 = "azonam";\
+\
+    if (isRotatedString(string1, string2)) \{\
+        std::cout << "Yes, string2 can be obtained by rotating string1 two places." << std::endl;\
+    \} else \{\
+        std::cout << "No, string2 cannot be obtained by rotating string1 two places." << std::endl;\
+    \}\
+\
+    return 0;\
+\}\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+4. Given a dictionary and a string \'91str\'92, find the longest string in the dictionary which can be\
+formed by deleting some characters of the given \'91str\'92.\
+Examples:\
+Input : dict = \{"ale", "apple", "monkey", "plea"\}\
+str = "abpcplea"\
+Output : apple\
+\
+Ans 4 )\
+\
+#include <iostream>\
+#include <vector>\
+#include <string>\
+#include <algorithm>\
+\
+bool isSubsequence(const std::string& str1, const std::string& str2) \{\
+    int i = 0, j = 0;\
+    while (i < str1.length() && j < str2.length()) \{\
+        if (str1[i] == str2[j]) \{\
+            i++;\
+        \}\
+        j++;\
+    \}\
+    return i == str1.length();\
+\}\
+\
+std::string findLongestWord(const std::vector<std::string>& dict, const std::string& str) \{\
+    std::string longestWord = "";\
+\
+    for (const std::string& word : dict) \{\
+        if (word.length() > longestWord.length() && isSubsequence(word, str)) \{\
+            longestWord = word;\
+        \}\
+    \}\
+\
+    return longestWord;\
+\}\
+\
+int main() \{\
+    std::vector<std::string> dict = \{ "ale", "apple", "monkey", "plea" \};\
+    std::string str = "abpcplea";\
+\
+    std::string longestWord = findLongestWord(dict, str);\
+    std::cout << "Longest word in the dictionary that can be formed from \\"" << str << "\\" is: " << longestWord << std::endl;\
+\
+    return 0;\
+\}\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+5. Given two binary strings, return their sum (also a binary string).\
+Example:\
+Input: a = "11", b = "1"\
+Output: "100"\
+\
+Ans 5 )\
+\
+#include <iostream>\
+#include <string>\
+#include <algorithm>\
+\
+std::string addBinary(const std::string& a, const std::string& b) \{\
+    std::string result = "";\
+    int carry = 0;\
+    int i = a.length() - 1;\
+    int j = b.length() - 1;\
+\
+    while (i >= 0 || j >= 0 || carry > 0) \{\
+        int sum = carry;\
+\
+        if (i >= 0) \{\
+            sum += a[i] - '0';\
+            i--;\
+        \}\
+\
+        if (j >= 0) \{\
+            sum += b[j] - '0';\
+            j--;\
+        \}\
+\
+        result += std::to_string(sum % 2);\
+        carry = sum / 2;\
+    \}\
+\
+    std::reverse(result.begin(), result.end());\
+    return result;\
+\}\
+\
+int main() \{\
+    std::string a = "11";\
+    std::string b = "1";\
+\
+    std::string sum = addBinary(a, b);\
+    std::cout << "Sum of \\"" << a << "\\" and \\"" << b << "\\" is: " << sum << std::endl;\
+\
+    return 0;\
+\}\
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+6. Given a string s, find the length of the longest prefix, which is also a suffix. The prefix\
+and suffix should not overlap.\
+Examples:\
+Input : aabcdaabc\
+Output : 4\
+The string "aabc" is the longest\
+prefix which is also a suffix.\
+Input : abcab\
+Output : 2\
+Input : aaaa\
+Output : 2\
+\
+Ans 6 )\
+\
+#include <iostream>\
+#include <string>\
+\
+int longestPrefixSuffix(const std::string& s) \{\
+    int n = s.length();\
+\
+    // Initialize longest prefix suffix array\
+    std::vector<int> lps(n, 0);\
+    int len = 0;\
+    int i = 1;\
+\
+    while (i < n) \{\
+        if (s[i] == s[len]) \{\
+            len++;\
+            lps[i] = len;\
+            i++;\
+        \} else \{\
+            if (len != 0) \{\
+                len = lps[len - 1];\
+            \} else \{\
+                lps[i] = 0;\
+                i++;\
+            \}\
+        \}\
+    \}\
+\
+    // The length of the longest prefix suffix is the value at the last index of the lps array\
+    return lps[n - 1];\
+\}\
+\
+int main() \{\
+    std::string s1 = "aabcdaabc";\
+    int length1 = longestPrefixSuffix(s1);\
+    std::cout << "Length of the longest prefix that is also a suffix in \\"" << s1 << "\\" is: " << length1 << std::endl;\
+\
+    std::string s2 = "abcab";\
+    int length2 = longestPrefixSuffix(s2);\
+    std::cout << "Length of the longest prefix that is also a suffix in \\"" << s2 << "\\" is: " << length2 << std::endl;\
+\
+    std::string s3 = "aaaa";\
+    int length3 = longestPrefixSuffix(s3);\
+    std::cout << "Length of the longest prefix that is also a suffix in \\"" << s3 << "\\" is: " << length3 << std::endl;\
+\
+    return 0;\
+\}\
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+7. Given a string S consisting of N, lower case English alphabet, it is also given that a\
+string is encrypted by first replacing every substring of the string consisting of the same\
+character with the concatenation of that character and the hexadecimal representation of the\
+size of the substring and then reversing the whole string, the task is to find the encrypted string.\
+Note: All Hexadecimal letters should be converted to Lowercase letters.\
+Examples:\
+Input: S = \'93aaaaaaaaaaa\'94\
+Output: ba\
+Explanation:\
+\
+1. First convert the given string to \'93a11\'94 i.e. write character along with its frequency.\
+2. Then, change \'93a11\'94 to \'93ab\'94 because 11 is b in hexadecimal.\
+3. Then, finally reverse the string i.e \'93ba\'94.\
+\
+Ans 7 )\
+\
+#include <iostream>\
+#include <string>\
+#include <sstream>\
+#include <algorithm>\
+\
+std::string toHex(int n) \{\
+    std::stringstream ss;\
+    ss << std::hex << n;\
+    return ss.str();\
+\}\
+\
+std::string encryptString(const std::string& S) \{\
+    std::string encrypted = "";\
+\
+    int n = S.length();\
+    int count = 1;\
+    for (int i = 1; i < n; i++) \{\
+        if (S[i] == S[i - 1]) \{\
+            count++;\
+        \} else \{\
+            encrypted += S[i - 1] + toHex(count);\
+            count = 1;\
+        \}\
+    \}\
+\
+    encrypted += S[n - 1] + toHex(count);\
+\
+    std::reverse(encrypted.begin(), encrypted.end());\
+\
+    return encrypted;\
+\}\
+\
+int main() \{\
+    std::string S = "aaaaaaaaaaa";\
+    std::string encrypted = encryptString(S);\
+    std::cout << "Encrypted string: " << encrypted << std::endl;\
+\
+    return 0;\
+\}\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+8. Given a string of brackets, the task is to find an index k which decides the number of opening\
+brackets is equal to the number of closing brackets.\
+The string must consist of only opening and closing brackets i.e. \'91(\'91 and \'91)\'92.\
+\
+ An equal point is an index such that the number of opening brackets before it is equal to the\
+number of closing brackets from and after.\
+Examples:\
+Input: str = \'93(())))(\'93\
+Output: 4\
+Explanation: After index 4, string splits into (()) and ))(. The number of opening brackets in the\
+first part is equal to the number of closing brackets in the second part.\
+\
+Ans 8 )\
+\
+#include <iostream>\
+#include <string>\
+\
+int findEqualPoint(const std::string& str) \{\
+    int n = str.length();\
+    int openingCount = 0;\
+    int closingCount = 0;\
+\
+    // Count the total number of closing brackets\
+    for (int i = 0; i < n; i++) \{\
+        if (str[i] == ')') \{\
+            closingCount++;\
+        \}\
+    \}\
+\
+    // Iterate through the string to find the equal point\
+    for (int i = 0; i < n; i++) \{\
+        if (str[i] == '(') \{\
+            openingCount++;\
+        \} else \{\
+            closingCount--;\
+        \}\
+\
+        if (openingCount == closingCount) \{\
+            return i;\
+        \}\
+    \}\
+\
+    // If no equal point is found, return -1\
+    return -1;\
+\}\
+\
+int main() \{\
+    std::string str = "(())))(";\
+    int equalPoint = findEqualPoint(str);\
+    std::cout << "Equal point index: " << equalPoint << std::endl;\
+\
+    return 0;\
+\}\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+\
+9. Given a string S that consists of only alphanumeric characters and dashes. The string is\
+separated into N + 1 groups by N dashes. Also given an integer K.\
+We want to reformat the string S, such that each group contains exactly K characters, except for\
+the first group, which could be shorter than K but still must contain at least one character.\
+Furthermore, a dash must be inserted between two groups, and you should convert all\
+lowercase letters to uppercase.\
+Return the reformatted string.\
+Example :\
+Input: S = \'935F3Z-2e-9-w\'94, K = 4\
+Output: \'935F3Z-2E9W\'94\
+Explanation: The string S has been split into two parts, each part has 4 characters.\
+Note that two extra dashes are not needed and can be removed.\
+Input: S = \'932-5g-3-J\'94, K = 2\
+Output: \'932-5G-3J\'94\
+Explanation: The string s has been split into three parts, each part has 2 characters except the\
+first part as it could be shorter as mentioned above\
+\
+Ans 9 )\
+\
+#include <iostream>\
+#include <string>\
+#include <cctype>\
+\
+std::string reformatString(const std::string& S, int K) \{\
+    std::string reformatted = "";\
+\
+    int count = 0;\
+    for (char c : S) \{\
+        if (c != '-') \{\
+            if (count > 0 && count % K == 0) \{\
+                reformatted += '-';\
+            \}\
+            reformatted += std::toupper(c);\
+            count++;\
+        \}\
+    \}\
+\
+    return reformatted;\
+\}\
+\
+int main() \{\
+    std::string S1 = "5F3Z-2e-9-w";\
+    int K1 = 4;\
+    std::string reformatted1 = reformatString(S1, K1);\
+    std::cout << "Reformatted string: " << reformatted1 << std::endl;\
+\
+    std::string S2 = "2-5g-3-J";\
+    int K2 = 2;\
+    std::string reformatted2 = reformatString(S2, K2);\
+    std::cout << "Reformatted string: " << reformatted2 << std::endl;\
+\
+    return 0;\
+\}\
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+10. Given two strings A and B. The task is to find the minimum number of times A has to be\
+repeated such that B is a substring of it. If no such solution exists, print -1.\
+Example :\
+Input : A = \'93abcd\'94, B = \'93cdabcdab\'94\
+Output : 3\
+Repeating A three times (\'93abcdabcdabcd\'94), B is a substring of it. B is not a substring of A when\
+it is repeated less than 3 times.\
+\
+\
+Ans 10 )\
+\
+#include <iostream>\
+#include <string>\
+\
+int repeatedStringMatch(const std::string& A, const std::string& B) \{\
+    int n1 = A.length();\
+    int n2 = B.length();\
+\
+    std::string repeatedA = "";\
+    int count = 0;\
+\
+    // Repeat A until its length is greater than or equal to B\
+    while (repeatedA.length() < n2) \{\
+        repeatedA += A;\
+        count++;\
+    \}\
+\
+    // Check if B is a substring of repeated A\
+    if (repeatedA.find(B) != std::string::npos) \{\
+        return count;\
+    \}\
+\
+    // If B is not a substring of repeated A, try appending A one more time\
+    repeatedA += A;\
+    count++;\
+\
+    if (repeatedA.find(B) != std::string::npos) \{\
+        return count;\
+    \}\
+\
+    // If B is still not a substring, return -1\
+    return -1;\
+\}\
+\
+int main() \{\
+    std::string A = "abcd";\
+    std::string B = "cdabcdab";\
+    int minRepeats = repeatedStringMatch(A, B);\
+    std::cout << "Minimum number of repeats: " << minRepeats << std::endl;\
+\
+    return 0;\
+\}\
+}

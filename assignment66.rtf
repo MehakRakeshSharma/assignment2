@@ -1,0 +1,326 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2709
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww28300\viewh17700\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Assignment-66\
+Divide and Conquer\
+\
+1. We are given a sorted array A[] of n elements. We need to find if x is present in A or not.\
+In binary search we always used the middle element, here we will randomly pick one\
+element in a given range.\
+\
+ans 1 )\
+\
+#include <iostream>\
+#include <cstdlib>   // for rand() and srand()\
+#include <ctime>     // for time()\
+\
+bool randomBinarySearch(int A[], int n, int x) \{\
+    int start = 0;\
+    int end = n - 1;\
+\
+    while (start <= end) \{\
+        int randIndex = rand() % (end - start + 1) + start; // Generate random index within the current range\
+        if (A[randIndex] == x) \{\
+            return true;  // Element found\
+        \} else if (A[randIndex] > x) \{\
+            end = randIndex - 1; // Search in the left half\
+        \} else \{\
+            start = randIndex + 1; // Search in the right half\
+        \}\
+    \}\
+\
+    return false; // Element not found\
+\}\
+\
+int main() \{\
+    int A[] = \{1, 3, 5, 7, 9, 11\};\
+    int n = sizeof(A) / sizeof(A[0]);\
+    int x = 7;\
+\
+    // Initialize random seed\
+    srand(time(0));\
+\
+    bool isPresent = randomBinarySearch(A, n, x);\
+    if (isPresent) \{\
+        std::cout << "Element " << x << " is present in the array." << std::endl;\
+    \} else \{\
+        std::cout << "Element " << x << " is not present in the array." << std::endl;\
+    \}\
+\
+    return 0;\
+\}\
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+2. Given an array of integers. Find the Inversion Count in the array. Inversion Count: For\
+an array, inversion count indicates how far (or close) the array is from being sorted. If\
+array is already sorted then the inversion count is 0. If an array is sorted in the reverse\
+order then the inversion count is the maximum. Formally, two elements a[i] and a[j] form\
+an inversion if a[i] > a[j] and i < j.\
+Example 1:\
+Input: N = 5, arr[] = \{2, 4, 1, 3, 5\}\
+Output: 3\
+Explanation: The sequence 2, 4, 1, 3, 5\
+has three inversions (2, 1), (4, 1), (4, 3).\
+Example 2:\
+Input: N = 5\
+arr[] = \{2, 3, 4, 5, 6\}\
+Output: 0\
+Explanation: As the sequence is already\
+sorted so there is no inversion count.\
+Example 3:\
+Input: N = 3, arr[] = \{10, 10, 10\}\
+Output: 0\
+Explanation: As all the elements of array\
+are the same, so there is no inversion count.\
+\
+Ans 2 )\
+\
+#include <iostream>\
+#include <vector>\
+\
+long long merge(std::vector<int>& arr, int left, int mid, int right) \{\
+    int n1 = mid - left + 1;\
+    int n2 = right - mid;\
+\
+    std::vector<int> leftArr(n1);\
+    std::vector<int> rightArr(n2);\
+\
+    // Copy data to temporary arrays\
+    for (int i = 0; i < n1; i++) \{\
+        leftArr[i] = arr[left + i];\
+    \}\
+    for (int j = 0; j < n2; j++) \{\
+        rightArr[j] = arr[mid + 1 + j];\
+    \}\
+\
+    long long inversions = 0; // Count of inversions\
+    int i = 0; // Initial index of first subarray\
+    int j = 0; // Initial index of second subarray\
+    int k = left; // Initial index of merged subarray\
+\
+    // Merge the two subarrays while counting inversions\
+    while (i < n1 && j < n2) \{\
+        if (leftArr[i] <= rightArr[j]) \{\
+            arr[k] = leftArr[i];\
+            i++;\
+        \} else \{\
+            arr[k] = rightArr[j];\
+            j++;\
+            inversions += (n1 - i); // Count the inversions\
+        \}\
+        k++;\
+    \}\
+\
+    // Copy the remaining elements of leftArr[], if any\
+    while (i < n1) \{\
+        arr[k] = leftArr[i];\
+        i++;\
+        k++;\
+    \}\
+\
+    // Copy the remaining elements of rightArr[], if any\
+    while (j < n2) \{\
+        arr[k] = rightArr[j];\
+        j++;\
+        k++;\
+    \}\
+\
+    return inversions;\
+\}\
+\
+long long mergeSort(std::vector<int>& arr, int left, int right) \{\
+    long long inversions = 0;\
+\
+    if (left < right) \{\
+        int mid = left + (right - left) / 2;\
+\
+        // Recursively divide the array into two halves and count inversions\
+        inversions += mergeSort(arr, left, mid);\
+        inversions += mergeSort(arr, mid + 1, right);\
+\
+        // Merge the two sorted halves and count inversions\
+        inversions += merge(arr, left, mid, right);\
+    \}\
+\
+    return inversions;\
+\}\
+\
+long long inversionCount(std::vector<int>& arr, int n) \{\
+    return mergeSort(arr, 0, n - 1);\
+\}\
+\
+int main() \{\
+    int N = 5;\
+    std::vector<int> arr = \{2, 4, 1, 3, 5\};\
+\
+    long long invCount = inversionCount(arr, N);\
+    std::cout << "Inversion Count: " << invCount << std::endl;\
+\
+    return 0;\
+\}\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+3. Given a sorted array arr[] of size N. Find the element that appears only once in the array.\
+All other elements appear exactly twice.\
+\
+Example 1:\
+Input:\
+N = 11\
+arr[] = \{1, 1, 2, 2, 3, 3, 4, 50, 50, 65, 65\}\
+Output: 4\
+Explanation: 4 is the only element that\
+appears exactly once.\
+\
+Ans 3 )\
+\
+#include <iostream>\
+#include <vector>\
+\
+int findSingleElement(std::vector<int>& arr) \{\
+    int result = 0;\
+\
+    for (int num : arr) \{\
+        result ^= num;\
+    \}\
+\
+    return result;\
+\}\
+\
+int main() \{\
+    int N = 11;\
+    std::vector<int> arr = \{1, 1, 2, 2, 3, 3, 4, 50, 50, 65, 65\};\
+\
+    int singleElement = findSingleElement(arr);\
+    std::cout << "Element that appears only once: " << singleElement << std::endl;\
+\
+    return 0;\
+\}\
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+4. There are Infinite People Standing in a row, indexed from 1. A person having index 'i'\
+has strength of (i*i). You have Strength 'P'. You need to tell what is the maximum number of\
+People You can Kill With your Strength P. You can only Kill a person with strength 'X' if P >=\
+'X' and after killing him, Your Strength decreases by 'X'.\
+\
+Ans 4 )\
+\
+#include <iostream>\
+\
+int maximumPeopleKilled(int P) \{\
+    int count = 0;\
+    int i = 1;\
+\
+    while (P >= i * i) \{\
+        P -= i * i;\
+        count++;\
+        i++;\
+    \}\
+\
+    return count;\
+\}\
+\
+int main() \{\
+    int P = 15;\
+\
+    int maxPeopleKilled = maximumPeopleKilled(P);\
+    std::cout << "Maximum number of people killed: " << maxPeopleKilled << std::endl;\
+\
+    return 0;\
+\}\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+5. Given a sorted and rotated array A of N distinct elements which are rotated at some\
+point, and given an element K. The task is to find the index of the given element K in array A.\
+\
+Ans 5 )\
+\
+\
+#include <iostream>\
+#include <vector>\
+\
+int findElementIndex(std::vector<int>& arr, int K) \{\
+    int low = 0;\
+    int high = arr.size() - 1;\
+\
+    while (low <= high) \{\
+        int mid = low + (high - low) / 2;\
+\
+        if (arr[mid] == K) \{\
+            return mid;\
+        \}\
+\
+        if (arr[low] <= arr[mid]) \{\
+            // Left half is sorted\
+            if (arr[low] <= K && K < arr[mid]) \{\
+                high = mid - 1;\
+            \} else \{\
+                low = mid + 1;\
+            \}\
+        \} else \{\
+            // Right half is sorted\
+            if (arr[mid] < K && K <= arr[high]) \{\
+                low = mid + 1;\
+            \} else \{\
+                high = mid - 1;\
+            \}\
+        \}\
+    \}\
+\
+    return -1; // Element not found\
+\}\
+\
+int main() \{\
+    std::vector<int> arr = \{6, 7, 8, 9, 10, 1, 2, 3, 4, 5\};\
+    int K = 3;\
+\
+    int index = findElementIndex(arr, K);\
+\
+    if (index != -1) \{\
+        std::cout << "Element " << K << " found at index " << index << std::endl;\
+    \} else \{\
+        std::cout << "Element " << K << " not found in the array" << std::endl;\
+    \}\
+\
+    return 0;\
+\}\
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////\
+\
+6. Given a positive integer N, find the last digit of the Nth term from the Fibonacci series.\
+Note: For N=0 you have to return 0.\
+Expected Time Complexity: O(N)\
+\
+Ans 6 )\
+\
+\
+#include <iostream>\
+\
+int findLastDigitFibonacci(int N) \{\
+    if (N == 0) \{\
+        return 0;\
+    \}\
+\
+    int a = 0; // First term\
+    int b = 1; // Second term\
+\
+    for (int i = 2; i <= N; i++) \{\
+        int temp = (a + b) % 10; // Calculate the next term and keep only the last digit\
+        a = b;\
+        b = temp;\
+    \}\
+\
+    return b;\
+\}\
+\
+int main() \{\
+    int N = 10;\
+\
+    int lastDigit = findLastDigitFibonacci(N);\
+    std::cout << "Last digit of the " << N << "th Fibonacci term: " << lastDigit << std::endl;\
+\
+    return 0;\
+\}\
+}
